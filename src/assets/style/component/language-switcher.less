@@ -1,0 +1,53 @@
+.language-switcher-component {
+    z-index: 100;
+
+    position: absolute;
+    right: 48px;
+    top: 8px;
+
+    @media (max-width: 991px) {
+        right: 78px;
+    }
+
+    .current-language {
+        display: inline-block;
+        -webkit-box-shadow: 0px 0px 6px -4px grey;
+        box-shadow: 0px 0px 6px -4px grey;
+        text-align: center;
+        padding: 4px 8px;
+        margin: 4px 0px;
+        cursor: pointer;
+    }
+
+    .list-language {
+        display: block;
+        text-align: right;
+        position: absolute;
+        right: 42px;
+        top: 0px;
+        width: 300px;
+        overflow: hidden;
+        padding: 4px 0px;
+
+        img {
+            cursor: pointer;
+            display: inline-block;
+            padding: 4px 6px;
+            -webkit-box-shadow: 0px 0px 4px;
+            box-shadow: 0px 0px 4px;
+            margin-right: 6px;
+            position: relative;
+            right: -300px;
+            -webkit-transition: 0.4s;
+            transition: 0.4s;
+        }
+    }
+}
+
+.language-switcher-component.focus {
+    .list-language {
+        img {
+            right: 0px;
+        }
+    }
+}

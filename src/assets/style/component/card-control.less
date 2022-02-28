@@ -1,0 +1,136 @@
+#app.v-application {
+    .card-control {
+        position: relative;
+        display: block;
+        color: #4E5155;
+
+        position: relative;
+        width: 100%;
+        min-height: 100px;
+        padding: 30px;
+        text-align: center;
+        transition: .6s;
+        min-height: 100%;
+
+        background: white;
+        box-shadow: 0 0.75rem 1.5rem #12263f08;
+        border-radius: 0.25rem;
+
+        .badge-items {
+            position: absolute;
+            right: -10px;
+            top: 15px;
+
+            .badge-item {
+                padding: 2px 10px;
+                padding-right: 20px;
+                margin-bottom: 5px;
+            }
+
+            .badge-item.danger {
+                background-color: var(--bs-danger);
+                color: var(--bs-body-bg);
+            }
+
+            .badge-item.info {
+                background-color: var(--bs-info);
+                color: var(--bs-body-bg);
+            }
+
+            .badge-item.warning {
+                background-color: var(--bs-warning);
+                color: var(--bs-body-bg);
+            }
+
+            .badge-item.success {
+                background-color: var(--bs-success);
+                color: var(--bs-body-bg);
+            }
+
+        }
+
+        .icon {
+            font-size: 36px;
+            margin-bottom: 6px;
+        }
+
+        .name {
+            font-size: 18px;
+        }
+
+        .first-name {
+            font-weight: bold;
+        }
+
+        .disabled-text {
+            display: none;
+        }
+
+        a {
+            color: #4E5155;
+        }
+
+        .controls {
+            .control {
+                span {
+                    font-size: 12px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    user-select: none;
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+
+    .card-control.card-create {
+        background-color: #16b92a4d;
+    }
+
+    a.card-control {
+        user-select: none;
+        transform: scale(1);
+        cursor: pointer;
+    }
+
+    .card-control[data-disabled] {
+        cursor: no-drop;
+        pointer-events: none;
+        color: gray;
+        background-color: rgba(248, 249, 250, 0.5);
+
+        .name, .icon {
+            opacity: .5;
+        }
+
+        .disabled-text {
+            display: block;
+
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(27, 27, 27, 0.6);
+            color: white;
+            text-align: center;
+            padding: 55px 40px;
+            font-size: 20px;
+        }
+    }
+
+    .card-control:hover {
+        background-color: #ececec;
+        box-shadow: 1px 1px 6px 0px grey;
+    }
+
+    .card-control.card-create:hover {
+        background-color: #16b92a66;
+        color: #4E5155;
+    }
+
+    a.card-control:hover {
+        transform: scale(1.05);
+        color: #4E5155;
+    }
+}
