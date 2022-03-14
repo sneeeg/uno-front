@@ -9,6 +9,7 @@ import company from "@/router/company";
 import companyEmployee from "@/router/company-employee";
 import profile from "@/router/profile";
 import adminPanel from "@/router/admin-panel";
+import faq from "@/router/faq";
 
 Vue.use(VueRouter);
 
@@ -46,7 +47,8 @@ const routes: Array<RouteConfig> = [
     ...company,
     ...companyEmployee,
     ...profile,
-    ...adminPanel
+    ...adminPanel,
+    ...faq
 ];
 
 const router = new VueRouter({

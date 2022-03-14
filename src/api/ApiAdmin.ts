@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import IAdminPanelUserList from "@/struct/admin-panel/IAdminPanelUserList";
 import PersonalUserItemType from "@/struct/user/PersonalUserItemType";
 import IAdminPanelCompanyList from "@/struct/admin-panel/IAdminPanelCompanyList";
@@ -302,6 +302,56 @@ class ApiAdminPanel {
                 }
             });
             return result.data.session_uuid;
+        } catch (e) {
+            return undefined;
+        }
+    }
+
+    public static async GetFaq(session_uuid: string): Promise<IAdminPanelCompanyList[] | undefined> {
+        try {
+            const result = await axios.get("/api/admin/get-faq", {
+                headers: {
+                    "x-tenant": "null",
+                    "x-session-token": session_uuid
+                }
+            });
+            return result.data.data;
+        } catch (e) {
+            throw new Error("Error get companies");
+        }
+    }
+
+    public static async CreateFaq(session_uuid: string, answer: string , question: string): Promise<string | undefined> {
+        try {
+            const result: AxiosResponse<{ response: string }> = await axios.post("/api/admin/faq-create", {
+                answer: answer,
+                question: question,
+            }, {
+                headers: {
+                    "x-tenant": "null",
+                    "x-session-token": session_uuid
+                }
+            });
+            return result.data.response;
+        } catch (e) {
+            console.error(e);
+            if ("response" in e && "data" in e.response && "response" in e.response.data) {
+                return e.response.data.response;
+            }
+        }
+        return undefined;
+    }
+    public static async DeleteFaq(session_uuid: string, uuid: string): Promise<boolean | undefined> {
+        try {
+            const result = await axios.post("/api/admin/faq-delete", {
+                uuid: uuid
+            }, {
+                headers: {
+                    "x-tenant": "null",
+                    "x-session-token": session_uuid
+                }
+            });
+            return result.data.response;
         } catch (e) {
             return undefined;
         }

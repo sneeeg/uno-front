@@ -26,14 +26,6 @@ export default class DataUser {
             value: "second_name"
         },
         {
-            text: "Отчество",
-            value: "last_name"
-        },
-        {
-            text: "Телефон",
-            value: "phone"
-        },
-        {
             text: "Дата рождения",
             value: "birthday"
         },

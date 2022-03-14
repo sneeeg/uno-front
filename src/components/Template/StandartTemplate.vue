@@ -31,11 +31,14 @@
                 <div class="menu-category" v-if="GetCurrentSessionUser.system_role == SystemRole.Admin || GetCurrentSessionUser.system_role == SystemRole.SuperAdmin">
                     <div class="name">админка</div>
                     <div class="menu-items">
-                        <router-link to="/admin/companies" class="menu-item">
+<!--                        <router-link to="/admin/companies" class="menu-item">
                             <i class="fas fa-building"></i> Управ. компаниями
-                        </router-link>
+                        </router-link>-->
                         <router-link to="/admin/users" class="menu-item">
                             <i class="fas fa-users-cog"></i> Управ. пользователями
+                        </router-link>
+                        <router-link to="/faq/edit" class="menu-item">
+                            <i class="fas fa-users-cog"></i> FAQ
                         </router-link>
                     </div>
                 </div>
