@@ -40,6 +40,9 @@
                         <router-link to="/faq/edit" class="menu-item">
                             <i class="fas fa-users-cog"></i> FAQ
                         </router-link>
+                        <router-link to="/admin/blog" class="menu-item">
+                            <i class="fas fa-users-cog"></i> Blog
+                        </router-link>
                     </div>
                 </div>
             </div>
