@@ -109,7 +109,6 @@ export default class FaqEdit extends Vue {
 
     private async SubmitAnswer(): Promise<void> {
         if (ApiEnter.CurrentSessionUUID != undefined) {
-            this.HasRequest = true;
             this.$forceUpdate();
 
             const faq_uuid = await ApiAdmin.CreateFaq(ApiEnter.CurrentSessionUUID, this.newQuestion.Question, this.newQuestion.Answer);
@@ -121,8 +120,6 @@ export default class FaqEdit extends Vue {
                 });
                 return;
             }
-
-            this.HasRequest = false;
             this.$forceUpdate();
 
             sweetalert({
