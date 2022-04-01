@@ -10,10 +10,10 @@
                     <div class="name">меню</div>
                     <div class="menu-items">
                         <router-link to="/" class="menu-item" exact>
-                            <i class="fas fa-home"></i> Главная
+                            <i class="fas fa-home"></i> Home
                         </router-link>
                         <router-link to="/company/list" class="menu-item">
-                            <i class="fas fa-bars"></i> Список компаний
+                            <i class="fas fa-bars"></i> Companies
                         </router-link>
                     </div>
                 </div>
@@ -35,13 +35,19 @@
                             <i class="fas fa-building"></i> Управ. компаниями
                         </router-link>-->
                         <router-link to="/admin/users" class="menu-item">
-                            <i class="fas fa-users-cog"></i> Управ. пользователями
+                            <i class="fas fa-users-cog"></i> Users
                         </router-link>
                         <router-link to="/faq/edit" class="menu-item">
                             <i class="fas fa-users-cog"></i> FAQ
                         </router-link>
                         <router-link to="/admin/blog" class="menu-item">
                             <i class="fas fa-users-cog"></i> Blog
+                        </router-link>
+                    </div>
+                    <div class="name">E-SHOP</div>
+                    <div class="menu-items">
+                        <router-link to="/admin/catalog/offers" class="menu-item">
+                            <i class="fab fa-buffer"></i> Offers
                         </router-link>
                     </div>
                 </div>

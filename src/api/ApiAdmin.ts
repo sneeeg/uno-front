@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import IAdminPanelUserList from "@/struct/admin-panel/IAdminPanelUserList";
 import PersonalUserItemType from "@/struct/user/PersonalUserItemType";
 import IAdminPanelCompanyList from "@/struct/admin-panel/IAdminPanelCompanyList";
+import IAdminPanelOffersCategoriesList from "@/struct/admin-panel/IAdminPanelOffersCategoriesList";
 
 class ApiAdminPanel {
     public static async GetUsers(session_uuid: string): Promise<IAdminPanelUserList[] | undefined> {
@@ -439,6 +440,56 @@ class ApiAdminPanel {
         } catch (e) {
             throw new Error("Error get blog");
         }
+    }
+
+    public static async GetOfferCategories(session_uuid: string): Promise<IAdminPanelOffersCategoriesList[] | undefined> {
+        try {
+            const result = await axios.get("/api/admin/get-offer-categories", {
+                headers: {
+                    "x-tenant": "null",
+                    "x-session-token": session_uuid
+                }
+            });
+            return result.data.data;
+        } catch (e) {
+            throw new Error("Error get blog");
+        }
+    }
+    public static async GetOfferCategoryByUUID(session_uuid: string, offer_category_uuid: string): Promise<IAdminPanelOffersCategoriesList[] | undefined> {
+        try {
+            const result = await axios.post("/api/admin/get-offer-category-by", {
+                offer_category_uuid: offer_category_uuid
+            }, {
+                headers: {
+                    "x-tenant": "null",
+                    "x-session-token": session_uuid
+                }
+            });
+            return result.data.data;
+        } catch (e) {
+            return undefined;
+        }
+    }
+    public static async CreateOfferCategory(session_uuid: string, name: string , publish: number, priority: string): Promise<string | undefined> {
+        try {
+            const result: AxiosResponse<{ response: string }> = await axios.post("/api/admin/offer-create-category", {
+                name: name,
+                publish: publish,
+                priority: priority
+            }, {
+                headers: {
+                    "x-tenant": "null",
+                    "x-session-token": session_uuid
+                }
+            });
+            return result.data.response;
+        } catch (e) {
+            console.error(e);
+            if ("response" in e && "data" in e.response && "response" in e.response.data) {
+                return e.response.data.response;
+            }
+        }
+        return undefined;
     }
 }
 
