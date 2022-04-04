@@ -137,8 +137,8 @@ export default class CreateQuestion extends Vue {
             const blog_uuid = await ApiAdmin.CreateFaqQuestion(
                 ApiEnter.CurrentSessionUUID,
                 this.PostName,
-                this.PostPublish,
-                this.PostImage,
+                this.PostName,
+                this.PostPublish? 1: 0,
                 this.BlogContent);
             if (blog_uuid == undefined || blog_uuid.length != 36) {
                 sweetalert({

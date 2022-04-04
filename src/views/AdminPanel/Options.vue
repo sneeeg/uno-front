@@ -52,7 +52,6 @@ import TableHeaderItemType from "@/struct/ui/Table/TableHeaderItemType";
 import ApiAdmin from "@/api/ApiAdmin";
 import ApiEnter from "@/api/ApiEnter";
 import StandartTemplate from "@/components/Template/StandartTemplate.vue";
-import sweetalert from "sweetalert";
 import IAdminPanelOffersCategoriesList from "@/struct/admin-panel/IAdminPanelOffersCategoriesList";
 import DataOptions from "@/data/AdminPanel/DataOptions";
 

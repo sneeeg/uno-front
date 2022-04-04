@@ -82,7 +82,6 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import BreadcrumbsItemType from "@/struct/ui/breadcrumbs/BreadcrumbsItemType";
-import DataUserEditProfilePage from "@/data/Profile/DataUserEditProfilePage";
 import sweetalert from "sweetalert";
 import ApiEnter from "@/api/ApiEnter";
 import ApiAdmin from "@/api/ApiAdmin";
@@ -91,7 +90,6 @@ import LeftMenuTab from "@/components/LeftMenu/LeftMenuTab.vue";
 import PageHeader from "@/components/UI/PageHeader.vue";
 import IAdminPanelCompanyList from "@/struct/admin-panel/IAdminPanelCompanyList";
 import TableHeaderItemType from "@/struct/ui/Table/TableHeaderItemType";
-import DataOffers from "@/data/AdminPanel/DataOffers";
 import DataFaq from "@/data/AdminPanel/DataFaq";
 
 
