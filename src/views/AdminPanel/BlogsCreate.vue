@@ -1,50 +1,112 @@
 <template>
-    <div class="page-container">
-        <standart-template>
-            <div class="container">
-                <v-form ref="ValidateForms">
-                    <div class="row mt-1">
-                        <v-breadcrumbs :items="Breadcrumbs" divider="/"/>
-                        <page-header title="Create Blog" back-url="/company/list/"/>
-                        <div class="col-12">
-                            <div class="well">
-                                <div class="well-wrapper">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="row">
-                                                <form-generator ref="company-form-generator" title="Данные о компании"
-                                                                :form-model="BlogInfoModel"/>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="row">
-                                                <editor
-                                                    api-key="no-api-key"
-                                                    v-model="BlogContent"
-                                                    :init="{
-                                                         height: 200,
-                                                         menubar: false,
-                                                         plugins: []
-                                                       }"
-                                                />
-                                            </div>
-                                        </div>
-                                        <div class="col-12 text-center mt-4 pt-3 mb-5 border-top">
-                                            <div class="btn-group" role="group" aria-label="Basic example">
-                                                <v-btn color="success" @click="OnClickSubmit()" :loading="HasRequest">
-                                                    Create Blog
-                                                </v-btn>
-                                            </div>
-                                        </div>
-                                    </div>
+    <standart-template>
+        <div class="container">
+            <div class="row mt-1">
+                <v-breadcrumbs :items="Breadcrumbs" divider="/"/>
+                <page-header title="Posts" back-url="/company/list/"/>
+                <div class="col-12 px-6">
+                    <v-divider></v-divider>
+                </div>
+                <h6 class="px-6 font-weight-bold text-uppercase">Edit</h6>
+                <div class="col-12">
+                    <div class="well mb-0">
+                        <div class="well-wrapper">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h5 class="font-weight-medium">Main information</h5>
+                                    <v-switch
+                                        v-model="PostPublish"
+                                        label="Publish"
+                                        hide-details
+                                        class="mt-10"
+                                    ></v-switch>
+                                    <v-text-field
+                                        label="Post name"
+                                        v-model="PostName"
+                                        hide-details
+                                        class="col-7 px-0 mt-5"
+                                    ></v-text-field>
+                                    <v-text-field
+                                        label="Post image"
+                                        v-model="PostImage"
+                                        hide-details
+                                        class="col-4 px-0 mt-5"
+                                    ></v-text-field>
+                                </div>
+                                <div class="col-12">
+                                    <editor
+                                        api-key="no-api-key"
+                                        v-model="BlogContent"
+                                        :init="{
+                                             height: 200,
+                                             menubar: false,
+                                             plugins: []
+                                       }"/>
+                                </div>
+                                <div class="col-12">
+                                    <v-divider></v-divider>
+                                </div>
+                                <div class="col-12">
+                                    <h5 class="font-weight-medium">SEO Section</h5>
+                                    <v-textarea
+                                        outlined
+                                        name="input-7-4"
+                                        height="100"
+                                        no-resize
+                                        hide-details
+                                        class="col-5 px-0 mt-10"
+                                        label="Description"
+                                        v-model="PostSeoDescription"
+                                        value=""
+                                    ></v-textarea>
+                                    <v-textarea
+                                        outlined
+                                        name="input-7-4"
+                                        height="100"
+                                        no-resize
+                                        hide-details
+                                        class="col-5 px-0 mt-5"
+                                        label="Keywords"
+                                        v-model="PostSeoKeywords"
+                                        value=""
+                                    ></v-textarea>
+                                    <v-text-field
+                                        label="URL"
+                                        v-model="PostSeoImage"
+                                        hide-details
+                                        class="col-5 px-0 mt-5"
+                                    ></v-text-field>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </v-form>
+                    <div class="row">
+                        <div class="col-12 px-6">
+                            <div class="col-12 py-6 bg-light">
+                                <router-link to="/admin/blog">
+                                    <v-btn
+                                        color="grey lighten-1"
+                                        class="white--text col-1 ml-2"
+                                        small
+                                        depressed>
+                                        Cancel
+                                    </v-btn>
+                                </router-link>
+                                <v-btn
+                                    color="orange accent-4"
+                                    class="white--text col-1 ml-4"
+                                    small
+                                    @click="OnClickSubmit()"
+                                    depressed>
+                                    Save
+                                </v-btn>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </standart-template>
-    </div>
+        </div>
+    </standart-template>
 </template>
 
 <script lang="ts">
@@ -73,19 +135,23 @@ export default class BlogCreate extends Vue {
     public Breadcrumbs: BreadcrumbsItemType[] = [
         {
             to: '/',
-            text: 'Main'
+            text: 'Home'
         },
         {
             to: '/admin/blog',
-            text: 'Blog'
+            text: 'CMS'
         },
         {
-            text: 'Blog Create',
+            text: 'Blog',
             disabled: true
         }
     ];
 
     private BlogContent: string = ''
+
+    private PostName: string= ''
+    private PostImage: string= ''
+    private PostPublish: boolean = false
 
     private async OnClickSubmit(): Promise<void> {
         if (ApiEnter.CurrentSessionUUID != undefined) {
@@ -93,9 +159,9 @@ export default class BlogCreate extends Vue {
 
             const blog_uuid = await ApiAdmin.CreateBlog(
                 ApiEnter.CurrentSessionUUID,
-                this.BlogInfoModel.Title.value,
-                this.BlogInfoModel.IsShow.value,
-                this.BlogInfoModel.Image.value,
+                this.PostName,
+                this.PostPublish,
+                this.PostImage,
                 this.BlogContent);
             if (blog_uuid == undefined || blog_uuid.length != 36) {
                 sweetalert({
