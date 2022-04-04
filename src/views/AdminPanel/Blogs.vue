@@ -4,61 +4,44 @@
             <div class="container">
                 <div class="row mt-1">
                     <v-breadcrumbs :items="Breadcrumbs" divider="/"/>
-                    <page-header title="Blog Page"></page-header>
+                    <page-header title="Posts" back-url="/"/>
                 </div>
-                <div class="row mt-4">
-                    <div class="col-1">
-                        <router-link to="/admin/blog/create">
-                            <v-btn
-                                depressed
-                                color="primary">
-                                Create blog
-                            </v-btn>
-                        </router-link>
-                    </div>
+                <div class="col-12">
+                    <v-divider></v-divider>
                 </div>
-                <div class="row mt-5">
-                    <div class="col-12">
-                        <div class="well">
-                            <div class="row">
-                                <div class="col-12 text-center" v-if="BlogsItems.length === 0">
-                                    <p>Blog is empty</p>
-                                </div>
-                                <v-col
-                                    v-else
-                                    cols="4"
-                                    v-for="card in BlogsItems"
-                                    :key="card.id"
-                                >
-                                    <v-card>
-                                        <v-img
-                                            height="150"
-                                            :src="card.image"
-                                        ></v-img>
-                                        <v-card-title>{{ card.title }}</v-card-title>
-                                        <v-card-actions class="d-flex justify-space-between">
-                                            <router-link :to="{ name: 'BlogEdit', params: { blog_uuid: card.uuid } }">
-                                                <v-btn
-                                                    color="primary"
-                                                    depressed
-                                                >
-                                                    Edit
-                                                </v-btn>
-                                            </router-link>
-                                            <v-btn
-                                                icon
-                                                small
-                                                @click="DeleteBlog(card.uuid)">
-                                                <v-icon small>
-                                                    fas fa-trash
-                                                </v-icon>
-                                            </v-btn>
-                                        </v-card-actions>
-                                    </v-card>
-                                </v-col>
+                <div class="col-12">
+                    <router-link to="/admin/blog/create">
+                        <v-btn
+                            color="orange accent-4"
+                            class="white--text"
+                            small
+                            depressed
+                            @click="DialogToggle">
+                            Add post
+                        </v-btn>
+                    </router-link>
+                </div>
+                <div class="col-12">
+                    <v-data-table dense :headers="TableHeaders" :items="TableItems" :items-per-page="15" item-key="offer" class="elevation-1">
+                        <template v-slot:item.create_at="{ item }">
+                            {{ formatDate(item.create_at) }}
+                        </template>
+                        <template v-slot:item.action="{ item }">
+                            <div class="d-flex align-center">
+                                <v-switch hide-details :input-value="item.is_show" class="mt-0"></v-switch>
+                                <v-btn icon @click="editPost(item.uuid)">
+                                    <v-icon small color="grey darken-2">
+                                        fas fa-pencil-alt
+                                    </v-icon>
+                                </v-btn>
+                                <v-btn icon @click="() => console.log('del')">
+                                    <v-icon small color="red darken-3">
+                                        far fa-trash-alt
+                                    </v-icon>
+                                </v-btn>
                             </div>
-                        </div>
-                    </div>
+                        </template>
+                    </v-data-table>
                 </div>
             </div>
         </standart-template>
@@ -74,6 +57,9 @@ import ApiAdmin from "@/api/ApiAdmin";
 import StandartTemplate from "@/components/Template/StandartTemplate.vue";
 import LeftMenuTab from "@/components/LeftMenu/LeftMenuTab.vue";
 import PageHeader from "@/components/UI/PageHeader.vue";
+import TableHeaderItemType from "@/struct/ui/Table/TableHeaderItemType";
+import DataBlogCreate from "@/data/AdminPanel/DataBlogCreate";
+import dayjs from "dayjs";
 
 
 @Component({
@@ -94,11 +80,14 @@ export default class Blog extends Vue {
         }
     ];
 
-    private BlogsItems: any = [];
+    private TableHeaders: TableHeaderItemType[] = DataBlogCreate.TableHeaders;
+
+    private TableItems: any[] | undefined = [];
 
     private async GetBlogs(): Promise<void> {
         try {
-            this.BlogsItems = await ApiAdmin.GetBlog(ApiEnter.CurrentSessionUUID as string);
+            this.TableItems = await ApiAdmin.GetBlog(ApiEnter.CurrentSessionUUID as string);
+            console.log(this.TableItems)
         } catch (e) {
             console.error(e);
         }
@@ -134,6 +123,10 @@ export default class Blog extends Vue {
 
     private created(): void {
         this.GetBlogs()
+    }
+
+    private formatDate(item: string) {
+        return dayjs(item).format('DD.MM.YYYY')
     }
 }
 </script>

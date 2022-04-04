@@ -217,7 +217,6 @@ export default class OffersCategories extends Vue {
         this.getOfferCategory(uuid)
     }
 
-
     private mounted() {
         this.getOffers();
     }

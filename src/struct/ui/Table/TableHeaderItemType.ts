@@ -3,6 +3,7 @@ interface TableHeaderItemType {
     value: string;
     align?: string;
     sortable?: boolean;
+    width?: string;
 }
 
 export default TableHeaderItemType;

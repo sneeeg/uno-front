@@ -1,5 +1,7 @@
 import { FormGeneratorListInputModelType } from "@/struct/form/FormGenerator/FormGeneratorListInputModelType";
 import UtilFormValidation from "@/util/Form/UtilFormValidation";
+import BreadcrumbsItemType from "@/struct/ui/breadcrumbs/BreadcrumbsItemType";
+import TableHeaderItemType from "@/struct/ui/Table/TableHeaderItemType";
 
 class DataBlogCreate {
     public static BlogInfoModel: FormGeneratorListInputModelType = {
@@ -40,6 +42,40 @@ class DataBlogCreate {
             rules: []
         }
     };
+
+    public static Breadcrumbs: BreadcrumbsItemType[] = [
+        {
+            to: "/",
+            text: "Home",
+        },
+        {
+            to: "/",
+            text: "CMS",
+        },
+        {
+            to: "/admin/catalog/categories",
+            text: "Blog",
+            disabled: true
+        },
+    ];
+
+    public static TableHeaders: TableHeaderItemType[] = [
+        {
+            text: "Date",
+            value: "create_at",
+            width: '15%'
+        },
+        {
+            text: "Name",
+            value: "title",
+            width: '70%'
+        },
+        {
+            text: "Action",
+            value: "action"
+        }
+
+    ];
 }
 
 export default DataBlogCreate
