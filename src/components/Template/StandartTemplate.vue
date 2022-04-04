@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="menu-category" v-if="GetCurrentSessionUser.system_role == SystemRole.Admin || GetCurrentSessionUser.system_role == SystemRole.SuperAdmin">
-                    <div class="name">админка</div>
+                    <div class="name">ADMIN</div>
                     <div class="menu-items">
 <!--                        <router-link to="/admin/companies" class="menu-item">
                             <i class="fas fa-building"></i> Управ. компаниями
@@ -37,17 +37,26 @@
                         <router-link to="/admin/users" class="menu-item">
                             <i class="fas fa-users-cog"></i> Users
                         </router-link>
-                        <router-link to="/faq/edit" class="menu-item">
-                            <i class="fas fa-users-cog"></i> FAQ
+                    </div>
+                    <div class="name">CMS</div>
+                    <div class="menu-items">
+                        <router-link to="/faq/questions" class="menu-item">
+                            <i class="fas fa-question"></i> FAQ
                         </router-link>
                         <router-link to="/admin/blog" class="menu-item">
-                            <i class="fas fa-users-cog"></i> Blog
+                            <i class="fas fa-paste"></i> Blog
+                        </router-link>
+                        <router-link to="/admin/blog" class="menu-item">
+                            <i class="far fa-square"></i> Slider
                         </router-link>
                     </div>
                     <div class="name">E-SHOP</div>
                     <div class="menu-items">
                         <router-link to="/admin/catalog/offers" class="menu-item">
                             <i class="fab fa-buffer"></i> Offers
+                        </router-link>
+                        <router-link to="/admin/options" class="menu-item">
+                            <i class="fas fa-cogs"></i> Options and Extras
                         </router-link>
                     </div>
                 </div>

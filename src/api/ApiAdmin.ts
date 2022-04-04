@@ -357,6 +357,63 @@ class ApiAdminPanel {
         }
     }
 
+    public static async GetFaqCategories(session_uuid: string): Promise<any[] | undefined> {
+        try {
+            const result = await axios.get("/api/admin/get-faq-categories", {
+                headers: {
+                    "x-tenant": "null",
+                    "x-session-token": session_uuid
+                }
+            });
+            return result.data.data;
+        } catch (e) {
+            throw new Error("Error get faq");
+        }
+    }
+    public static async CreateFaqCategory(session_uuid: string, name: string, priority: string, publish: number): Promise<string | undefined> {
+        try {
+            const result: AxiosResponse<{ response: string }> = await axios.post("/api/admin/faq-create-category", {
+                name: name,
+                priority: priority,
+                publish: publish
+            }, {
+                headers: {
+                    "x-tenant": "null",
+                    "x-session-token": session_uuid
+                }
+            });
+            return result.data.response;
+        } catch (e) {
+            console.error(e);
+            if ("response" in e && "data" in e.response && "response" in e.response.data) {
+                return e.response.data.response;
+            }
+        }
+        return undefined;
+    }
+    public static async CreateFaqQuestion(session_uuid: string, name: string, priority: string, publish: number, category: string): Promise<string | undefined> {
+        try {
+            const result: AxiosResponse<{ response: string }> = await axios.post("/api/admin/faq-create-question", {
+                name: name,
+                priority: priority,
+                publish: publish,
+                category: category
+            }, {
+                headers: {
+                    "x-tenant": "null",
+                    "x-session-token": session_uuid
+                }
+            });
+            return result.data.response;
+        } catch (e) {
+            console.error(e);
+            if ("response" in e && "data" in e.response && "response" in e.response.data) {
+                return e.response.data.response;
+            }
+        }
+        return undefined;
+    }
+
     public static async GetBlog(session_uuid: string): Promise<IAdminPanelCompanyList[] | undefined> {
         try {
             const result = await axios.get("/api/admin/get-blog", {
