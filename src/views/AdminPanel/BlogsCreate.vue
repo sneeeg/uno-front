@@ -151,7 +151,7 @@ export default class BlogCreate extends Vue {
 
     private PostName: string= ''
     private PostImage: string= ''
-    private PostPublish: boolean = false
+    private PostPublish: boolean = true
 
     private async OnClickSubmit(): Promise<void> {
         if (ApiEnter.CurrentSessionUUID != undefined) {

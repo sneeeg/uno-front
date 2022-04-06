@@ -7,14 +7,14 @@
 
             <div class="menu-wrapper">
                 <div class="menu-category">
-                    <div class="name">меню</div>
+                    <div class="name">Menu</div>
                     <div class="menu-items">
                         <router-link to="/" class="menu-item" exact>
                             <i class="fas fa-home"></i> Home
                         </router-link>
-                        <router-link to="/company/list" class="menu-item">
+<!--                        <router-link to="/company/list" class="menu-item">
                             <i class="fas fa-bars"></i> Companies
-                        </router-link>
+                        </router-link>-->
                     </div>
                 </div>
                 <div class="menu-category" v-if="GetCurrentCompanyItem != undefined">
@@ -64,7 +64,7 @@
         </div>
         <div class="right-wrapper">
             <div class="top-bar">
-                <div class="dropdown company-list">
+<!--                <div class="dropdown company-list">
                     <a class="nav-link dropdown-toggle" href="#" id="companyListDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <span v-if="GetCurrentCompanyItem">({{ GetCurrentCompanyItem.id }}) {{ GetCurrentCompanyItem.name }} <i class="fas fa-angle-down"></i></span>
                         <span v-else>Выбрать компанию <i class="fas fa-angle-down"></i></span>
@@ -81,7 +81,7 @@
                             <router-link class="dropdown-item" to="/company/create">Создать компанию</router-link>
                         </li>
                     </ul>
-                </div>
+                </div>-->
                 <div class="dropdown user-bar">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <div>

@@ -10,7 +10,7 @@
                     <v-card-title class="text-h5">
                         <span>Category</span>
                         <v-spacer></v-spacer>
-                        <v-btn icon depressed @click="CreateCategory">
+                        <v-btn icon depressed @click="OpenDialog">
                             <v-icon>fas fa-times</v-icon>
                         </v-btn>
                     </v-card-title>
@@ -61,6 +61,7 @@
                             class="white--text"
                             small
                             depressed
+                            :disabled="newCategory.name === ''"
                             @click="CreateCategory"
                         >
                             Save
@@ -109,7 +110,7 @@
                                         fas fa-pencil-alt
                                     </v-icon>
                                 </v-btn>
-                                <v-btn icon @click="() => console.log('del')">
+                                <v-btn icon @click="DeleteFaq(item.uuid)">
                                     <v-icon small color="red darken-3">
                                         far fa-trash-alt
                                     </v-icon>
@@ -186,7 +187,7 @@ export default class FaqEdit extends Vue {
         }
     }
 
-    /*private DeleteFaq(faq_uuid: string): void {
+    private DeleteFaq(faq_uuid: string): void {
         sweetalert({
             title: "Вы уверены?",
             text: "Вы дейсвительно хотите удалить FAQ?",
@@ -202,7 +203,7 @@ export default class FaqEdit extends Vue {
                         icon: "success"
                     });
 
-                    this.GetFaq()
+                    await this.GetFaqCategories()
                 } else {
                     sweetalert({
                         title: "Ошибка!",
@@ -212,7 +213,7 @@ export default class FaqEdit extends Vue {
                 }
             }
         });
-    }*/
+    }
 
     private async GetFaqCategories(): Promise<void> {
         try {

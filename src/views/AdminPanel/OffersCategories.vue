@@ -61,6 +61,7 @@
                             class="white--text"
                             small
                             depressed
+                            :disabled="NewCategoryName === ''"
                             @click="createCategory"
                         >
                             Save
@@ -148,7 +149,7 @@ export default class OffersCategories extends Vue {
 
     private isOpenDialog: boolean = false
 
-    private NewCategoryPublish: boolean = false
+    private NewCategoryPublish: boolean = true
     private NewCategoryName: string = ''
     private NewCategoryPriority: string = ''
     private CategoryCreated: string = ''
@@ -220,6 +221,8 @@ export default class OffersCategories extends Vue {
     private mounted() {
         this.getOffers();
     }
+
+
 
 }
 </script>

@@ -32,12 +32,14 @@
                                         hide-details
                                         class="col-4 px-0 mt-5"
                                     ></v-text-field>
-                                    <v-text-field
-                                        label="Category"
-                                        v-model="PostImage"
-                                        hide-details
+                                    <v-select
+                                        :items="OfferCategories"
+                                        item-text="name"
+                                        label="Categories"
+                                        dense
                                         class="col-4 px-0 mt-5"
-                                    ></v-text-field>
+                                    >
+                                    </v-select>
                                 </div>
                                 <div class="col-12">
                                     <h6>Answer</h6>
@@ -126,9 +128,11 @@ export default class CreateQuestion extends Vue {
 
     private BlogContent: string = ''
 
+    private OfferCategories: any = []
+
     private PostName: string= ''
     private PostImage: string= ''
-    private PostPublish: boolean = false
+    private PostPublish: boolean = true
 
     private async OnClickSubmit(): Promise<void> {
         if (ApiEnter.CurrentSessionUUID != undefined) {
@@ -162,6 +166,18 @@ export default class CreateQuestion extends Vue {
                 this.$router.push(`/admin/blog`);
             })
         }
+    }
+
+    private async GetFaqCategories(): Promise<void> {
+        try {
+            this.OfferCategories = await ApiAdmin.GetFaqCategories(ApiEnter.CurrentSessionUUID as string);
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    private created(): void {
+        this.GetFaqCategories()
     }
 }
 </script>
