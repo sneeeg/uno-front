@@ -34,43 +34,21 @@
                 </div>
 
                 <div class="col-12">
-                    <v-data-table dense :headers="TableHeaders" :items="TableItems" :items-per-page="15" item-key="user" class="elevation-1">
-                        <template v-slot:body="{ item }">
-                            <draggable
-                                :list="item"
-                                tag="tbody">
-                                <tr
-                                    v-for="(item, index) in item"
-                                    :key="index"
-                                >
-                                    <td>
-                                        <v-icon
-                                            small
-                                            class="page__grab-icon"
-                                        >
-                                            mdi-arrow-all
-                                        </v-icon>
-                                    </td>
-                                    <td> {{ index + 1 }} </td>
-                                    <td> {{ item.first_name }} </td>
-                                    <td> {{ item.first_name }} </td>
-                                    <td> {{ item.first_name }} </td>
-                                    <td> {{ item.first_name }} </td>
-                                    <td> {{ item.first_name }} </td>
-                                    <td>
-                                        <v-btn icon @click="EditUser(item.user_uuid)">
-                                            <v-icon>
-                                                fas fa-pencil-alt
-                                            </v-icon>
-                                        </v-btn>
-                                        <v-btn icon @click="LoginOnUser(item.email)">
-                                            <v-icon>
-                                                fas fa-trash-alt
-                                            </v-icon>
-                                        </v-btn>
-                                    </td>
-                                </tr>
-                            </draggable>
+                    <v-data-table dense :headers="TableHeaders" :items="TableItems" :items-per-page="15" item-key="offer" class="elevation-1">
+                        <template v-slot:item.action="{ item }">
+                            <div class="d-flex align-center">
+                                <v-switch hide-details :input-value="item.publish" class="mt-0"></v-switch>
+                                <v-btn icon @click="editOfferCategory(item.uuid)">
+                                    <v-icon small color="grey darken-2">
+                                        fas fa-pencil-alt
+                                    </v-icon>
+                                </v-btn>
+                                <v-btn icon @click="DeleteQuestion(item.uuid)">
+                                    <v-icon small color="red darken-3">
+                                        far fa-trash-alt
+                                    </v-icon>
+                                </v-btn>
+                            </div>
                         </template>
                     </v-data-table>
                 </div>
@@ -102,44 +80,7 @@ export default class FaqEdit extends Vue {
     private TableHeaders: TableHeaderItemType[] = DataFaq.QuestionsTableHeaders;
 
     private Breadcrumbs: BreadcrumbsItemType[] = DataFaq.FaqQuestionsBreadcrumbs;
-    private FaqItems: IAdminPanelCompanyList[] | undefined = [];
-    public isCreating: boolean = false;
-    private newQuestion: any = {
-        Question: '',
-        Answer: ''
-    }
-
-    private CreateAnswer(): void {
-        this.isCreating = !this.isCreating
-    }
-
-    private async SubmitAnswer(): Promise<void> {
-        if (ApiEnter.CurrentSessionUUID != undefined) {
-            this.$forceUpdate();
-
-            const faq_uuid = await ApiAdmin.CreateFaq(ApiEnter.CurrentSessionUUID, this.newQuestion.Question, this.newQuestion.Answer);
-            if (faq_uuid == undefined || faq_uuid.length != 36) {
-                sweetalert({
-                    title: "Ошибка запроса!",
-                    text: "Ошибка создания FAQ: " + faq_uuid,
-                    icon: "info"
-                });
-                return;
-            }
-            this.$forceUpdate();
-
-            sweetalert({
-                title: "Успех!",
-                text: `FAQ успешно создан!`,
-                icon: "success"
-            })
-
-            this.GetFaq()
-            this.newQuestion.Answer = ''
-            this.newQuestion.Question = ''
-            this.isCreating = false
-        }
-    }
+    private TableItems: IAdminPanelCompanyList[] | undefined = [];
 
     private DeleteFaq(faq_uuid: string): void {
         sweetalert({
@@ -149,7 +90,7 @@ export default class FaqEdit extends Vue {
             buttons: ["Нет, Отмена!", "Да, Подтверждаю!"]
         }).then(async isConfirm => {
             if (isConfirm == true) {
-                const response = await ApiAdmin.DeleteFaq(ApiEnter.CurrentSessionUUID as string, faq_uuid);
+                const response = await ApiAdmin.DeleteFaqCategory(ApiEnter.CurrentSessionUUID as string, faq_uuid);
                 if (typeof response == "boolean") {
                     sweetalert({
                         title: "Успешно!",
@@ -171,13 +112,13 @@ export default class FaqEdit extends Vue {
 
     private async GetFaq(): Promise<void> {
         try {
-            this.FaqItems = await ApiAdmin.GetFaq(ApiEnter.CurrentSessionUUID as string);
+            this.TableItems = await ApiAdmin.GetFaq(ApiEnter.CurrentSessionUUID as string);
         } catch (e) {
             console.error(e);
         }
     }
 
-    private created(): void {
+    public created(): void {
         this.GetFaq()
     }
 }

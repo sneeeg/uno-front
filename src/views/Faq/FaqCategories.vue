@@ -40,6 +40,7 @@
                             <v-text-field
                                 label="Priority (sorting)"
                                 v-model="newCategory.priority"
+                                type="number"
                                 outlined
                                 dense
                             ></v-text-field>
@@ -61,8 +62,8 @@
                             class="white--text"
                             small
                             depressed
-                            :disabled="newCategory.name === ''"
-                            @click="CreateCategory"
+                            :disabled="newCategory.name === '' || newCategory.priority === ''"
+                            @click="CreateFaqCategory"
                         >
                             Save
                         </v-btn>
@@ -110,7 +111,7 @@
                                         fas fa-pencil-alt
                                     </v-icon>
                                 </v-btn>
-                                <v-btn icon @click="DeleteFaq(item.uuid)">
+                                <v-btn icon @click="DeleteCategory(item.uuid)">
                                     <v-icon small color="red darken-3">
                                         far fa-trash-alt
                                     </v-icon>
@@ -144,10 +145,11 @@ import DataFaq from "@/data/AdminPanel/DataFaq";
 
 export default class FaqEdit extends Vue {
 
-    private TableHeaders: TableHeaderItemType[] = DataFaq.CategoriesTableHeaders;
-
     private Breadcrumbs: BreadcrumbsItemType[] = DataFaq.FaqQuestionsBreadcrumbs;
+
+    private TableHeaders: TableHeaderItemType[] = DataFaq.CategoriesTableHeaders;
     private TableItems: IAdminPanelCompanyList[] | undefined = [];
+
     public isOpenDialog: boolean = false;
     private newCategory: any = {
         name: '',
@@ -159,7 +161,7 @@ export default class FaqEdit extends Vue {
         this.isOpenDialog = !this.isOpenDialog
     }
 
-    private async CreateCategory(): Promise<void> {
+    private async CreateFaqCategory(): Promise<void> {
         if (ApiEnter.CurrentSessionUUID != undefined) {
             this.$forceUpdate();
 
@@ -175,10 +177,10 @@ export default class FaqEdit extends Vue {
             this.$forceUpdate();
 
             sweetalert({
-                title: "Успех!",
-                text: `FAQ успешно создан!`,
+                title: "Success!",
+                text: `FAQ category has created!`,
                 icon: "success"
-            })
+            }).then(() => this.isOpenDialog = false)
 
             await this.GetFaqCategories()
             this.newCategory.name = ''
@@ -187,19 +189,19 @@ export default class FaqEdit extends Vue {
         }
     }
 
-    private DeleteFaq(faq_uuid: string): void {
+    private DeleteCategory(faq_uuid: string): void {
         sweetalert({
-            title: "Вы уверены?",
-            text: "Вы дейсвительно хотите удалить FAQ?",
+            title: "Are you sure?",
+            text: "Do you really want to delete it?",
             icon: "warning",
-            buttons: ["Нет, Отмена!", "Да, Подтверждаю!"]
+            buttons: ["No, cancel", "Yes, I'm sure"]
         }).then(async isConfirm => {
             if (isConfirm == true) {
-                const response = await ApiAdmin.DeleteFaq(ApiEnter.CurrentSessionUUID as string, faq_uuid);
+                const response = await ApiAdmin.DeleteFaqCategory(ApiEnter.CurrentSessionUUID as string, faq_uuid);
                 if (typeof response == "boolean") {
                     sweetalert({
-                        title: "Успешно!",
-                        text: "FAQ удален",
+                        title: "Success!",
+                        text: "FAQ Category has deleted",
                         icon: "success"
                     });
 
@@ -223,7 +225,7 @@ export default class FaqEdit extends Vue {
         }
     }
 
-    private created(): void {
+    public created(): void {
         this.GetFaqCategories()
     }
 }

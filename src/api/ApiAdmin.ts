@@ -341,9 +341,9 @@ class ApiAdminPanel {
         }
         return undefined;
     }
-    public static async DeleteFaq(session_uuid: string, uuid: string): Promise<boolean | undefined> {
+    public static async DeleteFaqCategory(session_uuid: string, uuid: string): Promise<boolean | undefined> {
         try {
-            const result = await axios.post("/api/admin/faq-delete", {
+            const result = await axios.post("/api/admin/faq-category-delete", {
                 uuid: uuid
             }, {
                 headers: {
@@ -391,7 +391,7 @@ class ApiAdminPanel {
         }
         return undefined;
     }
-    public static async CreateFaqQuestion(session_uuid: string, name: string, priority: string, publish: number, category: string): Promise<string | undefined> {
+    public static async CreateFaqQuestion(session_uuid: string, answer: string, question: string, priority: string, publish: number, category: string): Promise<string | undefined> {
         try {
             const result: AxiosResponse<{ response: string }> = await axios.post("/api/admin/faq-create-question", {
                 name: name,

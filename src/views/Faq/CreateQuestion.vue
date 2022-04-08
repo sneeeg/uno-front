@@ -15,25 +15,26 @@
                                 <div class="col-12">
                                     <h5 class="font-weight-medium">Main information</h5>
                                     <v-switch
-                                        v-model="PostPublish"
+                                        v-model="newPost.publish"
                                         label="Publish"
                                         hide-details
                                         class="mt-10"
                                     ></v-switch>
                                     <v-text-field
                                         label="Question"
-                                        v-model="PostName"
+                                        v-model="newPost.question"
                                         hide-details
                                         class="col-7 px-0 mt-5"
                                     ></v-text-field>
                                     <v-text-field
                                         label="Priority (sorting)"
-                                        v-model="PostImage"
+                                        v-model="newPost.priority"
                                         hide-details
                                         class="col-4 px-0 mt-5"
                                     ></v-text-field>
                                     <v-select
-                                        :items="OfferCategories"
+                                        :items="FaqCategories"
+                                        v-model="newPost.category"
                                         item-text="name"
                                         label="Categories"
                                         dense
@@ -45,7 +46,7 @@
                                     <h6>Answer</h6>
                                     <editor
                                         api-key="no-api-key"
-                                        v-model="BlogContent"
+                                        v-model="newPost.answer"
                                         :init="{
                                              height: 200,
                                              menubar: false,
@@ -57,11 +58,11 @@
                     </div>
                     <div class="row">
                         <div class="col-12 px-6">
-                            <div class="col-12 py-6 bg-light">
+                            <div class="col-12 py-6 bg-light d-flex">
                                 <router-link to="/faq/questions">
                                     <v-btn
                                         color="grey lighten-1"
-                                        class="white--text col-1 ml-2"
+                                        class="white--text"
                                         small
                                         depressed>
                                         Cancel
@@ -69,7 +70,7 @@
                                 </router-link>
                                 <v-btn
                                     color="orange accent-4"
-                                    class="white--text col-1 ml-4"
+                                    class="white--text ml-2"
                                     small
                                     @click="OnClickSubmit()"
                                     depressed>
@@ -105,7 +106,6 @@ import Editor from '@tinymce/tinymce-vue'
 export default class CreateQuestion extends Vue {
 
     @Ref("company-form-generator") private CompanyFormGenerator!: FormGenerator;
-    private BlogInfoModel: FormGeneratorListInputModelType = DataBlogCreate.BlogInfoModel;
 
     public Breadcrumbs: BreadcrumbsItemType[] = [
         {
@@ -126,13 +126,15 @@ export default class CreateQuestion extends Vue {
         }
     ];
 
-    private BlogContent: string = ''
+    private FaqCategories: any = []
 
-    private OfferCategories: any = []
-
-    private PostName: string= ''
-    private PostImage: string= ''
-    private PostPublish: boolean = true
+    private newPost: any = {
+        answer: '',
+        question: '',
+        publish: true,
+        priority: '',
+        category: undefined
+    }
 
     private async OnClickSubmit(): Promise<void> {
         if (ApiEnter.CurrentSessionUUID != undefined) {
@@ -140,43 +142,45 @@ export default class CreateQuestion extends Vue {
 
             const blog_uuid = await ApiAdmin.CreateFaqQuestion(
                 ApiEnter.CurrentSessionUUID,
-                this.PostName,
-                this.PostName,
-                this.PostPublish? 1: 0,
-                this.BlogContent);
+                this.newPost.answer,
+                this.newPost.question,
+                this.newPost.priority,
+                this.newPost.publish? 1: 0,
+                this.newPost.category);
             if (blog_uuid == undefined || blog_uuid.length != 36) {
                 sweetalert({
-                    title: "Ошибка запроса!",
-                    text: "Ошибка создания Blog: " + blog_uuid,
+                    title: "Request error!",
+                    text: "Ошибка создания Post: " + blog_uuid,
                     icon: "info"
                 });
                 return;
             }
 
             sweetalert({
-                title: "Успех!",
-                text: `Blog успешно создан!`,
+                title: "Success!",
+                text: `Post has created!`,
                 icon: "success"
             }).then(() => {
                 this.$forceUpdate()
-                this.BlogInfoModel.Title.value = ''
-                this.BlogInfoModel.IsShow.value = ''
-                this.BlogInfoModel.Image.value = ''
-                this.BlogContent = ''
-                this.$router.push(`/admin/blog`);
+                this.newPost.answer = ''
+                this.newPost.question = ''
+                this.newPost.priority = ''
+                this.newPost.publish = true
+                this.newPost.category = ''
+                this.$router.push(`/admin/faq`);
             })
         }
     }
 
     private async GetFaqCategories(): Promise<void> {
         try {
-            this.OfferCategories = await ApiAdmin.GetFaqCategories(ApiEnter.CurrentSessionUUID as string);
+            this.FaqCategories = await ApiAdmin.GetFaqCategories(ApiEnter.CurrentSessionUUID as string);
         } catch (e) {
             console.error(e);
         }
     }
 
-    private created(): void {
+    public created(): void {
         this.GetFaqCategories()
     }
 }
