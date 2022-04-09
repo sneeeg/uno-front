@@ -130,7 +130,7 @@ import { Component, Vue } from "vue-property-decorator";
 import BreadcrumbsItemType from "@/struct/ui/breadcrumbs/BreadcrumbsItemType";
 import sweetalert from "sweetalert";
 import ApiEnter from "@/api/ApiEnter";
-import ApiAdmin from "@/api/ApiAdmin";
+import ApiFaq from "@/api/ApiFaq";
 import StandartTemplate from "@/components/Template/StandartTemplate.vue";
 import LeftMenuTab from "@/components/LeftMenu/LeftMenuTab.vue";
 import PageHeader from "@/components/UI/PageHeader.vue";
@@ -165,7 +165,7 @@ export default class FaqEdit extends Vue {
         if (ApiEnter.CurrentSessionUUID != undefined) {
             this.$forceUpdate();
 
-            const faq_uuid = await ApiAdmin.CreateFaqCategory(ApiEnter.CurrentSessionUUID, this.newCategory.name, this.newCategory.priority, this.newCategory.publish? 1: 0);
+            const faq_uuid = await ApiFaq.CreateFaqCategory(ApiEnter.CurrentSessionUUID, this.newCategory.name, this.newCategory.priority, this.newCategory.publish? 1: 0);
             if (faq_uuid == undefined || faq_uuid.length != 36) {
                 sweetalert({
                     title: "Ошибка запроса!",
@@ -197,7 +197,7 @@ export default class FaqEdit extends Vue {
             buttons: ["No, cancel", "Yes, I'm sure"]
         }).then(async isConfirm => {
             if (isConfirm == true) {
-                const response = await ApiAdmin.DeleteFaqCategory(ApiEnter.CurrentSessionUUID as string, faq_uuid);
+                const response = await ApiFaq.DeleteFaqCategory(ApiEnter.CurrentSessionUUID as string, faq_uuid);
                 if (typeof response == "boolean") {
                     sweetalert({
                         title: "Success!",
@@ -219,7 +219,7 @@ export default class FaqEdit extends Vue {
 
     private async GetFaqCategories(): Promise<void> {
         try {
-            this.TableItems = await ApiAdmin.GetFaqCategories(ApiEnter.CurrentSessionUUID as string);
+            this.TableItems = await ApiFaq.GetFaqCategories(ApiEnter.CurrentSessionUUID as string);
         } catch (e) {
             console.error(e);
         }

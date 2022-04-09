@@ -46,7 +46,7 @@
                         <router-link to="/admin/blog" class="menu-item">
                             <i class="fas fa-paste"></i> Blog
                         </router-link>
-                        <router-link to="/admin/blog" class="menu-item">
+                        <router-link to="/slider/slides" class="menu-item">
                             <i class="far fa-square"></i> Slider
                         </router-link>
                     </div>

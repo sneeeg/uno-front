@@ -10,6 +10,7 @@ import companyEmployee from "@/router/company-employee";
 import profile from "@/router/profile";
 import adminPanel from "@/router/admin-panel";
 import faq from "@/router/faq";
+import slider from "@/router/slider";
 
 Vue.use(VueRouter);
 
@@ -48,7 +49,8 @@ const routes: Array<RouteConfig> = [
     ...companyEmployee,
     ...profile,
     ...adminPanel,
-    ...faq
+    ...faq,
+    ...slider
 ];
 
 const router = new VueRouter({

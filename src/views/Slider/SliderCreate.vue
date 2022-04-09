@@ -3,7 +3,7 @@
         <div class="container">
             <div class="row mt-1">
                 <v-breadcrumbs :items="Breadcrumbs" divider="/"/>
-                <page-header title="Support (FAQ)" back-url="/company/list/"/>
+                <page-header title="Slider" back-url="/company/list/"/>
                 <div class="col-12 px-6">
                     <v-divider></v-divider>
                 </div>
@@ -20,38 +20,30 @@
                                         hide-details
                                         class="mt-10"
                                     ></v-switch>
+                                    <v-switch
+                                        v-model="newPost.display_text"
+                                        label="Display text on the slide"
+                                        hide-details
+                                        class="mt-10"
+                                    ></v-switch>
                                     <v-text-field
-                                        label="Question"
+                                        label="Slide title"
                                         v-model="newPost.question"
                                         hide-details
                                         class="col-7 px-0 mt-5"
                                     ></v-text-field>
                                     <v-text-field
-                                        label="Priority (sorting)"
+                                        label="Slide subtitle"
                                         v-model="newPost.priority"
                                         hide-details
                                         class="col-4 px-0 mt-5"
                                     ></v-text-field>
-                                    <v-select
-                                        :items="FaqCategories"
-                                        v-model="newPost.category"
-                                        item-text="name"
-                                        label="Categories"
-                                        dense
+                                    <v-text-field
+                                        label="Link for the slide"
+                                        v-model="newPost.priority"
+                                        hide-details
                                         class="col-4 px-0 mt-5"
-                                    >
-                                    </v-select>
-                                </div>
-                                <div class="col-12">
-                                    <h6>Answer</h6>
-                                    <editor
-                                        api-key="no-api-key"
-                                        v-model="newPost.answer"
-                                        :init="{
-                                             height: 200,
-                                             menubar: false,
-                                             plugins: []
-                                       }"/>
+                                    ></v-text-field>
                                 </div>
                             </div>
                         </div>
@@ -59,7 +51,7 @@
                     <div class="row">
                         <div class="col-12 px-6">
                             <div class="col-12 py-6 bg-light d-flex">
-                                <router-link to="/faq/questions">
+                                <router-link to="/slider/slides">
                                     <v-btn
                                         color="grey lighten-1"
                                         class="white--text"
@@ -101,7 +93,7 @@ import Editor from '@tinymce/tinymce-vue'
     components: { PageHeader, StandartTemplate, FormGenerator, Editor },
 })
 
-export default class CreateQuestion extends Vue {
+export default class SliderCreate extends Vue {
 
     @Ref("company-form-generator") private CompanyFormGenerator!: FormGenerator;
 
@@ -130,6 +122,7 @@ export default class CreateQuestion extends Vue {
         answer: '',
         question: '',
         publish: true,
+        display_text: true,
         priority: '',
         category: undefined
     }

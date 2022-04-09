@@ -3,32 +3,20 @@
         <div class="container">
             <div class="row mt-1">
                 <v-breadcrumbs :items="Breadcrumbs" divider="/"/>
-                <page-header title="Support (FAQ)" back-url="/"/>
+                <page-header title="Slider" back-url="/"/>
 
-                <div class="col-12 mt-5">
-                    <router-link to="/faq/questions">
-                        <v-btn depressed small color="light-blue darken-4" class="white--text">
-                            Questions
-                        </v-btn>
-                    </router-link>
-                    <router-link to="/faq/categories" class="ml-3">
-                        <v-btn depressed small color="white">
-                            Categories
-                        </v-btn>
-                    </router-link>
-                </div>
                 <div class="col-12">
                     <v-divider></v-divider>
                 </div>
 
                 <div class="col-12">
-                    <router-link to="/faq/questions/create">
+                    <router-link to="/slider/create">
                         <v-btn
                             color="orange accent-4"
                             class="white--text"
                             small
                             depressed>
-                            Add Questions
+                            Add slide
                         </v-btn>
                     </router-link>
                 </div>
@@ -68,18 +56,17 @@ import LeftMenuTab from "@/components/LeftMenu/LeftMenuTab.vue";
 import PageHeader from "@/components/UI/PageHeader.vue";
 import IAdminPanelCompanyList from "@/struct/admin-panel/IAdminPanelCompanyList";
 import TableHeaderItemType from "@/struct/ui/Table/TableHeaderItemType";
-import DataFaq from "@/data/AdminPanel/DataFaq";
+import DataSlider from "@/data/Slider/DataSlider";
 
 
 @Component({
     components: { PageHeader, StandartTemplate, LeftMenuTab },
 })
 
-export default class FaqEdit extends Vue {
+export default class SliderList extends Vue {
 
-    private TableHeaders: TableHeaderItemType[] = DataFaq.QuestionsTableHeaders;
-
-    private Breadcrumbs: BreadcrumbsItemType[] = DataFaq.FaqQuestionsBreadcrumbs;
+    private Breadcrumbs: BreadcrumbsItemType[] = DataSlider.SliderListBreadcrumbs;
+    private TableHeaders: TableHeaderItemType[] = DataSlider.SliderListTableHeaders;
     private TableItems: IAdminPanelCompanyList[] | undefined = [];
 
     private DeleteFaq(faq_uuid: string): void {
