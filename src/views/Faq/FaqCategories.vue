@@ -17,7 +17,7 @@
                     <v-card-text>
                         <div class="col-12 d-flex">
                             <span class="font-weight-medium">Created</span>
-                            <p class="ml-10 mb-0">{{ CategoryCreated }}</p>
+                            <p class="ml-10 mb-0">{{ newCategory.created }}</p>
                         </div>
                         <div class="col-12 pt-0">
                             <v-switch
@@ -137,6 +137,7 @@ import PageHeader from "@/components/UI/PageHeader.vue";
 import IAdminPanelCompanyList from "@/struct/admin-panel/IAdminPanelCompanyList";
 import TableHeaderItemType from "@/struct/ui/Table/TableHeaderItemType";
 import DataFaq from "@/data/AdminPanel/DataFaq";
+import dayjs from "dayjs";
 
 
 @Component({
@@ -154,11 +155,16 @@ export default class FaqEdit extends Vue {
     private newCategory: any = {
         name: '',
         priority: '',
-        publish: true
+        publish: true,
+        created: '',
     }
 
     private OpenDialog(): void {
         this.isOpenDialog = !this.isOpenDialog
+        this.newCategory.name = ''
+        this.newCategory.priority = ''
+        this.newCategory.publish = true
+        this.newCategory.created = ''
     }
 
     private async CreateFaqCategory(): Promise<void> {
@@ -167,7 +173,7 @@ export default class FaqEdit extends Vue {
 
             const faq_uuid = await ApiFaq.CreateFaqCategory(ApiEnter.CurrentSessionUUID, this.newCategory.name, this.newCategory.priority, this.newCategory.publish? 1: 0);
             if (faq_uuid == undefined || faq_uuid.length != 36) {
-                sweetalert({
+                await sweetalert({
                     title: "Ошибка запроса!",
                     text: "Ошибка создания FAQ: " + faq_uuid,
                     icon: "info"
@@ -180,13 +186,29 @@ export default class FaqEdit extends Vue {
                 title: "Success!",
                 text: `FAQ category has created!`,
                 icon: "success"
-            }).then(() => this.isOpenDialog = false)
+            }).then(() => this.OpenDialog())
 
             await this.GetFaqCategories()
-            this.newCategory.name = ''
-            this.newCategory.priority = ''
-            this.newCategory.publish = true
         }
+    }
+
+    private async editOfferCategory(uuid): Promise<void> {
+        const categoryInfo: any = await ApiFaq.GetFaqCategoryByUUID(ApiEnter.CurrentSessionUUID as string, uuid);
+        if (categoryInfo == undefined) {
+            await sweetalert({
+                title: "Упс!",
+                text: "Во время загрузки информации - возникла ошибка, не все данные были заружены!",
+                icon: "error"
+            })
+            return;
+        }
+
+        this.OpenDialog()
+
+        this.newCategory.name = categoryInfo.name
+        this.newCategory.priority = categoryInfo.priority
+        this.newCategory.publish = categoryInfo.publish
+        this.newCategory.created = dayjs(categoryInfo.create_at).format('DD.MM.YYYY')
     }
 
     private DeleteCategory(faq_uuid: string): void {
@@ -199,7 +221,7 @@ export default class FaqEdit extends Vue {
             if (isConfirm == true) {
                 const response = await ApiFaq.DeleteFaqCategory(ApiEnter.CurrentSessionUUID as string, faq_uuid);
                 if (typeof response == "boolean") {
-                    sweetalert({
+                    await sweetalert({
                         title: "Success!",
                         text: "FAQ Category has deleted",
                         icon: "success"
@@ -207,7 +229,7 @@ export default class FaqEdit extends Vue {
 
                     await this.GetFaqCategories()
                 } else {
-                    sweetalert({
+                    await sweetalert({
                         title: "Ошибка!",
                         text: `Во время выполнения запроса, возникла ошибка: ${response}`,
                         icon: "error"

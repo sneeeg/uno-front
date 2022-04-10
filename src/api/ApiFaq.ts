@@ -83,6 +83,21 @@ class ApiFaq {
             throw new Error("Error get faq");
         }
     }
+    public static async GetFaqCategoryByUUID(session_uuid: string, uuid: string): Promise<any[] | undefined> {
+        try {
+            const result = await axios.post("/api/admin/get-faq-category-by", {
+                uuid: uuid
+            }, {
+                headers: {
+                    "x-tenant": "null",
+                    "x-session-token": session_uuid
+                }
+            });
+            return result.data.data;
+        } catch (e) {
+            return undefined;
+        }
+    }
     public static async CreateFaqCategory(session_uuid: string, name: string, priority: string, publish: number): Promise<string | undefined> {
         try {
             const result: AxiosResponse<{ response: string }> = await axios.post("/api/admin/faq-create-category", {
