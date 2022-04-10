@@ -37,13 +37,13 @@
                     <v-data-table dense :headers="TableHeaders" :items="TableItems" :items-per-page="15" item-key="offer" class="elevation-1">
                         <template v-slot:item.action="{ item }">
                             <div class="d-flex align-center">
-                                <v-switch hide-details :input-value="item.publish" class="mt-0"></v-switch>
+                                <v-switch hide-details v-model="item.publish" :input-value="item.publish" class="mt-0" @change="ChangeFaqPublish(item)"></v-switch>
                                 <v-btn icon @click="editOfferCategory(item.uuid)">
                                     <v-icon small color="grey darken-2">
                                         fas fa-pencil-alt
                                     </v-icon>
                                 </v-btn>
-                                <v-btn icon @click="DeleteQuestion(item.uuid)">
+                                <v-btn icon @click="DeleteFaq(item.uuid)">
                                     <v-icon small color="red darken-3">
                                         far fa-trash-alt
                                     </v-icon>
@@ -69,6 +69,8 @@ import PageHeader from "@/components/UI/PageHeader.vue";
 import IAdminPanelCompanyList from "@/struct/admin-panel/IAdminPanelCompanyList";
 import TableHeaderItemType from "@/struct/ui/Table/TableHeaderItemType";
 import DataFaq from "@/data/AdminPanel/DataFaq";
+import ApiCompany from "@/api/ApiCompany";
+import ApiAdmin from "@/api/ApiAdmin";
 
 
 @Component({
@@ -82,20 +84,45 @@ export default class FaqEdit extends Vue {
     private Breadcrumbs: BreadcrumbsItemType[] = DataFaq.FaqQuestionsBreadcrumbs;
     private TableItems: IAdminPanelCompanyList[] | undefined = [];
 
+    private async ChangeFaqPublish(item): Promise<void> {
+        try {
+            const response = await ApiFaq.UpdateFaqPublish(item.publish? 1: 0, ApiEnter.CurrentSessionUUID as string, item.uuid);
+            if (typeof response == "boolean") {
+                sweetalert({
+                    title: "Success!",
+                    text: "Faq has updated"
+                }).then(() => {
+                    this.GetFaq()
+                });
+            } else {
+                sweetalert({
+                    title: "Ошибка!",
+                    text: `Во время выполнения запроса, возникла ошибка: ${response}`,
+                    icon: "error"
+                });
+            }
+        } catch (e) {
+            console.error(e);
+            sweetalert({
+                title: "Ошибка!",
+                text: "Во время выполнения запроса, возникла ошибка!",
+                icon: "error"
+            });
+        }
+    }
+
     private DeleteFaq(faq_uuid: string): void {
         sweetalert({
-            title: "Вы уверены?",
-            text: "Вы дейсвительно хотите удалить FAQ?",
-            icon: "warning",
-            buttons: ["Нет, Отмена!", "Да, Подтверждаю!"]
+            title: "Are you sure?",
+            text: "You really want to delete this Question?",
+            buttons: ["No, Cancel!", "Yes, I'm sure!"]
         }).then(async isConfirm => {
             if (isConfirm == true) {
-                const response = await ApiFaq.DeleteFaqCategory(ApiEnter.CurrentSessionUUID as string, faq_uuid);
+                const response = await ApiFaq.DeleteFaqQuestion(ApiEnter.CurrentSessionUUID as string, faq_uuid);
                 if (typeof response == "boolean") {
                     sweetalert({
-                        title: "Успешно!",
-                        text: "FAQ удален",
-                        icon: "success"
+                        title: "Success!",
+                        text: "FAQ Question has deleted"
                     });
 
                     this.GetFaq()
@@ -118,7 +145,7 @@ export default class FaqEdit extends Vue {
         }
     }
 
-    public created(): void {
+    public mounted(): void {
         this.GetFaq()
     }
 }

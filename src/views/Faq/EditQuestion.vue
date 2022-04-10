@@ -100,7 +100,7 @@ import Editor from '@tinymce/tinymce-vue'
     components: { PageHeader, StandartTemplate, Editor },
 })
 
-export default class CreateQuestion extends Vue {
+export default class EditQuestion extends Vue {
 
     public Breadcrumbs: BreadcrumbsItemType[] = [
         {

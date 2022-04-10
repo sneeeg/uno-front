@@ -1,5 +1,4 @@
 import axios, { AxiosResponse } from "axios";
-import IAdminPanelCompanyList from "@/struct/admin-panel/IAdminPanelCompanyList";
 
 class ApiFaq {
     public static async GetFaq(session_uuid: string): Promise<any[] | undefined> {
@@ -15,11 +14,14 @@ class ApiFaq {
             throw new Error("Error get faq");
         }
     }
-    public static async CreateFaq(session_uuid: string, answer: string , question: string): Promise<string | undefined> {
+    public static async CreateFaqQuestion(session_uuid: string, answer: string, question: string, priority: string, publish: number, category: string): Promise<string | undefined> {
         try {
             const result: AxiosResponse<{ response: string }> = await axios.post("/api/admin/faq-create", {
                 answer: answer,
                 question: question,
+                priority: priority,
+                publish: publish,
+                category: category
             }, {
                 headers: {
                     "x-tenant": "null",
@@ -35,9 +37,9 @@ class ApiFaq {
         }
         return undefined;
     }
-    public static async DeleteFaqCategory(session_uuid: string, uuid: string): Promise<boolean | undefined> {
+    public static async DeleteFaqQuestion(session_uuid: string, uuid: string): Promise<boolean | undefined> {
         try {
-            const result = await axios.post("/api/admin/faq-category-delete", {
+            const result = await axios.post("/api/admin/faq-delete", {
                 uuid: uuid
             }, {
                 headers: {
@@ -50,6 +52,23 @@ class ApiFaq {
             return undefined;
         }
     }
+    public static async UpdateFaqPublish(publish: number, session_uuid: string, uuid: string): Promise<boolean | undefined> {
+        try {
+            const result = await axios.post("/api/admin/change-faq-publish", {
+                uuid: uuid,
+                publish: publish
+            }, {
+                headers: {
+                    "x-tenant": "null",
+                    "x-session-token": session_uuid
+                }
+            });
+            return result.data.response;
+        } catch (e) {
+            throw new Error("Error");
+        }
+    }
+
 
     public static async GetFaqCategories(session_uuid: string): Promise<any[] | undefined> {
         try {
@@ -85,14 +104,10 @@ class ApiFaq {
         }
         return undefined;
     }
-    public static async CreateFaqQuestion(session_uuid: string, answer: string, question: string, priority: string, publish: number, category: string): Promise<string | undefined> {
+    public static async DeleteFaqCategory(session_uuid: string, uuid: string): Promise<boolean | undefined> {
         try {
-            const result: AxiosResponse<{ response: string }> = await axios.post("/api/admin/faq-create", {
-                answer: answer,
-                question: question,
-                priority: priority,
-                publish: publish,
-                category: category
+            const result = await axios.post("/api/admin/faq-category-delete", {
+                uuid: uuid
             }, {
                 headers: {
                     "x-tenant": "null",
@@ -101,12 +116,8 @@ class ApiFaq {
             });
             return result.data.response;
         } catch (e) {
-            console.error(e);
-            if ("response" in e && "data" in e.response && "response" in e.response.data) {
-                return e.response.data.response;
-            }
+            return undefined;
         }
-        return undefined;
     }
 }
 

@@ -39,7 +39,7 @@ export default class DataFaq {
     public static QuestionsTableHeaders: TableHeaderItemType[] = [
         {
             text: "Sorting",
-            value: "sorting",
+            value: "priority",
             width: '10%'
         },
         {
