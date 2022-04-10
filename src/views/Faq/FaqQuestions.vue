@@ -38,11 +38,13 @@
                         <template v-slot:item.action="{ item }">
                             <div class="d-flex align-center">
                                 <v-switch hide-details v-model="item.publish" :input-value="item.publish" class="mt-0" @change="ChangeFaqPublish(item)"></v-switch>
-                                <v-btn icon @click="editOfferCategory(item.uuid)">
-                                    <v-icon small color="grey darken-2">
-                                        fas fa-pencil-alt
-                                    </v-icon>
-                                </v-btn>
+                                <router-link :to="'/faq/questions/edit/' + item.uuid">
+                                    <v-btn icon>
+                                        <v-icon small color="grey darken-2">
+                                            fas fa-pencil-alt
+                                        </v-icon>
+                                    </v-btn>
+                                </router-link>
                                 <v-btn icon @click="DeleteFaq(item.uuid)">
                                     <v-icon small color="red darken-3">
                                         far fa-trash-alt

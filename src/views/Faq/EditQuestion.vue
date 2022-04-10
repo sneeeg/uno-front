@@ -15,26 +15,26 @@
                                 <div class="col-12">
                                     <h5 class="font-weight-medium">Main information</h5>
                                     <v-switch
-                                        v-model="newPost.publish"
+                                        v-model="currentFaq.publish"
                                         label="Publish"
                                         hide-details
                                         class="mt-10"
                                     ></v-switch>
                                     <v-text-field
                                         label="Question"
-                                        v-model="newPost.question"
+                                        v-model="currentFaq.question"
                                         hide-details
                                         class="col-7 px-0 mt-5"
                                     ></v-text-field>
                                     <v-text-field
                                         label="Priority (sorting)"
-                                        v-model="newPost.priority"
+                                        v-model="currentFaq.priority"
                                         hide-details
                                         class="col-4 px-0 mt-5"
                                     ></v-text-field>
                                     <v-select
                                         :items="FaqCategories"
-                                        v-model="newPost.category"
+                                        v-model="currentFaq.category"
                                         item-text="name"
                                         label="Categories"
                                         dense
@@ -46,7 +46,7 @@
                                     <h6>Answer</h6>
                                     <editor
                                         api-key="no-api-key"
-                                        v-model="newPost.answer"
+                                        v-model="currentFaq.answer"
                                         :init="{
                                              height: 200,
                                              menubar: false,
@@ -121,9 +121,11 @@ export default class EditQuestion extends Vue {
         }
     ];
 
+    private CurrentFaqUUID!: string
+
     private FaqCategories: any = []
 
-    private newPost: any = {
+    private currentFaq: any = {
         answer: '',
         question: '',
         publish: true,
@@ -135,35 +137,35 @@ export default class EditQuestion extends Vue {
         if (ApiEnter.CurrentSessionUUID != undefined) {
             this.$forceUpdate();
 
-            const blog_uuid = await ApiFaq.CreateFaqQuestion(
+            const response = await ApiFaq.UpdateFaqInfo(
+                this.currentFaq.answer,
+                this.currentFaq.question,
+                this.currentFaq.priority,
+                this.currentFaq.publish? 1: 0,
+                this.currentFaq.category,
                 ApiEnter.CurrentSessionUUID,
-                this.newPost.answer,
-                this.newPost.question,
-                this.newPost.priority,
-                this.newPost.publish? 1: 0,
-                this.newPost.category);
-            if (blog_uuid == undefined || blog_uuid.length != 36) {
+                this.CurrentFaqUUID);
+            if (typeof response == "boolean") {
                 sweetalert({
+                    title: "Success!",
+                    text: `Faq has updated!`,
+                    icon: "success"
+                }).then(() => {
+                    this.$forceUpdate()
+                    this.currentFaq.answer = ''
+                    this.currentFaq.question = ''
+                    this.currentFaq.priority = ''
+                    this.currentFaq.publish = true
+                    this.currentFaq.category = ''
+                    this.$router.push(`/faq/questions`);
+                })
+            } else {
+                await sweetalert({
                     title: "Request error!",
-                    text: "Ошибка создания Post: " + blog_uuid,
+                    text: "Ошибка",
                     icon: "info"
                 });
-                return;
             }
-
-            sweetalert({
-                title: "Success!",
-                text: `Post has created!`,
-                icon: "success"
-            }).then(() => {
-                this.$forceUpdate()
-                this.newPost.answer = ''
-                this.newPost.question = ''
-                this.newPost.priority = ''
-                this.newPost.publish = true
-                this.newPost.category = ''
-                this.$router.push(`/faq/questions`);
-            })
         }
     }
 
@@ -175,8 +177,29 @@ export default class EditQuestion extends Vue {
         }
     }
 
-    public created(): void {
+    private async GetFaqInfo(): Promise<void> {
+        const faqInfo: any | null = await ApiFaq.GetFaqByUUID(ApiEnter.CurrentSessionUUID as string, this.CurrentFaqUUID);
+        if (faqInfo == undefined) {
+            sweetalert({
+                title: "Упс!",
+                text: "Компания по вашему запросу - отсуствует!",
+                icon: "error"
+            }).then(() => {
+                this.$router.push("/");
+            });
+            return;
+        }
+        this.currentFaq.answer = faqInfo.answer
+        this.currentFaq.question = faqInfo.question
+        this.currentFaq.publish = faqInfo.publish
+        this.currentFaq.priority = faqInfo.priority
+        this.currentFaq.category = faqInfo.category
+    }
+
+    public mounted(): void {
+        this.CurrentFaqUUID = this.$route.params.faq_uuid;
         this.GetFaqCategories()
+        this.GetFaqInfo()
     }
 }
 </script>
