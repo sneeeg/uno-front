@@ -15,8 +15,7 @@
                             color="orange accent-4"
                             class="white--text"
                             small
-                            depressed
-                            @click="DialogToggle">
+                            depressed>
                             Add post
                         </v-btn>
                     </router-link>
@@ -28,13 +27,15 @@
                         </template>
                         <template v-slot:item.action="{ item }">
                             <div class="d-flex align-center">
-                                <v-switch hide-details :input-value="item.is_show" class="mt-0"></v-switch>
-                                <v-btn icon @click="editPost(item.uuid)">
-                                    <v-icon small color="grey darken-2">
-                                        fas fa-pencil-alt
-                                    </v-icon>
-                                </v-btn>
-                                <v-btn icon @click="() => console.log('del')">
+                                <v-switch hide-details v-model="item.publish" :input-value="item.publish" class="mt-0" @change="ChangeBlogPublish(item)"></v-switch>
+                                <router-link :to="'/admin/blog-edit/' + item.uuid">
+                                    <v-btn icon>
+                                        <v-icon small color="grey darken-2">
+                                            fas fa-pencil-alt
+                                        </v-icon>
+                                    </v-btn>
+                                </router-link>
+                                <v-btn icon @click="DeleteBlog(item.uuid)">
                                     <v-icon small color="red darken-3">
                                         far fa-trash-alt
                                     </v-icon>
@@ -53,13 +54,14 @@ import { Component, Vue } from "vue-property-decorator";
 import BreadcrumbsItemType from "@/struct/ui/breadcrumbs/BreadcrumbsItemType";
 import sweetalert from "sweetalert";
 import ApiEnter from "@/api/ApiEnter";
-import ApiAdmin from "@/api/ApiAdmin";
+import ApiBlog from "@/api/ApiBlog";
 import StandartTemplate from "@/components/Template/StandartTemplate.vue";
 import LeftMenuTab from "@/components/LeftMenu/LeftMenuTab.vue";
 import PageHeader from "@/components/UI/PageHeader.vue";
 import TableHeaderItemType from "@/struct/ui/Table/TableHeaderItemType";
 import DataBlogCreate from "@/data/AdminPanel/DataBlogCreate";
 import dayjs from "dayjs";
+import ApiFaq from "@/api/ApiFaq";
 
 
 @Component({
@@ -81,15 +83,40 @@ export default class Blog extends Vue {
     ];
 
     private TableHeaders: TableHeaderItemType[] = DataBlogCreate.TableHeaders;
-
     private TableItems: any[] | undefined = [];
 
     private async GetBlogs(): Promise<void> {
         try {
-            this.TableItems = await ApiAdmin.GetBlog(ApiEnter.CurrentSessionUUID as string);
-            console.log(this.TableItems)
+            this.TableItems = await ApiBlog.GetBlog(ApiEnter.CurrentSessionUUID as string);
         } catch (e) {
             console.error(e);
+        }
+    }
+
+    private async ChangeBlogPublish(item): Promise<void> {
+        try {
+            const response = await ApiBlog.UpdateBlogPublish(item.publish? 1: 0, ApiEnter.CurrentSessionUUID as string, item.uuid);
+            if (typeof response == "boolean") {
+                sweetalert({
+                    title: "Success!",
+                    text: "Blog has updated"
+                }).then(() => {
+                    this.GetBlogs()
+                });
+            } else {
+                await sweetalert({
+                    title: "Ошибка!",
+                    text: `Во время выполнения запроса, возникла ошибка: ${response}`,
+                    icon: "error"
+                });
+            }
+        } catch (e) {
+            console.error(e);
+            await sweetalert({
+                title: "Ошибка!",
+                text: "Во время выполнения запроса, возникла ошибка!",
+                icon: "error"
+            });
         }
     }
 
@@ -101,7 +128,7 @@ export default class Blog extends Vue {
             buttons: ["No", "Yes"]
         }).then(async isConfirm => {
             if (isConfirm == true) {
-                const response = await ApiAdmin.DeleteBlog(ApiEnter.CurrentSessionUUID as string, blog_uuid);
+                const response = await ApiBlog.DeleteBlog(ApiEnter.CurrentSessionUUID as string, blog_uuid);
                 if (typeof response == "boolean") {
                     sweetalert({
                         title: "Success!",
@@ -121,7 +148,7 @@ export default class Blog extends Vue {
         });
     }
 
-    private created(): void {
+    public created(): void {
         this.GetBlogs()
     }
 

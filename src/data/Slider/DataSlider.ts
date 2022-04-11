@@ -27,7 +27,7 @@ export default class DataSlider {
         },
         {
             text: "Slide title",
-            value: "question",
+            value: "title",
             width: '65%'
         },
         {

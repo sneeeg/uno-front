@@ -56,7 +56,6 @@
                                         hide-details
                                         class="col-5 px-0 mt-10"
                                         label="Description"
-                                        v-model="PostSeoDescription"
                                         value=""
                                     ></v-textarea>
                                     <v-textarea
@@ -67,12 +66,10 @@
                                         hide-details
                                         class="col-5 px-0 mt-5"
                                         label="Keywords"
-                                        v-model="PostSeoKeywords"
                                         value=""
                                     ></v-textarea>
                                     <v-text-field
                                         label="URL"
-                                        v-model="PostSeoImage"
                                         hide-details
                                         class="col-5 px-0 mt-5"
                                     ></v-text-field>
@@ -110,27 +107,21 @@
 </template>
 
 <script lang="ts">
-import { Component, Ref, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import BreadcrumbsItemType from "@/struct/ui/breadcrumbs/BreadcrumbsItemType";
 import sweetalert from "sweetalert";
 import ApiEnter from "@/api/ApiEnter";
-import ApiAdmin from "@/api/ApiAdmin";
+import ApiBlog from "@/api/ApiBlog";
 import StandartTemplate from "@/components/Template/StandartTemplate.vue";
 import PageHeader from "@/components/UI/PageHeader.vue";
-import FormGenerator from "@/components/UI/Form/FormGenerator.vue";
-import { FormGeneratorListInputModelType } from "@/struct/form/FormGenerator/FormGeneratorListInputModelType";
-import DataBlogCreate from "@/data/AdminPanel/DataBlogCreate";
 import Editor from '@tinymce/tinymce-vue'
 
 
 @Component({
-    components: { PageHeader, StandartTemplate, FormGenerator, Editor },
+    components: { PageHeader, StandartTemplate, Editor },
 })
 
 export default class BlogCreate extends Vue {
-
-    @Ref("company-form-generator") private CompanyFormGenerator!: FormGenerator;
-    private BlogInfoModel: FormGeneratorListInputModelType = DataBlogCreate.BlogInfoModel;
 
     public Breadcrumbs: BreadcrumbsItemType[] = [
         {
@@ -147,24 +138,23 @@ export default class BlogCreate extends Vue {
         }
     ];
 
-    private BlogContent: string = ''
-
     private PostName: string= ''
     private PostImage: string= ''
     private PostPublish: boolean = true
+    private BlogContent: string = ''
 
     private async OnClickSubmit(): Promise<void> {
         if (ApiEnter.CurrentSessionUUID != undefined) {
             this.$forceUpdate();
 
-            const blog_uuid = await ApiAdmin.CreateBlog(
+            const blog_uuid = await ApiBlog.CreateBlog(
                 ApiEnter.CurrentSessionUUID,
                 this.PostName,
-                this.PostPublish,
+                this.PostPublish? 1: 0,
                 this.PostImage,
                 this.BlogContent);
             if (blog_uuid == undefined || blog_uuid.length != 36) {
-                sweetalert({
+                await sweetalert({
                     title: "Ошибка запроса!",
                     text: "Ошибка создания Blog: " + blog_uuid,
                     icon: "info"
@@ -178,10 +168,6 @@ export default class BlogCreate extends Vue {
                 icon: "success"
             }).then(() => {
                 this.$forceUpdate()
-                this.BlogInfoModel.Title.value = ''
-                this.BlogInfoModel.IsShow.value = ''
-                this.BlogInfoModel.Image.value = ''
-                this.BlogContent = ''
                 this.$router.push(`/admin/blog`);
             })
         }

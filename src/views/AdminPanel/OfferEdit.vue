@@ -152,9 +152,25 @@
                         </div>
                         <div class="col-12">
                             <p>Offer overview</p>
+                            <editor
+                                api-key="no-api-key"
+                                class="mt-4"
+                                :init="{
+                                             height: 200,
+                                             menubar: false,
+                                             plugins: []
+                                       }"/>
                         </div>
                         <div class="col-12">
                             <p>Note</p>
+                            <editor
+                                api-key="no-api-key"
+                                class="mt-4"
+                                :init="{
+                                             height: 200,
+                                             menubar: false,
+                                             plugins: []
+                                       }"/>
                         </div>
                         <v-divider class="col-12 p-0"></v-divider>
                         <h6 class="col-12">Display options</h6>
@@ -365,14 +381,15 @@ import DataOffers from "@/data/AdminPanel/DataOffers";
 import ApiAdmin from "@/api/ApiAdmin";
 import ApiEnter from "@/api/ApiEnter";
 import IAdminPanelOffersCategoriesList from "@/struct/admin-panel/IAdminPanelOffersCategoriesList";
+import Editor from '@tinymce/tinymce-vue'
 
 @Component({
-    components: { StandartTemplate, PageHeader }
+    components: { StandartTemplate, PageHeader, Editor }
 })
 export default class Offers extends Vue {
     private Breadcrumbs: BreadcrumbsItemType[] = DataOffers.OfferCreateBreadcrumbs;
 
-    private NewCategoryPublish: boolean = false
+    private NewCategoryPublish: boolean = true
     private NewCategoryCardDesign: string[] = ['Blue', 'Orange', 'Transparent']
 
     private OfferCategory: any = []

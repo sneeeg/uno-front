@@ -104,13 +104,13 @@
                     <v-data-table dense :headers="TableHeaders" :items="TableItems" :items-per-page="15" item-key="offer" class="elevation-1">
                         <template v-slot:item.action="{ item }">
                             <div class="d-flex align-center">
-                                <v-switch hide-details :input-value="item.publish" class="mt-0"></v-switch>
+                                <v-switch hide-details v-model="item.publish" :input-value="item.publish" class="mt-0" @change="ChangeOfferCategoryPublish(item)"></v-switch>
                                 <v-btn icon @click="editOfferCategory(item.uuid)">
                                     <v-icon small color="grey darken-2">
                                         fas fa-pencil-alt
                                     </v-icon>
                                 </v-btn>
-                                <v-btn icon @click="() => console.log('del')">
+                                <v-btn icon @click="DeleteCategory(item.uuid)">
                                     <v-icon small color="red darken-3">
                                         far fa-trash-alt
                                     </v-icon>
@@ -129,7 +129,7 @@ import { Component, Vue } from "vue-property-decorator";
 import PageHeader from "@/components/UI/PageHeader.vue";
 import BreadcrumbsItemType from "@/struct/ui/breadcrumbs/BreadcrumbsItemType";
 import TableHeaderItemType from "@/struct/ui/Table/TableHeaderItemType";
-import ApiAdmin from "@/api/ApiAdmin";
+import ApiOffer from "@/api/ApiOffer";
 import ApiEnter from "@/api/ApiEnter";
 import StandartTemplate from "@/components/Template/StandartTemplate.vue";
 import dayjs from "dayjs";
@@ -157,14 +157,14 @@ export default class OffersCategories extends Vue {
 
     private async getOffers(): Promise<void> {
         try {
-            this.TableItems = await ApiAdmin.GetOfferCategories(ApiEnter.CurrentSessionUUID as string);
+            this.TableItems = await ApiOffer.GetOfferCategories(ApiEnter.CurrentSessionUUID as string);
         } catch (e) {
             console.error(e);
         }
     }
 
     private async getOfferCategory(uuid: string): Promise<void> {
-        const offerCategoryInfo: any = await ApiAdmin.GetOfferCategoryByUUID(ApiEnter.CurrentSessionUUID as string , uuid);
+        const offerCategoryInfo: any = await ApiOffer.GetOfferCategoryByUUID(ApiEnter.CurrentSessionUUID as string , uuid);
         if (offerCategoryInfo == undefined) {
             await sweetalert({
                 title: "Упс!",
@@ -179,6 +179,61 @@ export default class OffersCategories extends Vue {
         this.CategoryCreated = dayjs(offerCategoryInfo.create_at).format('DD.MM.YYYY HH:mm')
     }
 
+    private async ChangeOfferCategoryPublish(item): Promise<void> {
+        try {
+            const response = await ApiOffer.UpdateOfferCategoryPublish(item.publish? 1: 0, ApiEnter.CurrentSessionUUID as string, item.uuid);
+            if (typeof response == "boolean") {
+                sweetalert({
+                    title: "Success!",
+                    text: "Offer Category has updated"
+                }).then(() => {
+                    this.getOffers();
+                });
+            } else {
+                await sweetalert({
+                    title: "Ошибка!",
+                    text: `Во время выполнения запроса, возникла ошибка: ${response}`,
+                    icon: "error"
+                });
+            }
+        } catch (e) {
+            console.error(e);
+            await sweetalert({
+                title: "Ошибка!",
+                text: "Во время выполнения запроса, возникла ошибка!",
+                icon: "error"
+            });
+        }
+    }
+
+    private DeleteCategory(uuid: string): void {
+        sweetalert({
+            title: "Are you sure?",
+            text: "Do you really want to delete it?",
+            icon: "warning",
+            buttons: ["No, cancel", "Yes, I'm sure"]
+        }).then(async isConfirm => {
+            if (isConfirm == true) {
+                const response = await ApiOffer.DeleteOfferCategory(ApiEnter.CurrentSessionUUID as string, uuid);
+                if (typeof response == "boolean") {
+                    await sweetalert({
+                        title: "Success!",
+                        text: "Offer Category has deleted",
+                        icon: "success"
+                    });
+
+                    await this.getOffers();
+                } else {
+                    await sweetalert({
+                        title: "Ошибка!",
+                        text: `Во время выполнения запроса, возникла ошибка: ${response}`,
+                        icon: "error"
+                    });
+                }
+            }
+        });
+    }
+
     private DialogToggle(): void {
         if(this.isOpenDialog) {
             this.NewCategoryPublish = false
@@ -191,7 +246,7 @@ export default class OffersCategories extends Vue {
 
     private async createCategory(): Promise<void> {
         if (ApiEnter.CurrentSessionUUID != undefined) {
-            const offer_category_uuid = await ApiAdmin.CreateOfferCategory(ApiEnter.CurrentSessionUUID as string, this.NewCategoryName, this.NewCategoryPublish? 1: 0, this.NewCategoryPriority);
+            const offer_category_uuid = await ApiOffer.CreateOfferCategory(ApiEnter.CurrentSessionUUID as string, this.NewCategoryName, this.NewCategoryPublish? 1: 0, this.NewCategoryPriority);
             if (offer_category_uuid == undefined || offer_category_uuid.length != 36) {
                 await sweetalert({
                     title: "Ошибка запроса!",
@@ -201,10 +256,13 @@ export default class OffersCategories extends Vue {
                 return;
             }
 
-            sweetalert({
+            await sweetalert({
                 title: "Успех!",
                 text: `Offer category успешно создан!`,
                 icon: "success"
+            }).then(() => {
+                this.DialogToggle()
+                this.getOffers()
             })
 
             this.NewCategoryName = ''
@@ -218,7 +276,7 @@ export default class OffersCategories extends Vue {
         this.getOfferCategory(uuid)
     }
 
-    private mounted() {
+    public mounted() {
         this.getOffers();
     }
 

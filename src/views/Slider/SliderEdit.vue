@@ -85,17 +85,14 @@ import ApiEnter from "@/api/ApiEnter";
 import ApiSlider from "@/api/ApiSlider";
 import StandartTemplate from "@/components/Template/StandartTemplate.vue";
 import PageHeader from "@/components/UI/PageHeader.vue";
-import FormGenerator from "@/components/UI/Form/FormGenerator.vue";
 import Editor from '@tinymce/tinymce-vue'
 
 
 @Component({
-    components: { PageHeader, StandartTemplate, FormGenerator, Editor },
+    components: { PageHeader, StandartTemplate, Editor },
 })
 
-export default class SliderCreate extends Vue {
-
-    @Ref("company-form-generator") private CompanyFormGenerator!: FormGenerator;
+export default class SliderEdit extends Vue {
 
     public Breadcrumbs: BreadcrumbsItemType[] = [
         {
@@ -112,6 +109,8 @@ export default class SliderCreate extends Vue {
         }
     ];
 
+    private CurrentSliderUUID!: string
+
     private newPost: any = {
         title: '',
         subtitle: '',
@@ -120,40 +119,68 @@ export default class SliderCreate extends Vue {
         link: ''
     }
 
-    private async OnClickSubmit(): Promise<void> {
-        if (ApiEnter.CurrentSessionUUID != undefined) {
-            this.$forceUpdate();
+    public mounted() {
+        this.CurrentSliderUUID = this.$route.params.slider_uuid;
+        this.DoLoadForm();
+    }
 
-            const slider_uuid = await ApiSlider.CreateSlider(
-                ApiEnter.CurrentSessionUUID,
+    private async DoLoadForm(): Promise<void> {
+
+        const sliderInfo: any = await ApiSlider.GetSliderByUUID(ApiEnter.CurrentSessionUUID as string, this.CurrentSliderUUID);
+        if (sliderInfo == undefined) {
+            sweetalert({
+                title: "Упс!",
+                text: "Во время загрузки информации - возникла ошибка, не все данные были заружены!",
+                icon: "error"
+            }).then(() => {
+                this.$router.go(-1);
+            });
+            return;
+        }
+
+        this.newPost.title = sliderInfo.title
+        this.newPost.subtitle = sliderInfo.subtitle
+        this.newPost.publish = sliderInfo.publish
+        this.newPost.display_text = sliderInfo.display_text
+        this.newPost.link = sliderInfo.link
+
+        this.$forceUpdate();
+    }
+
+    private async OnClickSubmit(): Promise<void> {
+        try {
+            const response = await ApiSlider.UpdateSliderInfo(
                 this.newPost.title,
                 this.newPost.subtitle,
                 this.newPost.publish? 1: 0,
                 this.newPost.display_text? 1: 0,
                 '',
                 '',
-                this.newPost.link);
-            if (slider_uuid == undefined || slider_uuid.length != 36) {
-                await sweetalert({
-                    title: "Request error!",
-                    text: "Ошибка создания Post: " + slider_uuid,
-                    icon: "info"
+                this.newPost.link,
+                ApiEnter.CurrentSessionUUID,
+                this.CurrentSliderUUID)
+            if (typeof response == "boolean") {
+                sweetalert({
+                    title: "Успешно!",
+                    text: "Slider успешно поменян",
+                    icon: "success"
+                }).then(() => {
+                    this.$router.go(-1);
                 });
-                return;
+            } else {
+                sweetalert({
+                    title: "Ошибка!",
+                    text: `Во время выполнения запроса, возникла ошибка: ${response}`,
+                    icon: "error"
+                });
             }
-
+        } catch (e) {
+            console.error(e);
             sweetalert({
-                title: "Success!",
-                text: `Slider has created!`,
-                icon: "success"
-            }).then(() => {
-                this.$forceUpdate()
-                this.newPost.title = ''
-                this.newPost.subtitle = ''
-                this.newPost.link = ''
-                this.newPost.publish = true
-                this.$router.push(`/slider/slides`);
-            })
+                title: "Ошибка!",
+                text: "Во время выполнения запроса, возникла ошибка!",
+                icon: "error"
+            });
         }
     }
 }
