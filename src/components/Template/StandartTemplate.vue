@@ -52,7 +52,7 @@
                         <router-link to="/slider/slides" class="menu-item">
                             <i class="far fa-square"></i> Slider
                         </router-link>
-                        <router-link to="/cms/feedback/contact" class="menu-item">
+                        <router-link to="/cms/feedback/contacts" class="menu-item">
                             <i class="far fa-envelope-open"></i> Feedback messages
                         </router-link>
                     </div>
