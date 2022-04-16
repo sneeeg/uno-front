@@ -41,13 +41,19 @@
                     <div class="name">CMS</div>
                     <div class="menu-items">
                         <router-link to="/faq/questions" class="menu-item">
-                            <i class="fas fa-question"></i> FAQ
+                            <i class="fas fa-question"></i> Support (FAQ)
+                        </router-link>
+                        <router-link to="/cms/files" class="menu-item">
+                            <i class="far fa-file"></i> Support (Files)
                         </router-link>
                         <router-link to="/admin/blog" class="menu-item">
                             <i class="fas fa-paste"></i> Blog
                         </router-link>
                         <router-link to="/slider/slides" class="menu-item">
                             <i class="far fa-square"></i> Slider
+                        </router-link>
+                        <router-link to="/cms/feedback/contact" class="menu-item">
+                            <i class="far fa-envelope-open"></i> Feedback messages
                         </router-link>
                     </div>
                     <div class="name">E-SHOP</div>

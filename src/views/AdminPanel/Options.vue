@@ -49,7 +49,7 @@ import { Component, Vue } from "vue-property-decorator";
 import PageHeader from "@/components/UI/PageHeader.vue";
 import BreadcrumbsItemType from "@/struct/ui/breadcrumbs/BreadcrumbsItemType";
 import TableHeaderItemType from "@/struct/ui/Table/TableHeaderItemType";
-import ApiAdmin from "@/api/ApiAdmin";
+import ApiOffer from "@/api/ApiOffer";
 import ApiEnter from "@/api/ApiEnter";
 import StandartTemplate from "@/components/Template/StandartTemplate.vue";
 import IAdminPanelOffersCategoriesList from "@/struct/admin-panel/IAdminPanelOffersCategoriesList";
@@ -67,7 +67,7 @@ export default class Options extends Vue {
 
     private async getOffers(): Promise<void> {
         try {
-            this.TableItems = await ApiAdmin.GetOfferCategories(ApiEnter.CurrentSessionUUID as string);
+            this.TableItems = await ApiOffer.GetOfferCategories(ApiEnter.CurrentSessionUUID as string);
         } catch (e) {
             console.error(e);
         }

@@ -55,7 +55,6 @@ import { Component, Vue } from "vue-property-decorator";
 import BreadcrumbsItemType from "@/struct/ui/breadcrumbs/BreadcrumbsItemType";
 import sweetalert from "sweetalert";
 import ApiEnter from "@/api/ApiEnter";
-import ApiFaq from "@/api/ApiFaq";
 import StandartTemplate from "@/components/Template/StandartTemplate.vue";
 import LeftMenuTab from "@/components/LeftMenu/LeftMenuTab.vue";
 import PageHeader from "@/components/UI/PageHeader.vue";
@@ -64,7 +63,6 @@ import TableHeaderItemType from "@/struct/ui/Table/TableHeaderItemType";
 import DataSlider from "@/data/Slider/DataSlider";
 import ApiSlider from "@/api/ApiSlider";
 import dayjs from "dayjs";
-import ApiBlog from "@/api/ApiBlog";
 
 
 @Component({
@@ -113,7 +111,7 @@ export default class SliderList extends Vue {
         }
     }
 
-    private async ChangeSliderPublish(item): Promise<void> {
+    private async ChangeSliderPublish(item: any): Promise<void> {
         try {
             const response = await ApiSlider.UpdateSliderPublish(item.publish? 1: 0, ApiEnter.CurrentSessionUUID as string, item.uuid);
             if (typeof response == "boolean") {

@@ -179,7 +179,7 @@ export default class OffersCategories extends Vue {
         this.CategoryCreated = dayjs(offerCategoryInfo.create_at).format('DD.MM.YYYY HH:mm')
     }
 
-    private async ChangeOfferCategoryPublish(item): Promise<void> {
+    private async ChangeOfferCategoryPublish(item: any): Promise<void> {
         try {
             const response = await ApiOffer.UpdateOfferCategoryPublish(item.publish? 1: 0, ApiEnter.CurrentSessionUUID as string, item.uuid);
             if (typeof response == "boolean") {

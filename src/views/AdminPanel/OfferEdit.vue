@@ -378,10 +378,10 @@ import PageHeader from "@/components/UI/PageHeader.vue";
 import BreadcrumbsItemType from "@/struct/ui/breadcrumbs/BreadcrumbsItemType";
 import StandartTemplate from "@/components/Template/StandartTemplate.vue";
 import DataOffers from "@/data/AdminPanel/DataOffers";
-import ApiAdmin from "@/api/ApiAdmin";
 import ApiEnter from "@/api/ApiEnter";
 import IAdminPanelOffersCategoriesList from "@/struct/admin-panel/IAdminPanelOffersCategoriesList";
 import Editor from '@tinymce/tinymce-vue'
+import ApiOffer from "@/api/ApiOffer";
 
 @Component({
     components: { StandartTemplate, PageHeader, Editor }
@@ -398,7 +398,7 @@ export default class Offers extends Vue {
 
     private async getOffersCategories(): Promise<void> {
         try {
-            this.OffersCategories = await ApiAdmin.GetOfferCategories(ApiEnter.CurrentSessionUUID as string);
+            this.OffersCategories = await ApiOffer.GetOfferCategories(ApiEnter.CurrentSessionUUID as string);
         } catch (e) {
             console.error(e);
         }

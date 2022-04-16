@@ -1,41 +1,51 @@
 <template>
-    <div class="page-container">
-        <standart-template>
-            <div class="container">
-                <div class="row mt-1">
-                    <v-breadcrumbs :items="Breadcrumbs" divider="/"/>
-                    <page-header title="Posts" back-url="/"/>
+    <standart-template>
+        <div class="container">
+            <div class="row mt-1">
+                <v-breadcrumbs :items="Breadcrumbs" divider="/"/>
+                <page-header title="Support (Files)" back-url="/"/>
+
+                <div class="col-12 mt-5">
+                    <router-link to="/cms/files">
+                        <v-btn depressed small color="light-blue darken-4" class="white--text">
+                            Files
+                        </v-btn>
+                    </router-link>
+                    <router-link to="/cms/files/categories" class="ml-3">
+                        <v-btn depressed small color="white">
+                            Categories
+                        </v-btn>
+                    </router-link>
                 </div>
                 <div class="col-12">
                     <v-divider></v-divider>
                 </div>
+
                 <div class="col-12">
-                    <router-link to="/admin/blog/create">
+                    <router-link to="/cms/files/create">
                         <v-btn
                             color="orange accent-4"
                             class="white--text"
                             small
                             depressed>
-                            Add post
+                            Add File
                         </v-btn>
                     </router-link>
                 </div>
+
                 <div class="col-12">
                     <v-data-table dense :headers="TableHeaders" :items="TableItems" :items-per-page="15" item-key="offer" class="elevation-1">
-                        <template v-slot:item.create_at="{ item }">
-                            {{ formatDate(item.create_at) }}
-                        </template>
                         <template v-slot:item.action="{ item }">
                             <div class="d-flex align-center">
-                                <v-switch hide-details v-model="item.publish" :input-value="item.publish" class="mt-0" @change="ChangeBlogPublish(item)"></v-switch>
-                                <router-link :to="'/admin/blog-edit/' + item.uuid">
+                                <v-switch hide-details v-model="item.publish" :input-value="item.publish" class="mt-0" @change="ChangeFilePublish(item)"></v-switch>
+                                <router-link :to="'/cms/files/edit/' + item.uuid">
                                     <v-btn icon>
                                         <v-icon small color="grey darken-2">
                                             fas fa-pencil-alt
                                         </v-icon>
                                     </v-btn>
                                 </router-link>
-                                <v-btn icon @click="DeleteBlog(item.uuid)">
+                                <v-btn icon @click="DeleteFile(item.uuid)">
                                     <v-icon small color="red darken-3">
                                         far fa-trash-alt
                                     </v-icon>
@@ -45,8 +55,8 @@
                     </v-data-table>
                 </div>
             </div>
-        </standart-template>
-    </div>
+        </div>
+    </standart-template>
 </template>
 
 <script lang="ts">
@@ -54,56 +64,39 @@ import { Component, Vue } from "vue-property-decorator";
 import BreadcrumbsItemType from "@/struct/ui/breadcrumbs/BreadcrumbsItemType";
 import sweetalert from "sweetalert";
 import ApiEnter from "@/api/ApiEnter";
-import ApiBlog from "@/api/ApiBlog";
+import ApiSupportFiles from "@/api/ApiSupportFiles";
 import StandartTemplate from "@/components/Template/StandartTemplate.vue";
 import LeftMenuTab from "@/components/LeftMenu/LeftMenuTab.vue";
 import PageHeader from "@/components/UI/PageHeader.vue";
+import IAdminPanelCompanyList from "@/struct/admin-panel/IAdminPanelCompanyList";
 import TableHeaderItemType from "@/struct/ui/Table/TableHeaderItemType";
-import DataBlogCreate from "@/data/AdminPanel/DataBlogCreate";
-import dayjs from "dayjs";
+import DataFaq from "@/data/AdminPanel/DataFaq";
+import DataSupportFiles from "@/data/Files/DataSupportFiles";
 
 
 @Component({
     components: { PageHeader, StandartTemplate, LeftMenuTab },
 })
 
-export default class Blog extends Vue {
+export default class FaqEdit extends Vue {
 
-    public Breadcrumbs: BreadcrumbsItemType[] = [
-        {
-            to: '/',
-            text: 'Главная'
-        },
-        {
-            to: '/blog',
-            text: 'Blog',
-            disabled: true
-        }
-    ];
+    private Breadcrumbs: BreadcrumbsItemType[] = DataSupportFiles.FilesListBreadcrumbs;
 
-    private TableHeaders: TableHeaderItemType[] = DataBlogCreate.TableHeaders;
+    private TableHeaders: TableHeaderItemType[] = DataSupportFiles.FilesListTableHeaders;
     private TableItems: any[] | undefined = [];
 
-    private async GetBlogs(): Promise<void> {
+    private async ChangeFilePublish(item: any): Promise<void> {
         try {
-            this.TableItems = await ApiBlog.GetBlog(ApiEnter.CurrentSessionUUID as string);
-        } catch (e) {
-            console.error(e);
-        }
-    }
-
-    private async ChangeBlogPublish(item: any): Promise<void> {
-        try {
-            const response = await ApiBlog.UpdateBlogPublish(item.publish? 1: 0, ApiEnter.CurrentSessionUUID as string, item.uuid);
+            const response = await ApiSupportFiles.UpdateFilePublish(item.publish? 1: 0, ApiEnter.CurrentSessionUUID as string, item.uuid);
             if (typeof response == "boolean") {
                 sweetalert({
                     title: "Success!",
-                    text: "Blog has updated"
+                    text: "Faq has updated"
                 }).then(() => {
-                    this.GetBlogs()
+                    this.GetFiles()
                 });
             } else {
-                await sweetalert({
+                sweetalert({
                     title: "Ошибка!",
                     text: `Во время выполнения запроса, возникла ошибка: ${response}`,
                     icon: "error"
@@ -111,7 +104,7 @@ export default class Blog extends Vue {
             }
         } catch (e) {
             console.error(e);
-            await sweetalert({
+            sweetalert({
                 title: "Ошибка!",
                 text: "Во время выполнения запроса, возникла ошибка!",
                 icon: "error"
@@ -119,23 +112,21 @@ export default class Blog extends Vue {
         }
     }
 
-    private DeleteBlog(blog_uuid: string): void {
+    private DeleteFile(file_uui: string): void {
         sweetalert({
             title: "Are you sure?",
-            text: "Вы дейсвительно хотите удалить статью?",
-            icon: "warning",
-            buttons: ["No", "Yes"]
+            text: "You really want to delete this File?",
+            buttons: ["No, Cancel!", "Yes, I'm sure!"]
         }).then(async isConfirm => {
             if (isConfirm == true) {
-                const response = await ApiBlog.DeleteBlog(ApiEnter.CurrentSessionUUID as string, blog_uuid);
+                const response = await ApiSupportFiles.DeleteFile(ApiEnter.CurrentSessionUUID as string, file_uui);
                 if (typeof response == "boolean") {
                     sweetalert({
                         title: "Success!",
-                        text: "Статья удалена",
-                        icon: "success"
+                        text: "File has deleted"
                     });
 
-                    this.GetBlogs()
+                    this.GetFiles()
                 } else {
                     sweetalert({
                         title: "Ошибка!",
@@ -147,12 +138,16 @@ export default class Blog extends Vue {
         });
     }
 
-    public created(): void {
-        this.GetBlogs()
+    private async GetFiles(): Promise<void> {
+        try {
+            this.TableItems = await ApiSupportFiles.GetFiles(ApiEnter.CurrentSessionUUID as string);
+        } catch (e) {
+            console.error(e);
+        }
     }
 
-    private formatDate(item: string) {
-        return dayjs(item).format('DD.MM.YYYY')
+    public mounted(): void {
+        this.GetFiles()
     }
 }
 </script>

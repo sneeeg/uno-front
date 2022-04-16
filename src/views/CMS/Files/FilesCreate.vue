@@ -3,7 +3,7 @@
         <div class="container">
             <div class="row mt-1">
                 <v-breadcrumbs :items="Breadcrumbs" divider="/"/>
-                <page-header title="Slider" back-url="/company/list/"/>
+                <page-header title="Support (Files)" back-url="/company/list/"/>
                 <div class="col-12 px-6">
                     <v-divider></v-divider>
                 </div>
@@ -20,27 +20,37 @@
                                         hide-details
                                         class="mt-10"
                                     ></v-switch>
-                                    <v-switch
-                                        v-model="newPost.display_text"
-                                        label="Display text on the slide"
-                                        hide-details
-                                        class="mt-10"
-                                    ></v-switch>
                                     <v-text-field
-                                        label="Slide title"
-                                        v-model="newPost.title"
+                                        label="File name"
+                                        v-model="newPost.name"
                                         hide-details
                                         class="col-7 px-0 mt-5"
                                     ></v-text-field>
                                     <v-text-field
-                                        label="Slide subtitle"
-                                        v-model="newPost.subtitle"
+                                        label="File description"
+                                        v-model="newPost.description"
+                                        hide-details
+                                        class="col-7 px-0 mt-5"
+                                    ></v-text-field>
+                                    <v-select
+                                        :items="FaqCategories"
+                                        v-model="newPost.category"
+                                        item-text="name"
+                                        label="Category"
+                                        dense
                                         hide-details
                                         class="col-4 px-0 mt-5"
+                                    >
+                                    </v-select>
+                                    <v-text-field
+                                        label="File link"
+                                        v-model="newPost.file"
+                                        hide-details
+                                        class="col-7 px-0 mt-5"
                                     ></v-text-field>
                                     <v-text-field
-                                        label="Link for the slide"
-                                        v-model="newPost.link"
+                                        label="Priority (sorting)"
+                                        v-model="newPost.priority"
                                         hide-details
                                         class="col-4 px-0 mt-5"
                                     ></v-text-field>
@@ -51,7 +61,7 @@
                     <div class="row">
                         <div class="col-12 px-6">
                             <div class="col-12 py-6 bg-light d-flex">
-                                <router-link to="/slider/slides">
+                                <router-link to="/cms/files">
                                     <v-btn
                                         color="grey lighten-1"
                                         class="white--text"
@@ -82,17 +92,18 @@ import { Component, Vue } from "vue-property-decorator";
 import BreadcrumbsItemType from "@/struct/ui/breadcrumbs/BreadcrumbsItemType";
 import sweetalert from "sweetalert";
 import ApiEnter from "@/api/ApiEnter";
-import ApiSlider from "@/api/ApiSlider";
+import ApiFaq from "@/api/ApiFaq";
 import StandartTemplate from "@/components/Template/StandartTemplate.vue";
 import PageHeader from "@/components/UI/PageHeader.vue";
 import Editor from '@tinymce/tinymce-vue'
+import ApiSupportFiles from "@/api/ApiSupportFiles";
 
 
 @Component({
     components: { PageHeader, StandartTemplate, Editor },
 })
 
-export default class SliderEdit extends Vue {
+export default class FilesCreate extends Vue {
 
     public Breadcrumbs: BreadcrumbsItemType[] = [
         {
@@ -104,84 +115,74 @@ export default class SliderEdit extends Vue {
             text: 'CMS'
         },
         {
-            text: 'Slider',
+            to: '/faq/question',
+            text: 'Support (Files)'
+        },
+        {
+            text: 'Files',
             disabled: true
         }
     ];
 
-    private CurrentSliderUUID!: string
+    private FaqCategories: any = []
 
     private newPost: any = {
-        title: '',
-        subtitle: '',
+        name: '',
+        description: '',
         publish: true,
-        display_text: true,
-        link: ''
-    }
-
-    public mounted() {
-        this.CurrentSliderUUID = this.$route.params.slider_uuid;
-        this.DoLoadForm();
-    }
-
-    private async DoLoadForm(): Promise<void> {
-
-        const sliderInfo: any = await ApiSlider.GetSliderByUUID(ApiEnter.CurrentSessionUUID as string, this.CurrentSliderUUID);
-        if (sliderInfo == undefined) {
-            sweetalert({
-                title: "Упс!",
-                text: "Во время загрузки информации - возникла ошибка, не все данные были заружены!",
-                icon: "error"
-            }).then(() => {
-                this.$router.go(-1);
-            });
-            return;
-        }
-
-        this.newPost.title = sliderInfo.title
-        this.newPost.subtitle = sliderInfo.subtitle
-        this.newPost.publish = sliderInfo.publish
-        this.newPost.display_text = sliderInfo.display_text
-        this.newPost.link = sliderInfo.link
-
-        this.$forceUpdate();
+        priority: '',
+        file: '',
+        category: undefined
     }
 
     private async OnClickSubmit(): Promise<void> {
-        try {
-            const response = await ApiSlider.UpdateSliderInfo(
-                this.newPost.title,
-                this.newPost.subtitle,
-                this.newPost.publish? 1: 0,
-                this.newPost.display_text? 1: 0,
-                '',
-                '',
-                this.newPost.link,
-                ApiEnter.CurrentSessionUUID as string,
-                this.CurrentSliderUUID)
-            if (typeof response == "boolean") {
+        if (ApiEnter.CurrentSessionUUID != undefined) {
+            this.$forceUpdate();
+
+            const blog_uuid = await ApiSupportFiles.CreateFile(
+                ApiEnter.CurrentSessionUUID,
+                this.newPost.name,
+                this.newPost.description,
+                this.newPost.category,
+                this.newPost.file,
+                this.newPost.priority,
+                this.newPost.publish? 1: 0);
+            if (blog_uuid == undefined || blog_uuid.length != 36) {
                 sweetalert({
-                    title: "Успешно!",
-                    text: "Slider успешно поменян",
-                    icon: "success"
-                }).then(() => {
-                    this.$router.go(-1);
+                    title: "Request error!",
+                    text: "Ошибка создания Post: " + blog_uuid,
+                    icon: "info"
                 });
-            } else {
-                sweetalert({
-                    title: "Ошибка!",
-                    text: `Во время выполнения запроса, возникла ошибка: ${response}`,
-                    icon: "error"
-                });
+                return;
             }
+
+            sweetalert({
+                title: "Success!",
+                text: `Post has created!`,
+                icon: "success"
+            }).then(() => {
+                this.$forceUpdate()
+                this.newPost.name = ''
+                this.newPost.description = ''
+                this.newPost.priority = ''
+                this.newPost.file = ''
+                this.newPost.publish = true
+                this.newPost.category = ''
+                this.$router.push(`/cms/files`);
+            })
+        }
+    }
+
+    private async GetFaqCategories(): Promise<void> {
+        try {
+            this.FaqCategories = await ApiSupportFiles.GetFilesCategories(ApiEnter.CurrentSessionUUID as string);
         } catch (e) {
             console.error(e);
-            sweetalert({
-                title: "Ошибка!",
-                text: "Во время выполнения запроса, возникла ошибка!",
-                icon: "error"
-            });
         }
+    }
+
+    public created(): void {
+        this.GetFaqCategories()
     }
 }
 </script>

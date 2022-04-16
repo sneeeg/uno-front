@@ -71,8 +71,6 @@ import PageHeader from "@/components/UI/PageHeader.vue";
 import IAdminPanelCompanyList from "@/struct/admin-panel/IAdminPanelCompanyList";
 import TableHeaderItemType from "@/struct/ui/Table/TableHeaderItemType";
 import DataFaq from "@/data/AdminPanel/DataFaq";
-import ApiCompany from "@/api/ApiCompany";
-import ApiAdmin from "@/api/ApiAdmin";
 
 
 @Component({
@@ -86,7 +84,7 @@ export default class FaqEdit extends Vue {
     private Breadcrumbs: BreadcrumbsItemType[] = DataFaq.FaqQuestionsBreadcrumbs;
     private TableItems: IAdminPanelCompanyList[] | undefined = [];
 
-    private async ChangeFaqPublish(item): Promise<void> {
+    private async ChangeFaqPublish(item: any): Promise<void> {
         try {
             const response = await ApiFaq.UpdateFaqPublish(item.publish? 1: 0, ApiEnter.CurrentSessionUUID as string, item.uuid);
             if (typeof response == "boolean") {

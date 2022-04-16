@@ -140,15 +140,15 @@
             </v-dialog>
             <div class="row mt-1">
                 <v-breadcrumbs :items="Breadcrumbs" divider="/"/>
-                <page-header title="Support (FAQ)" back-url="/"/>
+                <page-header title="Support (Files)" back-url="/"/>
 
                 <div class="col-12 mt-5">
-                    <router-link to="/faq/questions">
+                    <router-link to="/cms/files">
                         <v-btn depressed small color="white">
-                            Questions
+                            Files
                         </v-btn>
                     </router-link>
-                    <router-link to="/faq/categories" class="ml-3">
+                    <router-link to="/cms/files/categories" class="ml-3">
                         <v-btn depressed small color="light-blue darken-4" class="white--text">
                             Categories
                         </v-btn>
@@ -199,6 +199,7 @@ import BreadcrumbsItemType from "@/struct/ui/breadcrumbs/BreadcrumbsItemType";
 import sweetalert from "sweetalert";
 import ApiEnter from "@/api/ApiEnter";
 import ApiFaq from "@/api/ApiFaq";
+import ApiSupportFiles from "@/api/ApiSupportFiles";
 import StandartTemplate from "@/components/Template/StandartTemplate.vue";
 import LeftMenuTab from "@/components/LeftMenu/LeftMenuTab.vue";
 import PageHeader from "@/components/UI/PageHeader.vue";
@@ -251,11 +252,11 @@ export default class FaqEdit extends Vue {
         if (ApiEnter.CurrentSessionUUID != undefined) {
             this.$forceUpdate();
 
-            const faq_uuid = await ApiFaq.CreateFaqCategory(ApiEnter.CurrentSessionUUID, this.newCategory.name, this.newCategory.priority, this.newCategory.publish? 1: 0);
-            if (faq_uuid == undefined || faq_uuid.length != 36) {
+            const file_uuid = await ApiSupportFiles.CreateFilesCategory(ApiEnter.CurrentSessionUUID, this.newCategory.name, this.newCategory.priority, this.newCategory.publish? 1: 0);
+            if (file_uuid == undefined || file_uuid.length != 36) {
                 await sweetalert({
                     title: "Ошибка запроса!",
-                    text: "Ошибка создания FAQ: " + faq_uuid,
+                    text: "Ошибка создания File: " + file_uuid,
                     icon: "info"
                 });
                 return;
@@ -264,23 +265,23 @@ export default class FaqEdit extends Vue {
 
             sweetalert({
                 title: "Success!",
-                text: `FAQ category has created!`,
+                text: `File category has created!`,
                 icon: "success"
             }).then(() => this.OpenDialog())
 
-            await this.GetFaqCategories()
+            await this.GetCategories()
         }
     }
 
     private async ChangeFaqCategoryPublish(item: any): Promise<void> {
         try {
-            const response = await ApiFaq.UpdateFaqCategoryPublish(item.publish? 1: 0, ApiEnter.CurrentSessionUUID as string, item.uuid);
+            const response = await ApiSupportFiles.UpdateFilesCategoryPublish(item.publish? 1: 0, ApiEnter.CurrentSessionUUID as string, item.uuid);
             if (typeof response == "boolean") {
                 sweetalert({
                     title: "Success!",
                     text: "Faq Category has updated"
                 }).then(() => {
-                    this.GetFaqCategories()
+                    this.GetCategories()
                 });
             } else {
                 sweetalert({
@@ -301,14 +302,14 @@ export default class FaqEdit extends Vue {
 
     private async ChangeFaqCategoryInfo(): Promise<void> {
         try {
-            const response = await ApiFaq.UpdateFaqCategoryInfo(this.currentCategory.name, this.currentCategory.priority, this.currentCategory.publish? 1: 0, ApiEnter.CurrentSessionUUID as string, this.currentCategory.uuid);
+            const response = await ApiSupportFiles.UpdateFilesCategoryInfo(this.currentCategory.name, this.currentCategory.priority, this.currentCategory.publish? 1: 0, ApiEnter.CurrentSessionUUID as string, this.currentCategory.uuid);
             if (typeof response == "boolean") {
                 sweetalert({
                     title: "Success!",
                     text: "Faq Category has updated"
                 }).then(() => {
                     this.OpenEditDialog()
-                    this.GetFaqCategories()
+                    this.GetCategories()
                 });
             } else {
                 sweetalert({
@@ -329,7 +330,7 @@ export default class FaqEdit extends Vue {
 
     private async openEditDialog(uuid: string): Promise<void> {
         this.currentCategory.uuid = uuid
-        const categoryInfo: any = await ApiFaq.GetFaqCategoryByUUID(ApiEnter.CurrentSessionUUID as string, uuid);
+        const categoryInfo: any = await ApiSupportFiles.GetFilesCategoryByUUID(ApiEnter.CurrentSessionUUID as string, uuid);
         if (categoryInfo == undefined) {
             await sweetalert({
                 title: "Упс!",
@@ -355,15 +356,15 @@ export default class FaqEdit extends Vue {
             buttons: ["No, cancel", "Yes, I'm sure"]
         }).then(async isConfirm => {
             if (isConfirm == true) {
-                const response = await ApiFaq.DeleteFaqCategory(ApiEnter.CurrentSessionUUID as string, faq_uuid);
+                const response = await ApiSupportFiles.DeleteFilesCategory(ApiEnter.CurrentSessionUUID as string, faq_uuid);
                 if (typeof response == "boolean") {
                     await sweetalert({
                         title: "Success!",
-                        text: "FAQ Category has deleted",
+                        text: "Files Category has deleted",
                         icon: "success"
                     });
 
-                    await this.GetFaqCategories()
+                    await this.GetCategories()
                 } else {
                     await sweetalert({
                         title: "Ошибка!",
@@ -375,16 +376,16 @@ export default class FaqEdit extends Vue {
         });
     }
 
-    private async GetFaqCategories(): Promise<void> {
+    private async GetCategories(): Promise<void> {
         try {
-            this.TableItems = await ApiFaq.GetFaqCategories(ApiEnter.CurrentSessionUUID as string);
+            this.TableItems = await ApiSupportFiles.GetFilesCategories(ApiEnter.CurrentSessionUUID as string);
         } catch (e) {
             console.error(e);
         }
     }
 
     public created(): void {
-        this.GetFaqCategories()
+        this.GetCategories()
     }
 }
 </script>

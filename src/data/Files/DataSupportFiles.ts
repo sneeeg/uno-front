@@ -1,22 +1,9 @@
 import BreadcrumbsItemType from "@/struct/ui/breadcrumbs/BreadcrumbsItemType";
 import TableHeaderItemType from "@/struct/ui/Table/TableHeaderItemType";
 
+export default class DataSupportFiles {
 
-export default class DataFaq {
-
-    public static Breadcrumbs: BreadcrumbsItemType[] = [
-        {
-            to: "/",
-            text: "Home",
-        },
-        {
-            to: "/admin/catalog/offers",
-            text: "Offers",
-            disabled: true
-        },
-    ];
-
-    public static FaqQuestionsBreadcrumbs: BreadcrumbsItemType[] = [
+    public static FilesListBreadcrumbs: BreadcrumbsItemType[] = [
         {
             to: "/",
             text: "Home",
@@ -26,31 +13,31 @@ export default class DataFaq {
             text: "CMS"
         },
         {
-            to: "/admin/faq/edit",
-            text: "Support(FAQ)"
+            to: "/admin",
+            text: "Support (Files)"
         },
         {
-            to: "/admin/faq/edit",
-            text: "Qestions",
+            to: "/slider/slides",
+            text: "Files",
             disabled: true
         },
     ];
 
-    public static QuestionsTableHeaders: TableHeaderItemType[] = [
+    public static FilesListTableHeaders: TableHeaderItemType[] = [
         {
             text: "Sorting",
             value: "priority",
             width: '10%'
         },
         {
-            text: "Question",
-            value: "question",
-            width: '40%'
+            text: "File name",
+            value: "name",
+            width: '45%'
         },
         {
             text: "Category",
             value: "category",
-            width: '30%'
+            width: '35%'
         },
         {
             text: "Action",
@@ -62,12 +49,12 @@ export default class DataFaq {
         {
             text: "Sorting",
             value: "priority",
-            width: '15%'
+            width: '10%'
         },
         {
             text: "Category name",
             value: "name",
-            width: '70%'
+            width: '60%'
         },
         {
             text: "Action",

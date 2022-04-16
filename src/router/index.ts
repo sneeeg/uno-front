@@ -11,6 +11,7 @@ import profile from "@/router/profile";
 import adminPanel from "@/router/admin-panel";
 import faq from "@/router/faq";
 import slider from "@/router/slider";
+import files from "@/router/files";
 
 Vue.use(VueRouter);
 
@@ -50,7 +51,8 @@ const routes: Array<RouteConfig> = [
     ...profile,
     ...adminPanel,
     ...faq,
-    ...slider
+    ...slider,
+    ...files
 ];
 
 const router = new VueRouter({
