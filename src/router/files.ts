@@ -7,7 +7,7 @@ import FilesCategories from "@/views/CMS/Files/FilesCategories.vue";
 const routes: Array<RouteConfig> = [
     {
         path: "/cms/files",
-        name: "FaqQuestions",
+        name: "FilesList",
         component: FilesList
     },
     {
@@ -22,7 +22,7 @@ const routes: Array<RouteConfig> = [
     },
     {
         path: "/cms/files/categories",
-        name: "FaqCategories",
+        name: "FilesCategories",
         component: FilesCategories
     }
 ];

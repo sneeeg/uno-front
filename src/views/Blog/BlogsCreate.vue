@@ -75,6 +75,7 @@
                                         hide-details
                                         class="col-5 px-0 mt-10"
                                         label="Description"
+                                        v-model="BlogSeoDescription"
                                         value=""
                                     ></v-textarea>
                                     <v-textarea
@@ -85,10 +86,12 @@
                                         hide-details
                                         class="col-5 px-0 mt-5"
                                         label="Keywords"
+                                        v-model="BlogSeoKeywords"
                                         value=""
                                     ></v-textarea>
                                     <v-text-field
                                         label="URL"
+                                        v-model="BlogSeoUrl"
                                         hide-details
                                         class="col-5 px-0 mt-5"
                                     ></v-text-field>
@@ -165,6 +168,9 @@ export default class BlogCreate extends Vue {
     private PostImage2: string= ''
     private BlogCardDesign: string = ''
     private BlogContent: string = ''
+    private BlogSeoDescription: string = ''
+    private BlogSeoKeywords: string = ''
+    private BlogSeoUrl: string = ''
 
     private async OnClickSubmit(): Promise<void> {
         if (ApiEnter.CurrentSessionUUID != undefined) {
@@ -177,7 +183,10 @@ export default class BlogCreate extends Vue {
                 this.PostImage1,
                 this.PostImage2,
                 this.BlogCardDesign,
-                this.BlogContent);
+                this.BlogContent,
+                this.BlogSeoDescription,
+                this.BlogSeoKeywords,
+                this.BlogSeoUrl);
             if (blog_uuid == undefined || blog_uuid.length != 36) {
                 await sweetalert({
                     title: "Ошибка запроса!",

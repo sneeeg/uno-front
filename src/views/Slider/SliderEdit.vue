@@ -14,15 +14,21 @@
                             <div class="row">
                                 <div class="col-12">
                                     <h5 class="font-weight-medium">Main information</h5>
+                                    <div class="d-flex mt-6">
+                                        <span class="font-weight-medium">Created</span>
+                                        <p class="ml-10 mb-0">{{ newPost.created }}</p>
+                                    </div>
                                     <v-switch
                                         v-model="newPost.publish"
                                         label="Publish"
+                                        inset
                                         hide-details
                                         class="mt-10"
                                     ></v-switch>
                                     <v-switch
                                         v-model="newPost.display_text"
                                         label="Display text on the slide"
+                                        inset
                                         hide-details
                                         class="mt-10"
                                     ></v-switch>
@@ -86,6 +92,7 @@ import ApiSlider from "@/api/ApiSlider";
 import StandartTemplate from "@/components/Template/StandartTemplate.vue";
 import PageHeader from "@/components/UI/PageHeader.vue";
 import Editor from '@tinymce/tinymce-vue'
+import dayjs from "dayjs";
 
 
 @Component({
@@ -116,7 +123,8 @@ export default class SliderEdit extends Vue {
         subtitle: '',
         publish: true,
         display_text: true,
-        link: ''
+        link: '',
+        created: ''
     }
 
     public mounted() {
@@ -143,6 +151,7 @@ export default class SliderEdit extends Vue {
         this.newPost.publish = sliderInfo.publish
         this.newPost.display_text = sliderInfo.display_text
         this.newPost.link = sliderInfo.link
+        this.newPost.created = dayjs(sliderInfo.create_at).format('DD.MM.YYYY HH:mm')
 
         this.$forceUpdate();
     }

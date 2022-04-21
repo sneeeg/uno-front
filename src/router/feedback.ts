@@ -9,20 +9,10 @@ const routes: Array<RouteConfig> = [
         component: FeedbackContacts
     },
     {
-        path: "/cms/feedback/contacts/view/:message_uuid",
-        name: "FeedbackContacts",
-        component: FeedbackContacts
-    },
-    {
         path: "/cms/feedback/partners",
         name: "FeedbackPartners",
         component: FeedbackPartners
-    },
-    {
-        path: "/cms/feedback/partners/view/:message_uuid",
-        name: "FeedbackPartners",
-        component: FeedbackPartners
-    },
+    }
 ];
 
 export default routes;

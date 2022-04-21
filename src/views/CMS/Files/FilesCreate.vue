@@ -51,6 +51,7 @@
                                     <v-text-field
                                         label="Priority (sorting)"
                                         v-model="newPost.priority"
+                                        type="number"
                                         hide-details
                                         class="col-4 px-0 mt-5"
                                     ></v-text-field>

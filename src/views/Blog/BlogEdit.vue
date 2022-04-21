@@ -14,11 +14,16 @@
                             <div class="row">
                                 <div class="col-12">
                                     <h5 class="font-weight-medium">Main information</h5>
+                                    <div class="d-flex mt-6">
+                                        <span class="font-weight-medium">Created</span>
+                                        <p class="ml-10 mb-0">{{ PostCreated }}</p>
+                                    </div>
                                     <v-switch
                                         v-model="PostPublish"
                                         label="Publish"
+                                        inset
                                         hide-details
-                                        class="mt-10"
+                                        class="mt-9"
                                     ></v-switch>
                                     <v-text-field
                                         label="Post name"
@@ -75,6 +80,7 @@
                                         hide-details
                                         class="col-5 px-0 mt-10"
                                         label="Description"
+                                        v-model="BlogSeoDescription"
                                         value=""
                                     ></v-textarea>
                                     <v-textarea
@@ -85,10 +91,12 @@
                                         hide-details
                                         class="col-5 px-0 mt-5"
                                         label="Keywords"
+                                        v-model="BlogSeoKeywords"
                                         value=""
                                     ></v-textarea>
                                     <v-text-field
                                         label="URL"
+                                        v-model="BlogSeoUrl"
                                         hide-details
                                         class="col-5 px-0 mt-5"
                                     ></v-text-field>
@@ -134,6 +142,7 @@ import ApiBlog from "@/api/ApiBlog";
 import StandartTemplate from "@/components/Template/StandartTemplate.vue";
 import PageHeader from "@/components/UI/PageHeader.vue";
 import Editor from '@tinymce/tinymce-vue'
+import dayjs from "dayjs";
 
 
 @Component({
@@ -166,6 +175,10 @@ export default class BlogEdit extends Vue {
     private PostImage2: string= ''
     private BlogCardDesign: string = ''
     private BlogContent: string = ''
+    private BlogSeoDescription: string = ''
+    private BlogSeoKeywords: string = ''
+    private BlogSeoUrl: string = ''
+    private PostCreated: string= ''
 
     public mounted() {
         this.CurrentBlogUUID = this.$route.params.blog_uuid;
@@ -196,13 +209,17 @@ export default class BlogEdit extends Vue {
         this.BlogCardDesign = blogInfo.card_design
         this.PostPublish = blogInfo.publish
         this.BlogContent = blogInfo.content
+        this.BlogSeoDescription = blogInfo.seo_description
+        this.BlogSeoKeywords = blogInfo.seo_keywords
+        this.BlogSeoUrl = blogInfo.seo_url
+        this.PostCreated = dayjs(blogInfo.create_at).format('DD.MM.YYYY HH:mm')
 
         this.$forceUpdate();
     }
 
     private async OnClickSubmit(): Promise<void> {
         try {
-            const response = await ApiBlog.UpdateBlogInfo(this.PostName, this.PostPublish? 1: 0, this.PostImage1, this.PostImage2, this.BlogCardDesign, this.BlogContent, ApiEnter.CurrentSessionUUID as string, this.CurrentBlogUUID);
+            const response = await ApiBlog.UpdateBlogInfo(this.PostName, this.PostPublish? 1: 0, this.PostImage1, this.PostImage2, this.BlogCardDesign, this.BlogContent, this.BlogSeoDescription, this.BlogSeoKeywords, this.BlogSeoUrl, ApiEnter.CurrentSessionUUID as string, this.CurrentBlogUUID);
             if (typeof response == "boolean") {
                 sweetalert({
                     title: "Успешно!",

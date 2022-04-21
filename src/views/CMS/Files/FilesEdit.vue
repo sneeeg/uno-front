@@ -3,7 +3,7 @@
         <div class="container">
             <div class="row mt-1">
                 <v-breadcrumbs :items="Breadcrumbs" divider="/"/>
-                <page-header title="Support (FAQ)" back-url="/company/list/"/>
+                <page-header title="Support (Files)" back-url="/company/list/"/>
                 <div class="col-12 px-6">
                     <v-divider></v-divider>
                 </div>
@@ -14,9 +14,14 @@
                             <div class="row">
                                 <div class="col-12">
                                     <h5 class="font-weight-medium">Main information</h5>
+                                    <div class="d-flex mt-6">
+                                        <span class="font-weight-medium">Created</span>
+                                        <p class="ml-10 mb-0">{{ currentFaq.created }}</p>
+                                    </div>
                                     <v-switch
                                         v-model="currentFaq.publish"
                                         label="Publish"
+                                        inset
                                         hide-details
                                         class="mt-10"
                                     ></v-switch>
@@ -61,7 +66,7 @@
                     <div class="row">
                         <div class="col-12 px-6">
                             <div class="col-12 py-6 bg-light d-flex">
-                                <router-link to="/faq/questions">
+                                <router-link to="/cms/files">
                                     <v-btn
                                         color="grey lighten-1"
                                         class="white--text"
@@ -97,6 +102,7 @@ import StandartTemplate from "@/components/Template/StandartTemplate.vue";
 import PageHeader from "@/components/UI/PageHeader.vue";
 import Editor from '@tinymce/tinymce-vue'
 import ApiSupportFiles from "@/api/ApiSupportFiles";
+import dayjs from "dayjs";
 
 
 @Component({
@@ -116,10 +122,10 @@ export default class FilesEdit extends Vue {
         },
         {
             to: '/faq/question',
-            text: 'Support (FAQ)'
+            text: 'Support (Files)'
         },
         {
-            text: 'Questions',
+            text: 'Files',
             disabled: true
         }
     ];
@@ -134,7 +140,8 @@ export default class FilesEdit extends Vue {
         publish: true,
         priority: '',
         file: '',
-        category: undefined
+        category: undefined,
+        created: ''
     }
 
     private async OnClickSubmit(): Promise<void> {
@@ -163,6 +170,7 @@ export default class FilesEdit extends Vue {
                     this.currentFaq.file = ''
                     this.currentFaq.publish = true
                     this.currentFaq.category = ''
+                    this.currentFaq.created = ''
                     this.$router.push(`/cms/files`);
                 })
             } else {
@@ -201,6 +209,7 @@ export default class FilesEdit extends Vue {
         this.currentFaq.priority = faqInfo.priority
         this.currentFaq.category = faqInfo.category
         this.currentFaq.file = faqInfo.file
+        this.currentFaq.created = dayjs(faqInfo.create_at).format('DD.MM.YYYY HH:mm')
     }
 
     public mounted(): void {

@@ -14,11 +14,16 @@
                             <div class="row">
                                 <div class="col-12">
                                     <h5 class="font-weight-medium">Main information</h5>
+                                    <div class="d-flex mt-6">
+                                        <span class="font-weight-medium">Created</span>
+                                        <p class="ml-10 mb-0">{{ currentFaq.created }}</p>
+                                    </div>
                                     <v-switch
                                         v-model="currentFaq.publish"
                                         label="Publish"
+                                        inset
                                         hide-details
-                                        class="mt-10"
+                                        class="mt-8"
                                     ></v-switch>
                                     <v-text-field
                                         label="Question"
@@ -94,6 +99,7 @@ import ApiFaq from "@/api/ApiFaq";
 import StandartTemplate from "@/components/Template/StandartTemplate.vue";
 import PageHeader from "@/components/UI/PageHeader.vue";
 import Editor from '@tinymce/tinymce-vue'
+import dayjs from "dayjs";
 
 
 @Component({
@@ -130,7 +136,8 @@ export default class EditQuestion extends Vue {
         question: '',
         publish: true,
         priority: '',
-        category: undefined
+        category: undefined,
+        created: ''
     }
 
     private async OnClickSubmit(): Promise<void> {
@@ -157,6 +164,7 @@ export default class EditQuestion extends Vue {
                     this.currentFaq.priority = ''
                     this.currentFaq.publish = true
                     this.currentFaq.category = ''
+                    this.currentFaq.created = ''
                     this.$router.push(`/faq/questions`);
                 })
             } else {
@@ -194,6 +202,7 @@ export default class EditQuestion extends Vue {
         this.currentFaq.publish = faqInfo.publish
         this.currentFaq.priority = faqInfo.priority
         this.currentFaq.category = faqInfo.category
+        this.currentFaq.created = dayjs(faqInfo.create_at).format('DD.MM.YYYY HH:mm')
     }
 
     public mounted(): void {

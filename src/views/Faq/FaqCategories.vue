@@ -214,7 +214,7 @@ import dayjs from "dayjs";
 
 export default class FaqEdit extends Vue {
 
-    private Breadcrumbs: BreadcrumbsItemType[] = DataFaq.FaqQuestionsBreadcrumbs;
+    private Breadcrumbs: BreadcrumbsItemType[] = DataFaq.FaqCategoriesBreadcrumbs;
 
     private TableHeaders: TableHeaderItemType[] = DataFaq.CategoriesTableHeaders;
     private TableItems: IAdminPanelCompanyList[] | undefined = [];

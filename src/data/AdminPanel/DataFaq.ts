@@ -4,18 +4,6 @@ import TableHeaderItemType from "@/struct/ui/Table/TableHeaderItemType";
 
 export default class DataFaq {
 
-    public static Breadcrumbs: BreadcrumbsItemType[] = [
-        {
-            to: "/",
-            text: "Home",
-        },
-        {
-            to: "/admin/catalog/offers",
-            text: "Offers",
-            disabled: true
-        },
-    ];
-
     public static FaqQuestionsBreadcrumbs: BreadcrumbsItemType[] = [
         {
             to: "/",
@@ -32,6 +20,26 @@ export default class DataFaq {
         {
             to: "/admin/faq/edit",
             text: "Qestions",
+            disabled: true
+        },
+    ];
+
+    public static FaqCategoriesBreadcrumbs: BreadcrumbsItemType[] = [
+        {
+            to: "/",
+            text: "Home",
+        },
+        {
+            to: "/admin",
+            text: "CMS"
+        },
+        {
+            to: "/admin/faq/edit",
+            text: "Support(FAQ)"
+        },
+        {
+            to: "/admin/faq/edit",
+            text: "Categories",
             disabled: true
         },
     ];

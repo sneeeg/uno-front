@@ -15,7 +15,7 @@ class ApiBlog {
             throw new Error("Error get blog");
         }
     }
-    public static async CreateBlog(session_uuid: string, title: string | boolean, publish: number, image1: string, image2: string, card_design: string, content: string | boolean): Promise<string | undefined> {
+    public static async CreateBlog(session_uuid: string, title: string | boolean, publish: number, image1: string, image2: string, card_design: string, content: string | boolean, seo_description: string, seo_keywords: string, seo_url: string): Promise<string | undefined> {
         try {
             const result: AxiosResponse<{ response: string }> = await axios.post("/api/admin/create-blog", {
                 title: title,
@@ -23,7 +23,10 @@ class ApiBlog {
                 image1: image1,
                 image2: image2,
                 card_design: card_design,
-                content: content
+                content: content,
+                seo_description: seo_description,
+                seo_keywords: seo_keywords,
+                seo_url: seo_url
             }, {
                 headers: {
                     "x-tenant": "null",
@@ -69,7 +72,7 @@ class ApiBlog {
             return undefined;
         }
     }
-    public static async UpdateBlogInfo(title: string | boolean, publish: number, image1: string, image2: string, card_design: string, content: string | boolean, session_uuid: string, uuid: string): Promise<boolean | undefined> {
+    public static async UpdateBlogInfo(title: string | boolean, publish: number, image1: string, image2: string, card_design: string, content: string | boolean, seo_description: string, seo_keywords: string, seo_url: string, session_uuid: string, uuid: string): Promise<boolean | undefined> {
         try {
             const result = await axios.post("/api/admin/change-blog-info", {
                 title: title,
@@ -78,6 +81,9 @@ class ApiBlog {
                 image2: image2,
                 card_design: card_design,
                 content: content,
+                seo_description: seo_description,
+                seo_keywords: seo_keywords,
+                seo_url: seo_url,
                 uuid: uuid
             }, {
                 headers: {
