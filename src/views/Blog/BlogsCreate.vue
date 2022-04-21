@@ -26,12 +26,31 @@
                                         hide-details
                                         class="col-7 px-0 mt-5"
                                     ></v-text-field>
-                                    <v-text-field
-                                        label="Post image"
-                                        v-model="PostImage"
-                                        hide-details
-                                        class="col-4 px-0 mt-5"
-                                    ></v-text-field>
+                                    <v-col cols="4" class="px-0">
+                                        <v-select
+                                            :items="CardDesignData"
+                                            v-model="BlogCardDesign"
+                                            label="Card design"
+                                            hide-details
+                                            outlined
+                                        ></v-select>
+                                    </v-col>
+                                    <v-col>
+                                        <v-row class="mt-5">
+                                            <v-text-field
+                                                label="Post image size1"
+                                                v-model="PostImage1"
+                                                hide-details
+                                                class="col-4 px-0"
+                                            ></v-text-field>
+                                            <v-text-field
+                                                label="Post image size2"
+                                                v-model="PostImage2"
+                                                hide-details
+                                                class="col-4 px-0 ml-7"
+                                            ></v-text-field>
+                                        </v-row>
+                                    </v-col>
                                 </div>
                                 <div class="col-12">
                                     <editor
@@ -138,9 +157,13 @@ export default class BlogCreate extends Vue {
         }
     ];
 
-    private PostName: string= ''
-    private PostImage: string= ''
+    private CardDesignData: string[] = ['Blue', 'Orange', 'White']
+
     private PostPublish: boolean = true
+    private PostName: string= ''
+    private PostImage1: string= ''
+    private PostImage2: string= ''
+    private BlogCardDesign: string = ''
     private BlogContent: string = ''
 
     private async OnClickSubmit(): Promise<void> {
@@ -151,7 +174,9 @@ export default class BlogCreate extends Vue {
                 ApiEnter.CurrentSessionUUID,
                 this.PostName,
                 this.PostPublish? 1: 0,
-                this.PostImage,
+                this.PostImage1,
+                this.PostImage2,
+                this.BlogCardDesign,
                 this.BlogContent);
             if (blog_uuid == undefined || blog_uuid.length != 36) {
                 await sweetalert({
