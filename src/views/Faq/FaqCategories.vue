@@ -131,6 +131,7 @@
                             class="white--text"
                             small
                             depressed
+                            :disabled="currentCategory.name === '' || currentCategory.priority === ''"
                             @click="ChangeFaqCategoryInfo"
                         >
                             Save
@@ -170,7 +171,7 @@
                 </div>
 
                 <div class="col-12">
-                    <v-data-table dense :headers="TableHeaders" :items="TableItems" :items-per-page="15" item-key="offer" class="elevation-1">
+                    <v-data-table dense :headers="TableHeaders" sort-by="priority" :items="TableItems" :items-per-page="15" item-key="offer" class="elevation-1">
                         <template v-slot:item.action="{ item }">
                             <div class="d-flex align-center">
                                 <v-switch hide-details v-model="item.publish" :input-value="item.publish" class="mt-0" @change="ChangeFaqCategoryPublish(item)"></v-switch>

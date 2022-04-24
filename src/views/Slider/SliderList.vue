@@ -78,7 +78,7 @@ export default class SliderList extends Vue {
     private DeleteSlider(slider_uuid: string): void {
         sweetalert({
             title: "Are you sure?",
-            text: "Вы дейсвительно хотите удалить Slider?",
+            text: "You really want to delete Slider?",
             icon: "warning",
             buttons: ["No, cancel!", "Yes, delete!"]
         }).then(async isConfirm => {

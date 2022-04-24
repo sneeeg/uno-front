@@ -4,6 +4,18 @@
             <div class="row mt-1">
                 <v-breadcrumbs :items="Breadcrumbs" divider="/"/>
                 <page-header title="Support (Files)" back-url="/company/list/"/>
+                <div class="col-12 mt-5">
+                    <router-link to="/cms/files">
+                        <v-btn depressed small color="light-blue darken-4" class="white--text">
+                            Files
+                        </v-btn>
+                    </router-link>
+                    <router-link to="/cms/files/categories" class="ml-3">
+                        <v-btn depressed small color="white">
+                            Categories
+                        </v-btn>
+                    </router-link>
+                </div>
                 <div class="col-12 px-6">
                     <v-divider></v-divider>
                 </div>
@@ -112,11 +124,11 @@ export default class FilesCreate extends Vue {
             text: 'Home'
         },
         {
-            to: '/faq/question',
+            to: '/admin',
             text: 'CMS'
         },
         {
-            to: '/faq/question',
+            to: '/cms/files',
             text: 'Support (Files)'
         },
         {
@@ -151,7 +163,7 @@ export default class FilesCreate extends Vue {
             if (blog_uuid == undefined || blog_uuid.length != 36) {
                 sweetalert({
                     title: "Request error!",
-                    text: "Ошибка создания Post: " + blog_uuid,
+                    text: "Creation error File: " + blog_uuid,
                     icon: "info"
                 });
                 return;

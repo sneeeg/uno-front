@@ -64,6 +64,9 @@
                         <router-link to="/admin/options" class="menu-item">
                             <i class="fas fa-cogs"></i> Options and Extras
                         </router-link>
+                        <router-link to="/shop/orders" class="menu-item">
+                            <i class="fas fa-shopping-cart"></i> Order management
+                        </router-link>
                     </div>
                 </div>
             </div>

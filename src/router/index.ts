@@ -13,6 +13,7 @@ import faq from "@/router/faq";
 import slider from "@/router/slider";
 import files from "@/router/files";
 import feedback from "@/router/feedback";
+import shop from "@/router/shop";
 
 Vue.use(VueRouter);
 
@@ -54,7 +55,8 @@ const routes: Array<RouteConfig> = [
     ...faq,
     ...slider,
     ...files,
-    ...feedback
+    ...feedback,
+    ...shop
 ];
 
 const router = new VueRouter({

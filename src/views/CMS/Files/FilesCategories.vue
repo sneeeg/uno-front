@@ -131,6 +131,7 @@
                             class="white--text"
                             small
                             depressed
+                            :disabled="currentCategory.name === '' || currentCategory.priority === ''"
                             @click="ChangeFaqCategoryInfo"
                         >
                             Save
@@ -170,7 +171,7 @@
                 </div>
 
                 <div class="col-12">
-                    <v-data-table dense :headers="TableHeaders" :items="TableItems" :items-per-page="15" item-key="offer" class="elevation-1">
+                    <v-data-table dense :headers="TableHeaders" sort-by="priority" :items="TableItems" :items-per-page="15" item-key="offer" class="elevation-1">
                         <template v-slot:item.action="{ item }">
                             <div class="d-flex align-center">
                                 <v-switch hide-details v-model="item.publish" :input-value="item.publish" class="mt-0" @change="ChangeFaqCategoryPublish(item)"></v-switch>
@@ -272,8 +273,8 @@ export default class FaqEdit extends Vue {
             const file_uuid = await ApiSupportFiles.CreateFilesCategory(ApiEnter.CurrentSessionUUID, this.newCategory.name, this.newCategory.priority, this.newCategory.publish? 1: 0);
             if (file_uuid == undefined || file_uuid.length != 36) {
                 await sweetalert({
-                    title: "Ошибка запроса!",
-                    text: "Ошибка создания File: " + file_uuid,
+                    title: "Request error!",
+                    text: "Creation error File: " + file_uuid,
                     icon: "info"
                 });
                 return;

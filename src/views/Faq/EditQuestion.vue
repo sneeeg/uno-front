@@ -4,6 +4,18 @@
             <div class="row mt-1">
                 <v-breadcrumbs :items="Breadcrumbs" divider="/"/>
                 <page-header title="Support (FAQ)" back-url="/company/list/"/>
+                <div class="col-12 mt-5">
+                    <router-link to="/faq/questions">
+                        <v-btn depressed small color="light-blue darken-4" class="white--text">
+                            Questions
+                        </v-btn>
+                    </router-link>
+                    <router-link to="/faq/categories" class="ml-3">
+                        <v-btn depressed small color="white">
+                            Categories
+                        </v-btn>
+                    </router-link>
+                </div>
                 <div class="col-12 px-6">
                     <v-divider></v-divider>
                 </div>
@@ -34,6 +46,7 @@
                                     <v-text-field
                                         label="Priority (sorting)"
                                         v-model="currentFaq.priority"
+                                        type="number"
                                         hide-details
                                         class="col-4 px-0 mt-5"
                                     ></v-text-field>

@@ -14,7 +14,7 @@ export default class DataFaq {
             text: "CMS"
         },
         {
-            to: "/admin/faq/edit",
+            to: "/faq/questions",
             text: "Support(FAQ)"
         },
         {
@@ -34,7 +34,7 @@ export default class DataFaq {
             text: "CMS"
         },
         {
-            to: "/admin/faq/edit",
+            to: "/faq/questions",
             text: "Support(FAQ)"
         },
         {

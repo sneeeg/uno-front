@@ -170,8 +170,8 @@ export default class SliderEdit extends Vue {
                 this.CurrentSliderUUID)
             if (typeof response == "boolean") {
                 sweetalert({
-                    title: "Успешно!",
-                    text: "Slider успешно поменян",
+                    title: "Success!",
+                    text: "Slider has updated",
                     icon: "success"
                 }).then(() => {
                     this.$router.go(-1);

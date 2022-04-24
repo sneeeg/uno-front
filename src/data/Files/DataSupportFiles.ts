@@ -13,11 +13,11 @@ export default class DataSupportFiles {
             text: "CMS"
         },
         {
-            to: "/admin",
+            to: "/cms/files",
             text: "Support (Files)"
         },
         {
-            to: "/slider/slides",
+            to: "/cms/files",
             text: "Files",
             disabled: true
         },
