@@ -217,7 +217,7 @@ export default class EditQuestion extends Vue {
         this.currentFaq.publish = faqInfo.publish
         this.currentFaq.priority = faqInfo.priority
         this.currentFaq.created = dayjs(faqInfo.create_at).format('DD.MM.YYYY HH:mm')
-        this.currentFaq.category = await ApiFaq.GetFaqCategoryByUUID(ApiEnter.CurrentSessionUUID as string, faqInfo.category);
+        this.currentFaq.category = faqInfo.category;
     }
 
     public mounted(): void {

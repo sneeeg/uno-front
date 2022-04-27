@@ -36,7 +36,7 @@
                 <div class="col-12">
                     <v-data-table dense :headers="TableHeaders" sort-by="priority" :items="TableItems" :items-per-page="15" item-key="offer" class="elevation-1">
                         <template v-slot:item.category="{ item }">
-                            {{ FileCategories.find(i => i.uuid === item.category).name }}
+                            {{ FileCategories.find(i => i.uuid === item.category)? FileCategories.find(i => i.uuid === item.category).name: 'undefined' }}
                         </template>
                         <template v-slot:item.action="{ item }">
                             <div class="d-flex align-center">

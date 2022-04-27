@@ -168,7 +168,7 @@ export default class BlogEdit extends Vue {
             disabled: true
         }
     ];
-    private CardDesignData: string[] = ['Blue', 'Orange', 'White']
+    private CardDesignData: string[] = ['Blue', 'Orange', 'White', 'With image']
 
     private CurrentBlogUUID!: string;
     private PostPublish: boolean = true

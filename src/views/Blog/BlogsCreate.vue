@@ -14,12 +14,13 @@
                             <div class="row">
                                 <div class="col-12">
                                     <h5 class="font-weight-medium">Main information</h5>
-                                    <v-switch
-                                        v-model="PostPublish"
-                                        label="Publish"
-                                        hide-details
-                                        class="mt-10"
-                                    ></v-switch>
+                                    <v-col cols="3" class="px-0">
+                                        <v-switch
+                                            v-model="PostPublish"
+                                            label="Publish"
+                                            hide-details
+                                        ></v-switch>
+                                    </v-col>
                                     <v-text-field
                                         label="Post name"
                                         v-model="PostName"
@@ -162,7 +163,7 @@ export default class BlogCreate extends Vue {
         }
     ];
 
-    private CardDesignData: string[] = ['Blue', 'Orange', 'White']
+    private CardDesignData: string[] = ['Blue', 'Orange', 'White', 'With image']
 
     private PostPublish: boolean = true
     private PostName: string= ''
