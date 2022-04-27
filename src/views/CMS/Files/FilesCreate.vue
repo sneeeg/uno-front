@@ -28,6 +28,7 @@
                                     <h5 class="font-weight-medium">Main information</h5>
                                     <v-switch
                                         v-model="newPost.publish"
+                                        inset
                                         label="Publish"
                                         hide-details
                                         class="mt-10"
@@ -48,18 +49,19 @@
                                         :items="FaqCategories"
                                         v-model="newPost.category"
                                         item-text="name"
+                                        item-value="uuid"
                                         label="Category"
                                         dense
                                         hide-details
                                         class="col-4 px-0 mt-5"
                                     >
                                     </v-select>
-                                    <v-text-field
-                                        label="File link"
-                                        v-model="newPost.file"
+                                    <v-file-input
+                                        show-size
+                                        label="File input"
                                         hide-details
-                                        class="col-7 px-0 mt-5"
-                                    ></v-text-field>
+                                        class="col-4 px-0 mt-5"
+                                    ></v-file-input>
                                     <v-text-field
                                         label="Priority (sorting)"
                                         v-model="newPost.priority"
@@ -88,6 +90,7 @@
                                     class="white--text ml-2"
                                     small
                                     @click="OnClickSubmit()"
+                                    :disabled="newPost.name === '' || newPost.description === '' || !newPost.category || newPost.priority === ''"
                                     depressed>
                                     Save
                                 </v-btn>
@@ -144,7 +147,7 @@ export default class FilesCreate extends Vue {
         description: '',
         publish: true,
         priority: '',
-        file: '',
+        file: 'url',
         category: undefined
     }
 

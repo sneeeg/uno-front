@@ -29,6 +29,7 @@
                                         label="Post name"
                                         v-model="PostName"
                                         hide-details
+                                        @input="GenerateSeoUrl"
                                         class="col-7 px-0 mt-5"
                                     ></v-text-field>
                                     <v-col cols="4" class="px-0">
@@ -121,6 +122,7 @@
                                     class="white--text col-1 ml-4"
                                     small
                                     @click="OnClickSubmit()"
+                                    :disabled="PostName === '' || BlogContent === '' ||  BlogCardDesign === ''"
                                     depressed>
                                     Save
                                 </v-btn>
@@ -185,8 +187,8 @@ export default class BlogEdit extends Vue {
         this.DoLoadForm();
     }
 
-    private SetInputValue(model: any, line: string): void {
-        model.value = line;
+    private GenerateSeoUrl() {
+        this.BlogSeoUrl = this.PostName.replace(/ /ig, '-').toLowerCase()
     }
 
     private async DoLoadForm(): Promise<void> {

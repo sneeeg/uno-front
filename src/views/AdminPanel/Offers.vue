@@ -34,43 +34,23 @@
                 </div>
 
                 <div class="col-12">
-                    <v-data-table dense :headers="TableHeaders" :items="TableItems" :items-per-page="15" item-key="user" class="elevation-1">
-                        <template v-slot:body="{ item }">
-                            <draggable
-                                :list="item"
-                                tag="tbody">
-                                <tr
-                                    v-for="(item, index) in item"
-                                    :key="index"
-                                >
-                                    <td>
-                                        <v-icon
-                                            small
-                                            class="page__grab-icon"
-                                        >
-                                            mdi-arrow-all
+                    <v-data-table dense :headers="TableHeaders" :items="TableItems" :items-per-page="15" item-key="offer" class="elevation-1">
+                        <template v-slot:item.action="{ item }">
+                            <div class="d-flex align-center">
+                                <v-switch hide-details v-model="item.publish" :input-value="item.publish" class="mt-0" @change="ChangeSliderPublish(item)"></v-switch>
+                                <router-link :to="'/admin/catalog/offers/edit/' + item.uuid">
+                                    <v-btn icon>
+                                        <v-icon small color="grey darken-2">
+                                            fas fa-pencil-alt
                                         </v-icon>
-                                    </td>
-                                    <td> {{ index + 1 }} </td>
-                                    <td> {{ item.first_name }} </td>
-                                    <td> {{ item.first_name }} </td>
-                                    <td> {{ item.first_name }} </td>
-                                    <td> {{ item.first_name }} </td>
-                                    <td> {{ item.first_name }} </td>
-                                    <td>
-                                        <v-btn icon @click="EditUser(item.user_uuid)">
-                                            <v-icon>
-                                                fas fa-pencil-alt
-                                            </v-icon>
-                                        </v-btn>
-                                        <v-btn icon @click="LoginOnUser(item.email)">
-                                            <v-icon>
-                                                fas fa-trash-alt
-                                            </v-icon>
-                                        </v-btn>
-                                    </td>
-                                </tr>
-                            </draggable>
+                                    </v-btn>
+                                </router-link>
+                                <v-btn icon @click="deleteOffer(item.uuid)">
+                                    <v-icon small color="red darken-3">
+                                        far fa-trash-alt
+                                    </v-icon>
+                                </v-btn>
+                            </div>
                         </template>
                     </v-data-table>
                 </div>
@@ -89,41 +69,53 @@ import ApiEnter from "@/api/ApiEnter";
 import IAdminPanelUserList from "@/struct/admin-panel/IAdminPanelUserList";
 import StandartTemplate from "@/components/Template/StandartTemplate.vue";
 import DataOffers from "@/data/AdminPanel/DataOffers";
+import ApiOffer from "@/api/ApiOffer";
+import sweetalert from "sweetalert";
+import ApiSupportFiles from "@/api/ApiSupportFiles";
 
 @Component({
     components: { StandartTemplate, PageHeader }
 })
 export default class Offers extends Vue {
     private Breadcrumbs: BreadcrumbsItemType[] = DataOffers.Breadcrumbs;
-
     private TableHeaders: TableHeaderItemType[] = DataOffers.TableHeaders;
-
     private TableItems: IAdminPanelUserList[] | undefined = [];
 
-    private async getUsers(): Promise<void> {
+    private async getOffers(): Promise<void> {
         try {
-            this.TableItems = await ApiAdmin.GetUsers(ApiEnter.CurrentSessionUUID as string);
+            this.TableItems = await ApiOffer.GetOffers(ApiEnter.CurrentSessionUUID as string);
         } catch (e) {
             console.error(e);
         }
     }
+    private deleteOffer(offer_uuid: string): void {
+        sweetalert({
+            title: "Are you sure?",
+            text: "You really want to delete this Offer?",
+            buttons: ["No, Cancel!", "Yes, I'm sure!"]
+        }).then(async isConfirm => {
+            if (isConfirm == true) {
+                const response = await ApiOffer.DeleteOffer(ApiEnter.CurrentSessionUUID as string, offer_uuid);
+                if (typeof response == "boolean") {
+                    sweetalert({
+                        title: "Success!",
+                        text: "Offer has deleted"
+                    });
 
-    private EditUser(uuid: string): void {
-        this.$router.push(`/admin/edit-user/${uuid}`);
+                    this.getOffers()
+                } else {
+                    sweetalert({
+                        title: "Ошибка!",
+                        text: `Во время выполнения запроса, возникла ошибка: ${response}`,
+                        icon: "error"
+                    });
+                }
+            }
+        });
     }
 
-    private async LoginOnUser(email: string): Promise<void> {
-        const session_uuid = await ApiAdmin.LoginOnUser(ApiEnter.CurrentSessionUUID as string, email);
-        if (session_uuid !== undefined) {
-            localStorage.setItem("XSessionUUIDOLD", ApiEnter.CurrentSessionUUID as string);
-            localStorage.setItem("XSessionUUID", session_uuid);
-            window.location.reload();
-        }
-    }
-
-
-    private mounted() {
-        this.getUsers();
+    public mounted() {
+        this.getOffers();
     }
 
 }

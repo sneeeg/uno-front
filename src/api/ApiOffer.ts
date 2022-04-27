@@ -2,6 +2,123 @@ import axios, { AxiosResponse } from "axios";
 import IAdminPanelOffersCategoriesList from "@/struct/admin-panel/IAdminPanelOffersCategoriesList";
 
 class ApiOffer {
+    public static async GetOffers(session_uuid: string): Promise<any[] | undefined> {
+        try {
+            const result = await axios.get("/api/shop/offer/get-offers", {
+                headers: {
+                    "x-tenant": "null",
+                    "x-session-token": session_uuid
+                }
+            });
+            return result.data.data;
+        } catch (e) {
+            throw new Error("Error get offers");
+        }
+    }
+    public static async CreateOffer(session_uuid: string,
+                                    name: string,
+                                    priority: string,
+                                    publish: number,
+                                    category: string,
+                                    price: string,
+                                    data: string,
+                                    sms: string,
+                                    min: string,
+                                    additional_data: string,
+                                    int_min: string,
+                                    countries: string,
+                                    rates_abroad: number,
+                                    free: number,
+                                    activation_info: string,
+                                    display_roaming: number,
+                                    overview: string,
+                                    note: string,
+                                    design: string,
+                                    photo_list: string,
+                                    photo_slide: string,
+                                    photo_slide_m: string,
+                                    display_offers: number,
+                                    display_home: number,
+                                    display_slider: number,
+                                    active: number,
+                                    prospects_info: string,
+                                    contract: string,
+                                    activation_price: string,
+                                    is_porting: number,
+                                    price_vodafone: string,
+                                    price_others: string,
+                                    title: string,
+                                    description: string,
+                                    keywords: string,
+                                    url: string): Promise<string | undefined> {
+        try {
+            const result: AxiosResponse<{ response: string }> = await axios.post("/api/admin/offer-create", {
+                name: name,
+                priority: priority,
+                publish: publish,
+                category: category,
+                price: price,
+                data: data,
+                sms: sms,
+                min: min,
+                additional_data: additional_data,
+                int_min: int_min,
+                countries: countries,
+                rates_abroad: rates_abroad,
+                free: free,
+                activation_info: activation_info,
+                display_roaming: display_roaming,
+                overview: overview,
+                note: note,
+                design: design,
+                photo_list: photo_list,
+                photo_slide: photo_slide,
+                photo_slide_m: photo_slide_m,
+                display_offers: display_offers,
+                display_home: display_home,
+                display_slider: display_slider,
+                active: active,
+                prospects_info: prospects_info,
+                contract: contract,
+                activation_price: activation_price,
+                is_porting: is_porting,
+                price_vodafone: price_vodafone,
+                price_others: price_others,
+                title: title,
+                description: description,
+                keywords: keywords,
+                url: url
+            }, {
+                headers: {
+                    "x-tenant": "null",
+                    "x-session-token": session_uuid
+                }
+            });
+            return result.data.response;
+        } catch (e) {
+            console.error(e);
+            if ("response" in e && "data" in e.response && "response" in e.response.data) {
+                return e.response.data.response;
+            }
+        }
+        return undefined;
+    }
+    public static async DeleteOffer(session_uuid: string, uuid: string): Promise<boolean | undefined> {
+        try {
+            const result = await axios.post("/api/shop/offer/delete-offer", {
+                uuid: uuid
+            }, {
+                headers: {
+                    "x-tenant": "null",
+                    "x-session-token": session_uuid
+                }
+            });
+            return result.data.response;
+        } catch (e) {
+            return undefined;
+        }
+    }
+
     public static async GetOfferCategories(session_uuid: string): Promise<IAdminPanelOffersCategoriesList[] | undefined> {
         try {
             const result = await axios.get("/api/admin/get-offer-categories", {

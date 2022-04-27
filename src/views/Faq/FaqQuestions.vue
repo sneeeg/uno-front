@@ -35,6 +35,9 @@
 
                 <div class="col-12">
                     <v-data-table dense :headers="TableHeaders" sort-by="priority" :items="TableItems" :items-per-page="15" item-key="offer" class="elevation-1">
+                        <template v-slot:item.category="{ item }">
+                            {{ FaqCategories.find(i => i.uuid === item.category).name }}
+                        </template>
                         <template v-slot:item.action="{ item }">
                             <div class="d-flex align-center">
                                 <v-switch hide-details v-model="item.publish" :input-value="item.publish" class="mt-0" @change="ChangeFaqPublish(item)"></v-switch>
@@ -83,6 +86,7 @@ export default class FaqEdit extends Vue {
 
     private Breadcrumbs: BreadcrumbsItemType[] = DataFaq.FaqQuestionsBreadcrumbs;
     private TableItems: IAdminPanelCompanyList[] | undefined = [];
+    private FaqCategories: any[] | undefined = []
 
     private async ChangeFaqPublish(item: any): Promise<void> {
         try {
@@ -144,8 +148,16 @@ export default class FaqEdit extends Vue {
             console.error(e);
         }
     }
+    private async GetFaqCategories(): Promise<void> {
+        try {
+            this.FaqCategories = await ApiFaq.GetFaqCategories(ApiEnter.CurrentSessionUUID as string);
+        } catch (e) {
+            console.error(e);
+        }
+    }
 
     public mounted(): void {
+        this.GetFaqCategories()
         this.GetFaq()
     }
 }

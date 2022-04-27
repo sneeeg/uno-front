@@ -49,6 +49,7 @@
                                         :items="FaqCategories"
                                         v-model="newPost.category"
                                         item-text="name"
+                                        item-value="uuid"
                                         label="Categories"
                                         dense
                                         class="col-4 px-0 mt-5"
@@ -86,6 +87,7 @@
                                     class="white--text ml-2"
                                     small
                                     @click="OnClickSubmit()"
+                                    :disabled="newPost.answer === '' || newPost.question === '' || !newPost.category || newPost.priority === ''"
                                     depressed>
                                     Save
                                 </v-btn>

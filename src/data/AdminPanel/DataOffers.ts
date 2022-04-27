@@ -35,15 +35,15 @@ export default class DataOffers {
     public static TableHeaders: TableHeaderItemType[] = [
         {
             text: "Sorting",
-            value: "first_name"
+            value: "priority"
         },
         {
             text: "Offer name",
-            value: "second_name"
+            value: "name"
         },
         {
             text: "Category",
-            value: "birthday"
+            value: "category"
         },
         {
             text: "Tariff transparency",
@@ -51,11 +51,11 @@ export default class DataOffers {
         },
         {
             text: "Price, €",
-            value: "email"
+            value: "price"
         },
         {
             text: "Data, GB",
-            value: "user_id"
+            value: "data"
         },
         {
             text: "Action",

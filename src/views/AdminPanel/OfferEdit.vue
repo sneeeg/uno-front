@@ -30,19 +30,22 @@
                         <p class="col-12">Main information</p>
                         <div class="col-12">
                             <v-switch
-                                v-model="NewCategoryPublish"
+                                v-model="newOffer.publish"
                                 label="Publish"
                             ></v-switch>
                         </div>
                         <div class="col-6">
                             <v-text-field
                                 label="Offer name"
+                                v-model="newOffer.name"
                                 hide-details="auto"
                             ></v-text-field>
                         </div>
                         <div class="col-3">
                             <v-text-field
                                 label="Priority (sorting)"
+                                type="number"
+                                v-model="newOffer.priority"
                                 hide-details="auto"
                             ></v-text-field>
                         </div>
@@ -52,7 +55,7 @@
                                 <v-checkbox
                                     v-model="OfferCategory"
                                     v-for="item in OffersCategories"
-                                    :key="item.name"
+                                    :key="item.uuid"
                                     :label="item.name"
                                     color="indigo darken-3"
                                     :value="item.name"
@@ -74,24 +77,29 @@
                             <div class="col-2">
                                 <v-text-field
                                     label="Price, €"
+                                    v-model="newOffer.price"
+                                    type="number"
                                     hide-details="auto"
                                 ></v-text-field>
                             </div>
                             <div class="col-2">
                                 <v-text-field
                                     label="Data, GB"
+                                    v-model="newOffer.data"
                                     hide-details="auto"
                                 ></v-text-field>
                             </div>
                             <div class="col-2">
                                 <v-text-field
                                     label="SMS"
+                                    v-model="newOffer.sms"
                                     hide-details="auto"
                                 ></v-text-field>
                             </div>
                             <div class="col-2">
                                 <v-text-field
                                     label="Minutes"
+                                    v-model="newOffer.min"
                                     hide-details="auto"
                                 ></v-text-field>
                             </div>
@@ -100,12 +108,15 @@
                             <div class="col-6">
                                 <v-text-field
                                     label="Additional Data"
+                                    v-model="newOffer.additional_data"
                                     hide-details="auto"
                                 ></v-text-field>
                             </div>
                             <div class="col-2">
                                 <v-text-field
                                     label="Int. minutes"
+                                    type="number"
+                                    v-model="newOffer.int_min"
                                     hide-details="auto"
                                 ></v-text-field>
                             </div>
@@ -118,11 +129,12 @@
                                 hide-details
                                 label="Countries for International minutes"
                                 value=""
+                                v-model="newOffer.countries"
                             ></v-textarea>
                         </div>
                         <div class="col-12">
                             <v-checkbox
-                                v-model="NewCategoryPublish"
+                                v-model="newOffer.rates_abroad"
                                 label="Special rates abroad"
                                 color="indigo darken-3"
                                 value="Special rates abroad"
@@ -132,7 +144,7 @@
                         </div>
                         <div class="col-12">
                             <v-checkbox
-                                v-model="NewCategoryPublish"
+                                v-model="newOffer.free"
                                 label="FREE activation"
                                 color="indigo darken-3"
                                 value="FREE activation"
@@ -144,6 +156,7 @@
                             <v-textarea
                                 outlined
                                 name="input-7-4"
+                                v-model="newOffer.activation_info"
                                 no-resize
                                 hide-details
                                 label="Activation info"
@@ -154,6 +167,7 @@
                             <p>Offer overview</p>
                             <editor
                                 api-key="no-api-key"
+                                v-model="newOffer.overview"
                                 class="mt-4"
                                 :init="{
                                              height: 200,
@@ -166,6 +180,7 @@
                             <editor
                                 api-key="no-api-key"
                                 class="mt-4"
+                                v-model="newOffer.note"
                                 :init="{
                                              height: 200,
                                              menubar: false,
@@ -177,6 +192,7 @@
                         <div class="col-5">
                             <v-select
                                 :items="NewCategoryCardDesign"
+                                v-model="newOffer.design"
                                 label="Card design"
                                 outlined
                             ></v-select>
@@ -187,6 +203,7 @@
                                 <span>The photo must be in .jpg or .png format. Size 700*350 pixels</span>
                                 <v-text-field
                                     label="Photo URL"
+                                    v-model="newOffer.photo_list"
                                     hide-details="auto"
                                 ></v-text-field>
                             </div>
@@ -199,6 +216,7 @@
                                 </span>
                                 <v-text-field
                                     label="Photo URL"
+                                    v-model="newOffer.photo_slide"
                                     hide-details="auto"
                                 ></v-text-field>
                             </div>
@@ -211,6 +229,7 @@
                                 </span>
                                 <v-text-field
                                     label="Photo URL"
+                                    v-model="newOffer.photo_slide_m"
                                     hide-details="auto"
                                 ></v-text-field>
                             </div>
@@ -218,26 +237,23 @@
                         <h6 class="col-12">Where display</h6>
                         <div class="col-12 row">
                             <v-checkbox
-                                v-model="ex4"
+                                v-model="newOffer.display_offers"
                                 label="in OFFERS PAGE"
                                 color="indigo darken-3"
-                                value="Per tutti"
                                 class="col-3"
                                 hide-details
                             ></v-checkbox>
                             <v-checkbox
-                                v-model="ex4"
+                                v-model="newOffer.display_home"
                                 label="in HOME PAGE"
                                 color="indigo darken-3"
-                                value="Per tutti"
                                 class="col-3"
                                 hide-details
                             ></v-checkbox>
                             <v-checkbox
-                                v-model="ex4"
+                                v-model="newOffer.display_slider"
                                 label="in SLIDER"
                                 color="indigo darken-3"
-                                value="Per tutti"
                                 class="col-3"
                                 hide-details
                             ></v-checkbox>
@@ -245,7 +261,7 @@
                         <v-divider class="col-12 p-0"></v-divider>
                         <h6 class="col-12">Tariff transparency</h6>
                         <div class="col-12 row">
-                            <v-radio-group row v-model="radioGroup">
+                            <v-radio-group row v-model="newOffer.active">
                                 <v-radio
                                     :label="'Offerte attivabili'"
                                     :value="'active'"
@@ -265,6 +281,7 @@
                                 <span>The file must be in PDF format</span>
                                 <v-text-field
                                     label="Photo URL"
+                                    v-model="newOffer.prospects_info"
                                     hide-details="auto"
                                 ></v-text-field>
                             </div>
@@ -275,6 +292,7 @@
                                 </span>
                                 <v-text-field
                                     label="Photo URL"
+                                    v-model="newOffer.contract"
                                     hide-details="auto"
                                 ></v-text-field>
                             </div>
@@ -290,13 +308,14 @@
                             </div>
                             <div class="col-3">
                                 <v-text-field
-                                    label="Actication price (for NEW user)"
+                                    label="Activation price (for NEW user)"
+                                    v-model="newOffer.activation_price"
                                     hide-details="auto"
                                 ></v-text-field>
                             </div>
                         </div>
                         <v-checkbox
-                            v-model="ex4"
+                            v-model="newOffer.is_porting"
                             label="Offer can be PORTING"
                             class="col-12"
                             color="indigo darken-3"
@@ -307,12 +326,14 @@
                             <div class="col-3">
                                 <v-text-field
                                     label="Activation price for Vodafone group"
+                                    v-model="newOffer.price_vodafone"
                                     hide-details="auto"
                                 ></v-text-field>
                             </div>
                             <div class="col-3">
                                 <v-text-field
                                     label="Activation price for other operators"
+                                    v-model="newOffer.price_others"
                                     hide-details="auto"
                                 ></v-text-field>
                             </div>
@@ -321,30 +342,32 @@
                         <h6 class="col-12">SEO section</h6>
                         <v-text-field
                             label="Title"
+                            v-model="newOffer.title"
                             class="col-5"
                             hide-details="auto"
                         ></v-text-field>
                         <v-textarea
                             outlined
                             name="input-7-4"
+                            v-model="newOffer.description"
                             no-resize
                             hide-details
                             label="Description"
-                            value=""
                             class="col-5 mt-10 ml-2"
                         ></v-textarea>
                         <v-textarea
                             outlined
                             name="input-7-4"
+                            v-model="newOffer.keywords"
                             no-resize
                             hide-details
                             label="Keywords"
-                            value=""
                             class="col-5 mt-10 ml-2"
                         ></v-textarea>
                         <v-text-field
                             label="URL"
                             class="col-5"
+                            v-model="newOffer.url"
                             hide-details="auto"
                         ></v-text-field>
                     </div>
@@ -362,7 +385,8 @@
                             color="orange accent-4"
                             class="white--text col-1 ml-4"
                             small
-                            depressed>
+                            depressed
+                            @click="OnClickSubmit">
                             Save
                         </v-btn>
                     </div>
@@ -382,6 +406,8 @@ import ApiEnter from "@/api/ApiEnter";
 import IAdminPanelOffersCategoriesList from "@/struct/admin-panel/IAdminPanelOffersCategoriesList";
 import Editor from '@tinymce/tinymce-vue'
 import ApiOffer from "@/api/ApiOffer";
+import ApiBlog from "@/api/ApiBlog";
+import sweetalert from "sweetalert";
 
 @Component({
     components: { StandartTemplate, PageHeader, Editor }
@@ -389,18 +415,115 @@ import ApiOffer from "@/api/ApiOffer";
 export default class Offers extends Vue {
     private Breadcrumbs: BreadcrumbsItemType[] = DataOffers.OfferCreateBreadcrumbs;
 
-    private NewCategoryPublish: boolean = true
     private NewCategoryCardDesign: string[] = ['Blue', 'Orange', 'Transparent']
 
     private OfferCategory: any = []
-
     private OffersCategories: IAdminPanelOffersCategoriesList[] | undefined = []
+
+    private newOffer: any = {
+        name: '',
+        priority: '',
+        publish: true,
+        category: '123123132321',
+        price: '',
+        data: '',
+        sms: '',
+        min: '',
+        additional_data: '',
+        int_min: '',
+        countries: '',
+        rates_abroad: true,
+        free: true,
+        activation_info: '',
+        display_roaming: true,
+        overview: '',
+        note: '',
+        design: '',
+        photo_list: '',
+        photo_slide: '',
+        photo_slide_m: '',
+        display_offers: true,
+        display_home: true,
+        display_slider: true,
+        active: 'active',
+        prospects_info: '',
+        contract: '',
+        activation_price: '',
+        is_porting: true,
+        price_vodafone: '',
+        price_others: '',
+        title: '',
+        description: '',
+        keywords: '',
+        url: ''
+    }
 
     private async getOffersCategories(): Promise<void> {
         try {
             this.OffersCategories = await ApiOffer.GetOfferCategories(ApiEnter.CurrentSessionUUID as string);
         } catch (e) {
             console.error(e);
+        }
+    }
+
+    private async OnClickSubmit(): Promise<void> {
+        if (ApiEnter.CurrentSessionUUID != undefined) {
+            this.$forceUpdate();
+
+            const offer_uuid = await ApiOffer.CreateOffer(
+                ApiEnter.CurrentSessionUUID,
+                this.newOffer.name,
+                this.newOffer.priority,
+                this.newOffer.publish? 1: 0,
+                this.newOffer.category,
+                this.newOffer.price,
+                this.newOffer.data,
+                this.newOffer.sms,
+                this.newOffer.min,
+                this.newOffer.additional_data,
+                this.newOffer.int_min,
+                this.newOffer.countries,
+                this.newOffer.rates_abroad? 1 : 0,
+                this.newOffer.free? 1: 0,
+                this.newOffer.activation_info,
+                this.newOffer.display_roaming? 1: 0,
+                this.newOffer.overview,
+                this.newOffer.note,
+                this.newOffer.design,
+                this.newOffer.photo_list,
+                this.newOffer.photo_slide,
+                this.newOffer.photo_slide_m,
+                this.newOffer.display_offers? 1 : 0,
+                this.newOffer.display_home? 1 : 0,
+                this.newOffer.display_slider? 1 : 0,
+                this.newOffer.active === 'active'? 1: 0,
+                this.newOffer.prospects_info,
+                this.newOffer.contract,
+                this.newOffer.activation_price,
+                this.newOffer.is_porting? 1: 0,
+                this.newOffer.price_vodafone,
+                this.newOffer.price_others,
+                this.newOffer.title,
+                this.newOffer.description,
+                this.newOffer.keywords,
+                this.newOffer.url);
+            if (offer_uuid == undefined || offer_uuid.length != 36) {
+                await sweetalert({
+                    title: "Request error!",
+                    text: "Creating error Offer: " + offer_uuid,
+                    icon: "info"
+                });
+                return;
+            }
+
+            sweetalert({
+                title: "Success!",
+                text: `Offer has created!`,
+                icon: "success"
+            }).then(() => {
+                this.$forceUpdate()
+                this.$router.push(`/admin/catalog/offers`);
+            })
         }
     }
 

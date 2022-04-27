@@ -36,20 +36,20 @@ export default class DataSlider {
         }
     ];
 
-    public static CategoriesTableHeaders: TableHeaderItemType[] = [
+    public static SliderDisplayTableHeaders: TableHeaderItemType[] = [
         {
             text: "Sorting",
-            value: "priority",
-            width: '10%'
+            value: "create_at",
+            width: '12%'
         },
         {
-            text: "Category name",
-            value: "name",
-            width: '60%'
+            text: "Source",
+            value: "source",
+            width: '12%'
         },
         {
-            text: "Action",
-            value: "action"
+            text: "Title",
+            value: "title",
         }
     ];
 }

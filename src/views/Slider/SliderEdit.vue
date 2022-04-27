@@ -71,6 +71,7 @@
                                     class="white--text ml-2"
                                     small
                                     @click="OnClickSubmit()"
+                                    :disabled="newPost.title === '' || newPost.subtitle === '' || newPost.link === ''"
                                     depressed>
                                     Save
                                 </v-btn>

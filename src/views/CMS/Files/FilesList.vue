@@ -35,6 +35,9 @@
 
                 <div class="col-12">
                     <v-data-table dense :headers="TableHeaders" sort-by="priority" :items="TableItems" :items-per-page="15" item-key="offer" class="elevation-1">
+                        <template v-slot:item.category="{ item }">
+                            {{ FileCategories.find(i => i.uuid === item.category).name }}
+                        </template>
                         <template v-slot:item.action="{ item }">
                             <div class="d-flex align-center">
                                 <v-switch hide-details v-model="item.publish" :input-value="item.publish" class="mt-0" @change="ChangeFilePublish(item)"></v-switch>
@@ -84,6 +87,7 @@ export default class FaqEdit extends Vue {
 
     private TableHeaders: TableHeaderItemType[] = DataSupportFiles.FilesListTableHeaders;
     private TableItems: any[] | undefined = [];
+    private FileCategories: any[] | undefined = []
 
     private async ChangeFilePublish(item: any): Promise<void> {
         try {
@@ -138,6 +142,14 @@ export default class FaqEdit extends Vue {
         });
     }
 
+    private async GetCategories(): Promise<void> {
+        try {
+            this.FileCategories = await ApiSupportFiles.GetFilesCategories(ApiEnter.CurrentSessionUUID as string);
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
     private async GetFiles(): Promise<void> {
         try {
             this.TableItems = await ApiSupportFiles.GetFiles(ApiEnter.CurrentSessionUUID as string);
@@ -147,6 +159,7 @@ export default class FaqEdit extends Vue {
     }
 
     public mounted(): void {
+        this.GetCategories()
         this.GetFiles()
     }
 }

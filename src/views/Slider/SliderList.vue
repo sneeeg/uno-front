@@ -4,6 +4,18 @@
             <div class="row mt-1">
                 <v-breadcrumbs :items="Breadcrumbs" divider="/"/>
                 <page-header title="Slider" back-url="/"/>
+                <div class="col-12 mt-5">
+                    <router-link to="/slider/slides">
+                        <v-btn depressed small color="light-blue darken-4" class="white--text">
+                            Slides
+                        </v-btn>
+                    </router-link>
+                    <router-link to="/slider/display-settings" class="ml-3">
+                        <v-btn depressed small color="white">
+                            Display settings
+                        </v-btn>
+                    </router-link>
+                </div>
 
                 <div class="col-12">
                     <v-divider></v-divider>

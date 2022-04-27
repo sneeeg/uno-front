@@ -54,6 +54,7 @@
                                         :items="FaqCategories"
                                         v-model="currentFaq.category"
                                         item-text="name"
+                                        item-value="uuid"
                                         label="Categories"
                                         dense
                                         class="col-4 px-0 mt-5"
@@ -91,6 +92,7 @@
                                     class="white--text ml-2"
                                     small
                                     @click="OnClickSubmit()"
+                                    :disabled="currentFaq.answer === '' || currentFaq.question === '' || !currentFaq.category || currentFaq.priority === ''"
                                     depressed>
                                     Save
                                 </v-btn>
@@ -214,8 +216,8 @@ export default class EditQuestion extends Vue {
         this.currentFaq.question = faqInfo.question
         this.currentFaq.publish = faqInfo.publish
         this.currentFaq.priority = faqInfo.priority
-        this.currentFaq.category = faqInfo.category
         this.currentFaq.created = dayjs(faqInfo.create_at).format('DD.MM.YYYY HH:mm')
+        this.currentFaq.category = await ApiFaq.GetFaqCategoryByUUID(ApiEnter.CurrentSessionUUID as string, faqInfo.category);
     }
 
     public mounted(): void {

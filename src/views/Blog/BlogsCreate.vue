@@ -25,6 +25,7 @@
                                         v-model="PostName"
                                         hide-details
                                         class="col-7 px-0 mt-5"
+                                        @input="GenerateSeoUrl"
                                     ></v-text-field>
                                     <v-col cols="4" class="px-0">
                                         <v-select
@@ -37,18 +38,18 @@
                                     </v-col>
                                     <v-col>
                                         <v-row class="mt-5">
-                                            <v-text-field
+                                            <v-file-input
+                                                show-size
                                                 label="Post image size1"
-                                                v-model="PostImage1"
                                                 hide-details
                                                 class="col-4 px-0"
-                                            ></v-text-field>
-                                            <v-text-field
+                                            ></v-file-input>
+                                            <v-file-input
+                                                show-size
                                                 label="Post image size2"
-                                                v-model="PostImage2"
                                                 hide-details
                                                 class="col-4 px-0 ml-7"
-                                            ></v-text-field>
+                                            ></v-file-input>
                                         </v-row>
                                     </v-col>
                                 </div>
@@ -116,6 +117,7 @@
                                     class="white--text col-1 ml-4"
                                     small
                                     @click="OnClickSubmit()"
+                                    :disabled="PostName === '' || BlogContent === '' ||  BlogCardDesign === ''"
                                     depressed>
                                     Save
                                 </v-btn>
@@ -171,6 +173,10 @@ export default class BlogCreate extends Vue {
     private BlogSeoDescription: string = ''
     private BlogSeoKeywords: string = ''
     private BlogSeoUrl: string = ''
+
+    private GenerateSeoUrl() {
+        this.BlogSeoUrl = this.PostName.replace(/ /ig, '-').toLowerCase()
+    }
 
     private async OnClickSubmit(): Promise<void> {
         if (ApiEnter.CurrentSessionUUID != undefined) {

@@ -32,8 +32,8 @@
                                     </div>
                                     <v-switch
                                         v-model="currentFaq.publish"
-                                        label="Publish"
                                         inset
+                                        label="Publish"
                                         hide-details
                                         class="mt-10"
                                     ></v-switch>
@@ -53,18 +53,19 @@
                                         :items="FaqCategories"
                                         v-model="currentFaq.category"
                                         item-text="name"
+                                        item-value="uuid"
                                         label="Category"
                                         dense
                                         hide-details
                                         class="col-4 px-0 mt-5"
                                     >
                                     </v-select>
-                                    <v-text-field
-                                        label="File link"
-                                        v-model="currentFaq.file"
+                                    <v-file-input
+                                        show-size
+                                        label="File input"
                                         hide-details
-                                        class="col-7 px-0 mt-5"
-                                    ></v-text-field>
+                                        class="col-4 px-0 mt-5"
+                                    ></v-file-input>
                                     <v-text-field
                                         label="Priority (sorting)"
                                         v-model="currentFaq.priority"
@@ -93,6 +94,7 @@
                                     class="white--text ml-2"
                                     small
                                     @click="OnClickSubmit()"
+                                    :disabled="currentFaq.name === '' || currentFaq.description === '' || !currentFaq.category || currentFaq.priority === ''"
                                     depressed>
                                     Save
                                 </v-btn>
@@ -152,7 +154,7 @@ export default class FilesEdit extends Vue {
         description: '',
         publish: true,
         priority: '',
-        file: '',
+        file: '123',
         category: undefined,
         created: ''
     }
