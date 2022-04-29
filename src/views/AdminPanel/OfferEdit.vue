@@ -41,6 +41,7 @@
                                 label="Offer name"
                                 v-model="newOffer.name"
                                 hide-details="auto"
+                                @input="GenerateSeoUrl"
                             ></v-text-field>
                         </div>
                         <div class="col-3">
@@ -458,6 +459,10 @@ export default class Offers extends Vue {
         description: '',
         keywords: '',
         url: ''
+    }
+
+    private GenerateSeoUrl() {
+        this.newOffer.url = this.newOffer.name.replace(/ /ig, '-').toLowerCase()
     }
 
     private async getOffersCategories(): Promise<void> {
