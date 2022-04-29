@@ -59,6 +59,7 @@
                                     <v-file-input
                                         show-size
                                         label="File input"
+                                        v-model="fileUpload"
                                         hide-details
                                         class="col-4 px-0 mt-5"
                                     ></v-file-input>
@@ -94,6 +95,14 @@
                                     depressed>
                                     Save
                                 </v-btn>
+                                <v-btn
+                                    color="orange accent-4"
+                                    class="white--text ml-2"
+                                    small
+                                    @click="OnUploadFile"
+                                    depressed>
+                                    Upload File
+                                </v-btn>
                             </div>
                         </div>
                     </div>
@@ -108,11 +117,11 @@ import { Component, Vue } from "vue-property-decorator";
 import BreadcrumbsItemType from "@/struct/ui/breadcrumbs/BreadcrumbsItemType";
 import sweetalert from "sweetalert";
 import ApiEnter from "@/api/ApiEnter";
-import ApiFaq from "@/api/ApiFaq";
 import StandartTemplate from "@/components/Template/StandartTemplate.vue";
 import PageHeader from "@/components/UI/PageHeader.vue";
 import Editor from '@tinymce/tinymce-vue'
 import ApiSupportFiles from "@/api/ApiSupportFiles";
+import ApiAdmin from "@/api/ApiAdmin";
 
 
 @Component({
@@ -141,6 +150,8 @@ export default class FilesCreate extends Vue {
     ];
 
     private FaqCategories: any = []
+
+    public fileUpload: any = []
 
     private newPost: any = {
         name: '',
@@ -189,6 +200,27 @@ export default class FilesCreate extends Vue {
         }
     }
 
+    private async OnUploadFile(): Promise<void> {
+        if (ApiEnter.CurrentSessionUUID != undefined) {
+
+            const file_uuid = await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID, this.fileUpload);
+            sweetalert({
+                title: "Success!",
+                text: `Post has created!`,
+                icon: "success"
+            }).then(() => {console.log(file_uuid)})
+        }
+    }
+
+    private async GetFiles(): Promise<void> {
+        try {
+            const files = await ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string);
+            console.log(files)
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
     private async GetFaqCategories(): Promise<void> {
         try {
             this.FaqCategories = await ApiSupportFiles.GetFilesCategories(ApiEnter.CurrentSessionUUID as string);
@@ -199,6 +231,7 @@ export default class FilesCreate extends Vue {
 
     public created(): void {
         this.GetFaqCategories()
+        this.GetFiles()
     }
 }
 </script>

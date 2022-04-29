@@ -307,6 +307,40 @@ class ApiAdminPanel {
             return undefined;
         }
     }
+
+    public static async UploadFile(session_uuid: string, file: File): Promise<undefined | string> {
+        const formData = new FormData()
+        formData.append("file", file)
+        try {
+            const result = await axios.post("/api/file/upload", formData, {
+                headers: {
+                    "x-tenant": "null",
+                    'Content-Type': 'multipart/form-data',
+                    "x-session-token": session_uuid
+                }
+            });
+            return result.data.response;
+        } catch (e) {
+            return undefined;
+        }
+    }
+
+    public static async GetFiles(session_uuid: string): Promise<IAdminPanelUserList[] | undefined> {
+        try {
+            const result = await axios.get("/api/file/get-files", {
+                headers: {
+                    "x-tenant": "null",
+                    "x-session-token": session_uuid
+                }
+            });
+            return result.data.data;
+        } catch (e) {
+            throw new Error("Error get users");
+        }
+
+    }
+
+
 }
 
 export default ApiAdminPanel;

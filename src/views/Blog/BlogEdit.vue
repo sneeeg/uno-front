@@ -29,7 +29,6 @@
                                         label="Post name"
                                         v-model="PostName"
                                         hide-details
-                                        @input="GenerateSeoUrl"
                                         class="col-7 px-0 mt-5"
                                     ></v-text-field>
                                     <v-col cols="4" class="px-0">
@@ -185,10 +184,6 @@ export default class BlogEdit extends Vue {
     public mounted() {
         this.CurrentBlogUUID = this.$route.params.blog_uuid;
         this.DoLoadForm();
-    }
-
-    private GenerateSeoUrl() {
-        this.BlogSeoUrl = this.PostName.replace(/ /ig, '-').toLowerCase()
     }
 
     private async DoLoadForm(): Promise<void> {

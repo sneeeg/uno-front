@@ -7,6 +7,7 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@mdi/font": "^6.4.95",
     "@fortawesome/fontawesome-free": "^5.15.4",
     "@popperjs/core": "^2.11.0",
     "@tinymce/tinymce-vue": "^3.2.8",

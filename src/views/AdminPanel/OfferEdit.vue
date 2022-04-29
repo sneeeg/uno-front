@@ -21,17 +21,19 @@
                     <v-divider></v-divider>
                 </div>
 
-                <div class="col-12">
-                    <span>Edit</span>
-                </div>
+                <h6 class="px-6 font-weight-bold text-uppercase">Edit</h6>
 
-                <div class="row">
+                <v-row class="mt-10">
                     <div class="col-12 bg-white pb-15">
-                        <p class="col-12">Main information</p>
+                        <v-col>
+                            <h5 class="font-weight-medium">Main information</h5>
+                        </v-col>
                         <div class="col-12">
                             <v-switch
                                 v-model="newOffer.publish"
                                 label="Publish"
+                                hide-details
+                                inset
                             ></v-switch>
                         </div>
                         <div class="col-6">
@@ -201,11 +203,11 @@
                             <div class="col-4">
                                 <h6>Photo for list of offers</h6>
                                 <span>The photo must be in .jpg or .png format. Size 700*350 pixels</span>
-                                <v-text-field
-                                    label="Photo URL"
-                                    v-model="newOffer.photo_list"
-                                    hide-details="auto"
-                                ></v-text-field>
+                                <v-file-input
+                                    show-size
+                                    label="Upload file"
+                                    hide-details
+                                ></v-file-input>
                             </div>
                             <div class="col-4">
                                 <h6>Photo for Slide on desktop screens</h6>
@@ -214,11 +216,11 @@
                                     For Blue or Orange design -  size 800*800 pixels
                                     For Transparent design - size 1400*800 pixels
                                 </span>
-                                <v-text-field
-                                    label="Photo URL"
-                                    v-model="newOffer.photo_slide"
-                                    hide-details="auto"
-                                ></v-text-field>
+                                <v-file-input
+                                    show-size
+                                    label="Upload file"
+                                    hide-details
+                                ></v-file-input>
                             </div>
                             <div class="col-4">
                                 <h6>Photo for Slide on mobile screens</h6>
@@ -227,11 +229,11 @@
                                     For Blue or Orange design -  size 450*300 pixels
                                     For Transparent design - size 450*680 pixels
                                 </span>
-                                <v-text-field
-                                    label="Photo URL"
-                                    v-model="newOffer.photo_slide_m"
-                                    hide-details="auto"
-                                ></v-text-field>
+                                <v-file-input
+                                    show-size
+                                    label="Upload file"
+                                    hide-details
+                                ></v-file-input>
                             </div>
                         </div>
                         <h6 class="col-12">Where display</h6>
@@ -371,7 +373,7 @@
                             hide-details="auto"
                         ></v-text-field>
                     </div>
-                </div>
+                </v-row>
                 <div class="col-12">
                     <div class="col-12 row bg-light">
                         <v-btn
