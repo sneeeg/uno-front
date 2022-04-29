@@ -325,19 +325,21 @@ class ApiAdminPanel {
         }
     }
 
-    public static async GetFiles(session_uuid: string): Promise<IAdminPanelUserList[] | undefined> {
+    public static async GetFiles(session_uuid: string, file_name: string): Promise<any | undefined> {
         try {
-            const result = await axios.get("/api/file/get-files", {
+            const result = await axios.post("/api/file/get-files", {
+                file_name: file_name
+            }, {
                 headers: {
                     "x-tenant": "null",
                     "x-session-token": session_uuid
-                }
+                },
+                responseType: 'blob'
             });
-            return result.data.data;
+            return result.data;
         } catch (e) {
-            throw new Error("Error get users");
+            throw new Error("Error get file");
         }
-
     }
 
 

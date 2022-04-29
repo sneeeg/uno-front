@@ -59,7 +59,7 @@
                                     <v-file-input
                                         show-size
                                         label="File input"
-                                        v-model="fileUpload"
+                                        v-model="newPost.file"
                                         hide-details
                                         class="col-4 px-0 mt-5"
                                     ></v-file-input>
@@ -91,17 +91,9 @@
                                     class="white--text ml-2"
                                     small
                                     @click="OnClickSubmit()"
-                                    :disabled="newPost.name === '' || newPost.description === '' || !newPost.category || newPost.priority === ''"
+                                    :disabled="newPost.name === '' || newPost.description === '' || !newPost.category || newPost.priority === '' || !newPost.file"
                                     depressed>
                                     Save
-                                </v-btn>
-                                <v-btn
-                                    color="orange accent-4"
-                                    class="white--text ml-2"
-                                    small
-                                    @click="OnUploadFile"
-                                    depressed>
-                                    Upload File
                                 </v-btn>
                             </div>
                         </div>
@@ -151,14 +143,12 @@ export default class FilesCreate extends Vue {
 
     private FaqCategories: any = []
 
-    public fileUpload: any = []
-
     private newPost: any = {
         name: '',
         description: '',
         publish: true,
         priority: '',
-        file: 'url',
+        file: null,
         category: undefined
     }
 
@@ -166,58 +156,41 @@ export default class FilesCreate extends Vue {
         if (ApiEnter.CurrentSessionUUID != undefined) {
             this.$forceUpdate();
 
-            const blog_uuid = await ApiSupportFiles.CreateFile(
-                ApiEnter.CurrentSessionUUID,
-                this.newPost.name,
-                this.newPost.description,
-                this.newPost.category,
-                this.newPost.file,
-                this.newPost.priority,
-                this.newPost.publish? 1: 0);
-            if (blog_uuid == undefined || blog_uuid.length != 36) {
+            const file_name = await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID, this.newPost.file)
+
+            if (file_name) {
+                const support_file_uuid = await ApiSupportFiles.CreateFile(
+                    ApiEnter.CurrentSessionUUID,
+                    this.newPost.name,
+                    this.newPost.description,
+                    this.newPost.category,
+                    file_name,
+                    this.newPost.priority,
+                    this.newPost.publish? 1: 0);
+                if (support_file_uuid == undefined || support_file_uuid.length != 36) {
+                    await sweetalert({
+                        title: "Request error!",
+                        text: "Creation error File: " + support_file_uuid,
+                        icon: "info"
+                    });
+                    return;
+                }
+
                 sweetalert({
-                    title: "Request error!",
-                    text: "Creation error File: " + blog_uuid,
-                    icon: "info"
-                });
-                return;
+                    title: "Success!",
+                    text: `Post has created!`,
+                    icon: "success"
+                }).then(() => {
+                    this.$forceUpdate()
+                    this.newPost.name = ''
+                    this.newPost.description = ''
+                    this.newPost.priority = ''
+                    this.newPost.file = ''
+                    this.newPost.publish = true
+                    this.newPost.category = ''
+                    this.$router.push(`/cms/files`);
+                })
             }
-
-            sweetalert({
-                title: "Success!",
-                text: `Post has created!`,
-                icon: "success"
-            }).then(() => {
-                this.$forceUpdate()
-                this.newPost.name = ''
-                this.newPost.description = ''
-                this.newPost.priority = ''
-                this.newPost.file = ''
-                this.newPost.publish = true
-                this.newPost.category = ''
-                this.$router.push(`/cms/files`);
-            })
-        }
-    }
-
-    private async OnUploadFile(): Promise<void> {
-        if (ApiEnter.CurrentSessionUUID != undefined) {
-
-            const file_uuid = await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID, this.fileUpload);
-            sweetalert({
-                title: "Success!",
-                text: `Post has created!`,
-                icon: "success"
-            }).then(() => {console.log(file_uuid)})
-        }
-    }
-
-    private async GetFiles(): Promise<void> {
-        try {
-            const files = await ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string);
-            console.log(files)
-        } catch (e) {
-            console.error(e);
         }
     }
 
@@ -231,7 +204,6 @@ export default class FilesCreate extends Vue {
 
     public created(): void {
         this.GetFaqCategories()
-        this.GetFiles()
     }
 }
 </script>

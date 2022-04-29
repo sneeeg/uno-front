@@ -28,10 +28,10 @@
                                     <h5 class="font-weight-medium">Main information</h5>
                                     <div class="d-flex mt-6">
                                         <span class="font-weight-medium">Created</span>
-                                        <p class="ml-10 mb-0">{{ currentFaq.created }}</p>
+                                        <p class="ml-10 mb-0">{{ currentFile.created }}</p>
                                     </div>
                                     <v-switch
-                                        v-model="currentFaq.publish"
+                                        v-model="currentFile.publish"
                                         inset
                                         label="Publish"
                                         hide-details
@@ -39,19 +39,19 @@
                                     ></v-switch>
                                     <v-text-field
                                         label="File name"
-                                        v-model="currentFaq.name"
+                                        v-model="currentFile.name"
                                         hide-details
                                         class="col-7 px-0 mt-5"
                                     ></v-text-field>
                                     <v-text-field
                                         label="File description"
-                                        v-model="currentFaq.description"
+                                        v-model="currentFile.description"
                                         hide-details
                                         class="col-7 px-0 mt-5"
                                     ></v-text-field>
                                     <v-select
                                         :items="FaqCategories"
-                                        v-model="currentFaq.category"
+                                        v-model="currentFile.category"
                                         item-text="name"
                                         item-value="uuid"
                                         label="Category"
@@ -60,15 +60,27 @@
                                         class="col-4 px-0 mt-5"
                                     >
                                     </v-select>
-                                    <v-file-input
-                                        show-size
-                                        label="File input"
-                                        hide-details
-                                        class="col-4 px-0 mt-5"
-                                    ></v-file-input>
+                                    <v-row class="mt-5 d-flex align-center">
+                                        <v-col cols="4">
+                                            <v-file-input
+                                                show-size
+                                                label="File input"
+                                                v-model="currentFile.file"
+                                                hide-details
+                                            ></v-file-input>
+                                        </v-col>
+                                        <v-col>
+                                            <button
+                                                @click="DownloadFile(currentFile.file_name)"
+                                                class="mt-3 pa-2"
+                                            >
+                                                Скачать файл
+                                            </button>
+                                        </v-col>
+                                    </v-row>
                                     <v-text-field
                                         label="Priority (sorting)"
-                                        v-model="currentFaq.priority"
+                                        v-model="currentFile.priority"
                                         type="number"
                                         hide-details
                                         class="col-4 px-0 mt-5"
@@ -94,7 +106,7 @@
                                     class="white--text ml-2"
                                     small
                                     @click="OnClickSubmit()"
-                                    :disabled="currentFaq.name === '' || currentFaq.description === '' || !currentFaq.category || currentFaq.priority === ''"
+                                    :disabled="currentFile.name === '' || currentFile.description === '' || !currentFile.category || currentFile.priority === '' || !currentFile.file"
                                     depressed>
                                     Save
                                 </v-btn>
@@ -118,6 +130,7 @@ import PageHeader from "@/components/UI/PageHeader.vue";
 import Editor from '@tinymce/tinymce-vue'
 import ApiSupportFiles from "@/api/ApiSupportFiles";
 import dayjs from "dayjs";
+import ApiAdmin from "@/api/ApiAdmin";
 
 
 @Component({
@@ -145,16 +158,17 @@ export default class FilesEdit extends Vue {
         }
     ];
 
-    private CurrentFaqUUID!: string
+    private currentFileUUID!: string
 
     private FaqCategories: any = []
 
-    private currentFaq: any = {
+    private currentFile: any = {
         name: '',
         description: '',
         publish: true,
         priority: '',
-        file: '123',
+        file: null,
+        file_name: null,
         category: undefined,
         created: ''
     }
@@ -163,37 +177,41 @@ export default class FilesEdit extends Vue {
         if (ApiEnter.CurrentSessionUUID != undefined) {
             this.$forceUpdate();
 
-            const response = await ApiSupportFiles.UpdateFileInfo(
-                this.currentFaq.name,
-                this.currentFaq.description,
-                this.currentFaq.category,
-                this.currentFaq.file,
-                this.currentFaq.priority,
-                this.currentFaq.publish? 1: 0,
-                ApiEnter.CurrentSessionUUID,
-                this.CurrentFaqUUID);
-            if (typeof response == "boolean") {
-                sweetalert({
-                    title: "Success!",
-                    text: `File has updated!`,
-                    icon: "success"
-                }).then(() => {
-                    this.$forceUpdate()
-                    this.currentFaq.name = ''
-                    this.currentFaq.description = ''
-                    this.currentFaq.priority = ''
-                    this.currentFaq.file = ''
-                    this.currentFaq.publish = true
-                    this.currentFaq.category = ''
-                    this.currentFaq.created = ''
-                    this.$router.push(`/cms/files`);
-                })
-            } else {
-                await sweetalert({
-                    title: "Request error!",
-                    text: "Ошибка",
-                    icon: "info"
-                });
+            const file_name = await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID, this.currentFile.file)
+
+            if (file_name) {
+                const response = await ApiSupportFiles.UpdateFileInfo(
+                    this.currentFile.name,
+                    this.currentFile.description,
+                    this.currentFile.category,
+                    file_name,
+                    this.currentFile.priority,
+                    this.currentFile.publish? 1: 0,
+                    ApiEnter.CurrentSessionUUID,
+                    this.currentFileUUID);
+                if (typeof response == "boolean") {
+                    sweetalert({
+                        title: "Success!",
+                        text: `File has updated!`,
+                        icon: "success"
+                    }).then(() => {
+                        this.$forceUpdate()
+                        this.currentFile.name = ''
+                        this.currentFile.description = ''
+                        this.currentFile.priority = ''
+                        this.currentFile.file = ''
+                        this.currentFile.publish = true
+                        this.currentFile.category = ''
+                        this.currentFile.created = ''
+                        this.$router.push(`/cms/files`);
+                    })
+                } else {
+                    await sweetalert({
+                        title: "Request error!",
+                        text: "Error",
+                        icon: "info"
+                    });
+                }
             }
         }
     }
@@ -207,7 +225,7 @@ export default class FilesEdit extends Vue {
     }
 
     private async GetFaqInfo(): Promise<void> {
-        const faqInfo: any | null = await ApiSupportFiles.GetFileByUUID(ApiEnter.CurrentSessionUUID as string, this.CurrentFaqUUID);
+        const faqInfo: any | null = await ApiSupportFiles.GetFileByUUID(ApiEnter.CurrentSessionUUID as string, this.currentFileUUID);
         if (faqInfo == undefined) {
             sweetalert({
                 title: "Упс!",
@@ -218,17 +236,35 @@ export default class FilesEdit extends Vue {
             });
             return;
         }
-        this.currentFaq.name = faqInfo.name
-        this.currentFaq.description = faqInfo.description
-        this.currentFaq.publish = faqInfo.publish
-        this.currentFaq.priority = faqInfo.priority
-        this.currentFaq.category = faqInfo.category
-        this.currentFaq.file = faqInfo.file
-        this.currentFaq.created = dayjs(faqInfo.create_at).format('DD.MM.YYYY HH:mm')
+        this.currentFile.name = faqInfo.name
+        this.currentFile.description = faqInfo.description
+        this.currentFile.publish = faqInfo.publish
+        this.currentFile.priority = faqInfo.priority
+        this.currentFile.category = faqInfo.category
+        this.currentFile.file_name = faqInfo.file
+        this.currentFile.created = dayjs(faqInfo.create_at).format('DD.MM.YYYY HH:mm')
+        await this.GetFile(faqInfo.file)
+    }
+
+    private async GetFile(file_name: string): Promise<void> {
+        await ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, file_name)
+            .then((response) => {
+            this.currentFile.file = new File([new Blob([response.data])], file_name.split('/')[8])
+        })
+    }
+
+    private async DownloadFile(): Promise<void> {
+        await ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, this.currentFile.file_name).then((response) => {
+            let a = document.createElement("a")
+            let file = new Blob([response])
+            a.href = URL.createObjectURL(file);
+            a.download = this.currentFile.file_name.split('/')[8];
+            a.click();
+        })
     }
 
     public mounted(): void {
-        this.CurrentFaqUUID = this.$route.params.file_uuid;
+        this.currentFileUUID = this.$route.params.file_uuid;
         this.GetFaqCategories()
         this.GetFaqInfo()
     }
