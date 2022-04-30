@@ -15,10 +15,11 @@ class ApiBlog {
             throw new Error("Error get blog");
         }
     }
-    public static async CreateBlog(session_uuid: string, title: string | boolean, publish: number, image1: string, image2: string, card_design: string, content: string | boolean, seo_description: string, seo_keywords: string, seo_url: string): Promise<string | undefined> {
+    public static async CreateBlog(session_uuid: string, title: string | boolean, date: string, publish: number, image1: string, image2: string, card_design: string, content: string | boolean, seo_description: string, seo_keywords: string, seo_url: string): Promise<string | undefined> {
         try {
             const result: AxiosResponse<{ response: string }> = await axios.post("/api/admin/create-blog", {
                 title: title,
+                date: date,
                 publish: publish,
                 image1: image1,
                 image2: image2,
@@ -72,10 +73,11 @@ class ApiBlog {
             return undefined;
         }
     }
-    public static async UpdateBlogInfo(title: string | boolean, publish: number, image1: string, image2: string, card_design: string, content: string | boolean, seo_description: string, seo_keywords: string, seo_url: string, session_uuid: string, uuid: string): Promise<boolean | undefined> {
+    public static async UpdateBlogInfo(title: string | boolean, date: string, publish: number, image1: string, image2: string, card_design: string, content: string | boolean, seo_description: string, seo_keywords: string, seo_url: string, session_uuid: string, uuid: string): Promise<boolean | undefined> {
         try {
             const result = await axios.post("/api/admin/change-blog-info", {
                 title: title,
+                date: date,
                 publish: publish,
                 image1: image1,
                 image2: image2,

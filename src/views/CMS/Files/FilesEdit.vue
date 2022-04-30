@@ -71,10 +71,10 @@
                                         </v-col>
                                         <v-col>
                                             <button
-                                                @click="DownloadFile(currentFile.file_name)"
+                                                @click="DownloadFile"
                                                 class="mt-3 pa-2"
                                             >
-                                                Скачать файл
+                                                Download file
                                             </button>
                                         </v-col>
                                     </v-row>

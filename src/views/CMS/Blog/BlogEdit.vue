@@ -13,11 +13,40 @@
                         <div class="well-wrapper">
                             <div class="row">
                                 <div class="col-12">
-                                    <h5 class="font-weight-medium">Main information</h5>
+                                    <v-col>
+                                        <h5 class="font-weight-medium">Main information</h5>
+                                    </v-col>
                                     <div class="d-flex mt-6">
                                         <span class="font-weight-medium">Created</span>
                                         <p class="ml-10 mb-0">{{ PostCreated }}</p>
                                     </div>
+                                    <v-col cols="3">
+                                        <v-menu
+                                            v-model="isOpenDate"
+                                            :close-on-content-click="false"
+                                            :nudge-right="40"
+                                            transition="scale-transition"
+                                            offset-y
+                                            min-width="auto"
+                                        >
+                                            <template v-slot:activator="{ on, attrs }">
+                                                <v-text-field
+                                                    v-model="computedDateFormatted"
+                                                    label="Date"
+                                                    prepend-icon="mdi-calendar"
+                                                    hide-details
+                                                    readonly
+                                                    v-bind="attrs"
+                                                    v-on="on"
+                                                ></v-text-field>
+                                            </template>
+                                            <v-date-picker
+                                                v-model="PostDate"
+                                                locale="en"
+                                                @input="isOpenDate = false"
+                                            ></v-date-picker>
+                                        </v-menu>
+                                    </v-col>
                                     <v-switch
                                         v-model="PostPublish"
                                         label="Publish"
@@ -42,18 +71,42 @@
                                     </v-col>
                                     <v-col>
                                         <v-row class="mt-5">
-                                            <v-text-field
-                                                label="Post image size1"
-                                                v-model="PostImage1"
-                                                hide-details
-                                                class="col-4 px-0"
-                                            ></v-text-field>
-                                            <v-text-field
-                                                label="Post image size2"
-                                                v-model="PostImage2"
-                                                hide-details
-                                                class="col-4 px-0 ml-7"
-                                            ></v-text-field>
+                                            <v-col cols="4">
+                                                <h6 class="mb-1">Post image size1</h6>
+                                                <span>The photo must be in .jpg or .png format. Size 1365*505 pixels</span>
+                                                <v-file-input
+                                                    v-model="PostImage1"
+                                                    show-size
+                                                    accept="image/*"
+                                                    label="Upload file"
+                                                    hide-details
+                                                    class="mt-3"
+                                                ></v-file-input>
+                                                <button
+                                                    @click="DownloadFile1"
+                                                    class="mt-3 pa-2"
+                                                >
+                                                    Download file
+                                                </button>
+                                            </v-col>
+                                            <v-col cols="4" class="ml-15">
+                                                <h6 class="mb-1">Post image size2</h6>
+                                                <span>The photo must be in .jpg or .png format. Size 680*450 pixels</span>
+                                                <v-file-input
+                                                    v-model="PostImage2"
+                                                    show-size
+                                                    accept="image/*"
+                                                    label="Upload file"
+                                                    hide-details
+                                                    class="mt-3"
+                                                ></v-file-input>
+                                                <button
+                                                    @click="DownloadFile2"
+                                                    class="mt-3 pa-2"
+                                                >
+                                                    Download file
+                                                </button>
+                                            </v-col>
                                         </v-row>
                                     </v-col>
                                 </div>
@@ -121,7 +174,7 @@
                                     class="white--text col-1 ml-4"
                                     small
                                     @click="OnClickSubmit()"
-                                    :disabled="PostName === '' || BlogContent === '' ||  BlogCardDesign === ''"
+                                    :disabled="PostName === '' || BlogContent === '' ||  BlogCardDesign === '' || !PostImage1 || !PostImage2"
                                     depressed>
                                     Save
                                 </v-btn>
@@ -144,6 +197,7 @@ import StandartTemplate from "@/components/Template/StandartTemplate.vue";
 import PageHeader from "@/components/UI/PageHeader.vue";
 import Editor from '@tinymce/tinymce-vue'
 import dayjs from "dayjs";
+import ApiAdmin from "@/api/ApiAdmin";
 
 
 @Component({
@@ -169,22 +223,22 @@ export default class BlogEdit extends Vue {
     ];
     private CardDesignData: string[] = ['Blue', 'Orange', 'White', 'With image']
 
+    private isOpenDate: boolean = false
+
     private CurrentBlogUUID!: string;
     private PostPublish: boolean = true
     private PostName: string= ''
-    private PostImage1: string= ''
-    private PostImage2: string= ''
+    private PostDate: Date = null
+    private PostImage1: File = null
+    private PostImageName1: string = ''
+    private PostImage2: File = null
+    private PostImageName2: string = ''
     private BlogCardDesign: string = ''
     private BlogContent: string = ''
     private BlogSeoDescription: string = ''
     private BlogSeoKeywords: string = ''
     private BlogSeoUrl: string = ''
     private PostCreated: string= ''
-
-    public mounted() {
-        this.CurrentBlogUUID = this.$route.params.blog_uuid;
-        this.DoLoadForm();
-    }
 
     private async DoLoadForm(): Promise<void> {
 
@@ -201,8 +255,10 @@ export default class BlogEdit extends Vue {
         }
 
         this.PostName = blogInfo.title
-        this.PostImage1 = blogInfo.image1
-        this.PostImage2 = blogInfo.image2
+        this.PostDate = blogInfo.date
+        await this.GetFiles(blogInfo.image1, blogInfo.image2)
+        this.PostImageName1 = blogInfo.image1
+        this.PostImageName2 = blogInfo.image2
         this.BlogCardDesign = blogInfo.card_design
         this.PostPublish = blogInfo.publish
         this.BlogContent = blogInfo.content
@@ -214,32 +270,88 @@ export default class BlogEdit extends Vue {
         this.$forceUpdate();
     }
 
+    private async GetFiles(file_name1: string, file_name2: string): Promise<void> {
+        await ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, file_name1)
+            .then((response) => {
+                this.PostImage1 = new File([new Blob([response.data])], file_name1.split('/')[8])
+            })
+        await ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, file_name2)
+            .then((response) => {
+                this.PostImage2 = new File([new Blob([response.data])], file_name2.split('/')[8])
+            })
+    }
+
+    private async DownloadFile1(): Promise<void> {
+        await ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, this.PostImageName1).then((response) => {
+            let a = document.createElement("a")
+            let file = new Blob([response])
+            a.href = URL.createObjectURL(file);
+            a.download = this.PostImageName1.split('/')[8];
+            a.click();
+        })
+    }
+    private async DownloadFile2(): Promise<void> {
+        await ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, this.PostImageName2).then((response) => {
+            let a = document.createElement("a")
+            let file = new Blob([response])
+            a.href = URL.createObjectURL(file);
+            a.download = this.PostImageName2.split('/')[8];
+            a.click();
+        })
+    }
+
     private async OnClickSubmit(): Promise<void> {
-        try {
-            const response = await ApiBlog.UpdateBlogInfo(this.PostName, this.PostPublish? 1: 0, this.PostImage1, this.PostImage2, this.BlogCardDesign, this.BlogContent, this.BlogSeoDescription, this.BlogSeoKeywords, this.BlogSeoUrl, ApiEnter.CurrentSessionUUID as string, this.CurrentBlogUUID);
-            if (typeof response == "boolean") {
+        const file_name1 = await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID, this.PostImage1)
+        const file_name2 = await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID, this.PostImage2)
+
+        if (file_name1 || file_name2) {
+            try {
+                const response = await ApiBlog.UpdateBlogInfo(
+                    this.PostName,
+                    dayjs(this.PostDate).format('YYYY-MM-DD'),
+                    this.PostPublish? 1: 0,
+                    file_name1,
+                    file_name2,
+                    this.BlogCardDesign,
+                    this.BlogContent,
+                    this.BlogSeoDescription,
+                    this.BlogSeoKeywords,
+                    this.BlogSeoUrl,
+                    ApiEnter.CurrentSessionUUID as string,
+                    this.CurrentBlogUUID);
+                if (typeof response == "boolean") {
+                    sweetalert({
+                        title: "Success!",
+                        text: "Post has updated",
+                        icon: "success"
+                    }).then(() => {
+                        this.$router.go(-1);
+                    });
+                } else {
+                    sweetalert({
+                        title: "Error!",
+                        text: `Request error: ${response}`,
+                        icon: "error"
+                    });
+                }
+            } catch (e) {
+                console.error(e);
                 sweetalert({
-                    title: "Успешно!",
-                    text: "Blog успешно поменян",
-                    icon: "success"
-                }).then(() => {
-                    this.$router.go(-1);
-                });
-            } else {
-                sweetalert({
-                    title: "Ошибка!",
-                    text: `Во время выполнения запроса, возникла ошибка: ${response}`,
+                    title: "Error!",
+                    text: "Request error!",
                     icon: "error"
                 });
             }
-        } catch (e) {
-            console.error(e);
-            sweetalert({
-                title: "Ошибка!",
-                text: "Во время выполнения запроса, возникла ошибка!",
-                icon: "error"
-            });
         }
+    }
+
+    get computedDateFormatted() {
+        return dayjs(this.PostDate).format('DD.MM.YYYY')
+    }
+
+    public mounted() {
+        this.CurrentBlogUUID = this.$route.params.blog_uuid;
+        this.DoLoadForm();
     }
 }
 </script>
