@@ -31,7 +31,7 @@ class ApiFaq {
     }
     public static async CreateFaqQuestion(session_uuid: string, answer: string, question: string, priority: string, publish: number, category: string): Promise<string | undefined> {
         try {
-            const result: AxiosResponse<{ response: string }> = await axios.post("/api/admin/faq-create", {
+            const result: AxiosResponse<{ response: string }> = await axios.post("/api/admin/create-faq", {
                 answer: answer,
                 question: question,
                 priority: priority,
@@ -54,7 +54,7 @@ class ApiFaq {
     }
     public static async DeleteFaqQuestion(session_uuid: string, uuid: string): Promise<boolean | undefined> {
         try {
-            const result = await axios.post("/api/admin/faq-delete", {
+            const result = await axios.post("/api/admin/delete-faq", {
                 uuid: uuid
             }, {
                 headers: {
@@ -135,7 +135,7 @@ class ApiFaq {
     }
     public static async CreateFaqCategory(session_uuid: string, name: string, priority: string, publish: number): Promise<string | undefined> {
         try {
-            const result: AxiosResponse<{ response: string }> = await axios.post("/api/admin/faq-create-category", {
+            const result: AxiosResponse<{ response: string }> = await axios.post("/api/admin/create-faq-category", {
                 name: name,
                 priority: priority,
                 publish: publish
@@ -156,7 +156,7 @@ class ApiFaq {
     }
     public static async DeleteFaqCategory(session_uuid: string, uuid: string): Promise<boolean | undefined> {
         try {
-            const result = await axios.post("/api/admin/faq-category-delete", {
+            const result = await axios.post("/api/admin/delete-faq-category", {
                 uuid: uuid
             }, {
                 headers: {
