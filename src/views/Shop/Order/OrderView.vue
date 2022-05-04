@@ -26,6 +26,24 @@
                                                 <p>09.12.2021 15:30</p>
                                             </v-col>
                                         </v-row>
+                                        <v-row class="d-flex align-center">
+                                            <v-col cols="4">
+                                                <p class="font-weight-medium">Order status</p>
+                                            </v-col>
+                                            <v-col cols="4">
+                                                <v-select
+                                                    :items="['New', 'In process', 'In delivery', 'Cancelled', 'Activated']"
+                                                    height="20"
+                                                    v-model="OrderStatus"
+                                                    hide-details
+                                                    label="Order status"
+                                                >
+                                                    <template v-slot:selection="{ item }">
+                                                        <p class="text-body-2">{{ item }}</p>
+                                                    </template>
+                                                </v-select>
+                                            </v-col>
+                                        </v-row>
                                         <v-row>
                                             <v-col cols="4">
                                                 <p class="font-weight-medium">Order amount</p>
@@ -52,7 +70,7 @@
                                         </v-row>
                                         <v-row class="d-flex align-center">
                                             <v-col cols="4">
-                                                <p class="font-weight-medium">Payment status</p>
+                                                <p class="font-weight-medium">Delivery tracking</p>
                                             </v-col>
                                             <v-col>
                                                 <a href="#" target="_blank" class="link-button indigo--text text--darken-3">
@@ -72,7 +90,64 @@
                                         <h6>Products</h6>
                                     </v-expansion-panel-header>
                                     <v-expansion-panel-content class="pt-5">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                        <v-row>
+                                            <v-col>
+                                                <p class="font-weight-bold">SIM #1</p>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row>
+                                            <v-col cols="12" class="pb-0">
+                                                <v-data-table
+                                                    :headers="headersTableSim1"
+                                                    :items="dataTableSim1"
+                                                    :items-per-page="5"
+                                                    hide-default-footer
+                                                ></v-data-table>
+                                                <v-divider class="my-2"></v-divider>
+                                                <v-col class="d-flex justify-content-between pt-0">
+                                                    <p class="font-weight-medium">Total for SIM #1</p>
+                                                    <p class="font-weight-medium">127,99€</p>
+                                                </v-col>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row><v-divider class="my-8"></v-divider></v-row>
+                                        <v-row>
+                                            <v-col>
+                                                <p class="font-weight-bold">SIM #2</p>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row>
+                                            <v-col cols="12" class="pb-0">
+                                                <v-data-table
+                                                    :headers="headersTableSim1"
+                                                    :items="dataTableSim1"
+                                                    :items-per-page="5"
+                                                    hide-default-footer
+                                                ></v-data-table>
+                                                <v-divider class="my-2"></v-divider>
+                                                <v-col class="d-flex justify-content-between pt-0">
+                                                    <p class="font-weight-medium">Total for SIM #2</p>
+                                                    <p class="font-weight-medium">127,99€</p>
+                                                </v-col>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row><v-divider class="my-8"></v-divider></v-row>
+                                        <v-row>
+                                            <v-col cols="12">
+                                                <p class="font-weight-bold">SIM #3</p>
+                                            </v-col>
+                                            <v-col class="d-flex justify-content-between pt-0">
+                                                <p class="font-weight-medium">Replacement SIM</p>
+                                                <p class="font-weight-medium">10,00€</p>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row><v-divider class="my-4"></v-divider></v-row>
+                                        <v-row>
+                                            <v-col class="d-flex justify-space-between pb-6">
+                                                <p class="font-weight-bold text-uppercase">Total</p>
+                                                <p class="font-weight-bold">180,98€</p>
+                                            </v-col>
+                                        </v-row>
                                     </v-expansion-panel-content>
                                 </v-expansion-panel>
 
@@ -461,6 +536,28 @@
                         </v-col>
                     </v-col>
                 </v-row>
+                <v-row>
+                    <v-col class="px-6">
+                        <v-expansion-panels flat accordion multiple v-model="panelsHistory">
+                            <v-expansion-panel class="mt-8 rounded-3">
+                                <v-expansion-panel-header class="border-bottom">
+                                    <h6>Order history</h6>
+                                </v-expansion-panel-header>
+                                <v-expansion-panel-content class="pt-5">
+                                    <v-row>
+                                        <v-col>
+                                            <v-data-table
+                                                :headers="headersTableOrderHistory"
+                                                :items="dataTableOrderHistory"
+                                                hide-default-footer
+                                            ></v-data-table>
+                                        </v-col>
+                                    </v-row>
+                                </v-expansion-panel-content>
+                            </v-expansion-panel>
+                        </v-expansion-panels>
+                    </v-col>
+                </v-row>
             </div>
         </standart-template>
     </div>
@@ -484,5 +581,93 @@ export default class OrderView extends Vue {
 
     panels1 = [0, 1, 2, 3]
     panels2 = [0, 1, 2, 3, 4, 5, 6]
+    panelsHistory = [0]
+    OrderStatus = 'New'
+
+    dataTableSim1 = [
+        {
+            name: 'Smart Reward',
+            type: 'Offer',
+            price: '9,99€',
+        },
+        {
+            name: 'Activation SIM',
+            type: 'Activation',
+            price: '5,00€',
+        },
+        {
+            name: 'Extra 1GB',
+            type: 'Option',
+            price: '3,00€',
+        },
+        {
+            name: 'Extra 5GB',
+            type: 'Option',
+            price: '5,00€',
+        },]
+    headersTableSim1 = [
+        { text: 'Item name', value: 'name', width: '45%' },
+        { text: 'Item type', value: 'type', width: '45%' },
+        { text: 'Price', value: 'price', width: '10%' }
+    ]
+
+    headersTableOrderHistory = [
+        { text: 'Changed parameter', value: 'param'},
+        { text: 'Old value', value: 'old_val'},
+        { text: 'New value', value: 'new_val'},
+        { text: 'Changed by', value: 'changed_by'},
+        { text: 'Change time', value: 'change_time'},
+    ]
+    dataTableOrderHistory = [
+        {
+            param: 'Order created',
+            old_val: '',
+            new_val: '-',
+            changed_by: 'system',
+            change_time: '09.12.2021 15:30:00'
+        },
+        {
+            param: 'Order status',
+            old_val: '',
+            new_val: 'Not finished',
+            changed_by: 'system',
+            change_time: '09.12.2021 15:30:00'
+        },
+        {
+            param: 'Payment status',
+            old_val: '',
+            new_val: 'Not paid',
+            changed_by: 'system',
+            change_time: '09.12.2021 15:30:00'
+        },
+        {
+            param: 'Order status',
+            old_val: 'Not finished',
+            new_val: 'New',
+            changed_by: 'system',
+            change_time: '09.12.2021 15:30:00'
+        },
+        {
+            param: 'Payment status',
+            old_val: 'Not paid',
+            new_val: 'Paid',
+            changed_by: 'system',
+            change_time: '09.12.2021 15:30:00'
+        },
+        {
+            param: 'Order status',
+            old_val: 'New',
+            new_val: 'In process',
+            changed_by: 'Andrey Petrov',
+            change_time: '09.12.2021 15:30:00'
+        },
+        {
+            param: 'Street Name (Delivery address)',
+            old_val: 'Via Tommaso Salvini',
+            new_val: 'Via Salvini',
+            changed_by: 'Andrey Petrov',
+            change_time: '09.12.2021 15:30:00'
+        },
+    ]
 }
 </script>
