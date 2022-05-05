@@ -1,5 +1,6 @@
 <template>
     <div class="page-container">
+        <delivery-tracking :is-open="isOpenDeliveryTracking" @closeModal="isOpenDeliveryTracking = false"/>
         <standart-template>
             <div class="container">
                 <div class="row mt-1">
@@ -79,7 +80,15 @@
                                                         mdi-open-in-new
                                                     </v-icon>
                                                 </a>
-                                                <v-btn text color="indigo darken-3" height="auto" class="text-capitalize text-body-2 ml-7 pa-2">Edit</v-btn>
+                                                <v-btn
+                                                    text
+                                                    color="indigo darken-3"
+                                                    height="auto"
+                                                    class="text-capitalize text-body-2 ml-7 pa-2"
+                                                    @click="isOpenDeliveryTracking = true"
+                                                >
+                                                        Edit
+                                                </v-btn>
                                             </v-col>
                                         </v-row>
                                     </v-expansion-panel-content>
@@ -570,20 +579,27 @@ import StandartTemplate from "@/components/Template/StandartTemplate.vue";
 import LeftMenuTab from "@/components/LeftMenu/LeftMenuTab.vue";
 import PageHeader from "@/components/UI/PageHeader.vue";
 import DataOrder from "@/data/Shop/Order/DataOrder";
+import DeliveryTracking from "@/components/Modals/Order/DeliveryTracking.vue";
 
 
 @Component({
-    components: { PageHeader, StandartTemplate, LeftMenuTab },
+    components: { DeliveryTracking, PageHeader, StandartTemplate, LeftMenuTab },
 })
 
 export default class OrderView extends Vue {
     public Breadcrumbs: BreadcrumbsItemType[] = DataOrder.Breadcrumbs;
+    isOpenDeliveryTracking: boolean = false
 
     panels1 = [0, 1, 2, 3]
     panels2 = [0, 1, 2, 3, 4, 5, 6]
     panelsHistory = [0]
     OrderStatus = 'New'
 
+    headersTableSim1 = [
+        { text: 'Item name', value: 'name', width: '45%' },
+        { text: 'Item type', value: 'type', width: '45%' },
+        { text: 'Price', value: 'price', width: '10%' }
+    ]
     dataTableSim1 = [
         {
             name: 'Smart Reward',
@@ -605,11 +621,6 @@ export default class OrderView extends Vue {
             type: 'Option',
             price: '5,00€',
         },]
-    headersTableSim1 = [
-        { text: 'Item name', value: 'name', width: '45%' },
-        { text: 'Item type', value: 'type', width: '45%' },
-        { text: 'Price', value: 'price', width: '10%' }
-    ]
 
     headersTableOrderHistory = [
         { text: 'Changed parameter', value: 'param'},
