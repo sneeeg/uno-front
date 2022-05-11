@@ -28,7 +28,7 @@
                             class="white--text"
                             small
                             depressed>
-                            Add Questions
+                            Add Question
                         </v-btn>
                     </router-link>
                 </div>

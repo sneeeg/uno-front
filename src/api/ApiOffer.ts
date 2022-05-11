@@ -147,7 +147,7 @@ class ApiOffer {
             return undefined;
         }
     }
-    public static async CreateOfferCategory(session_uuid: string, name: string , publish: number, priority: string): Promise<string | undefined> {
+    public static async CreateOfferCategory(session_uuid: string, name: string , priority: string, publish: number): Promise<string | undefined> {
         try {
             const result: AxiosResponse<{ response: string }> = await axios.post("/api/admin/offer-create-category", {
                 name: name,
@@ -172,6 +172,24 @@ class ApiOffer {
         try {
             const result = await axios.post("/api/admin/change-offer-category-publish", {
                 uuid: uuid,
+                publish: publish
+            }, {
+                headers: {
+                    "x-tenant": "null",
+                    "x-session-token": session_uuid
+                }
+            });
+            return result.data.response;
+        } catch (e) {
+            throw new Error("Error");
+        }
+    }
+    public static async UpdateOfferCategoryInfo(name: string, priority: string, publish: number, session_uuid: string, uuid: string): Promise<boolean | undefined> {
+        try {
+            const result = await axios.post("/api/admin/change-offer-category-info", {
+                uuid: uuid,
+                name: name,
+                priority: priority,
                 publish: publish
             }, {
                 headers: {

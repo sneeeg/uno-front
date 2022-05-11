@@ -98,16 +98,16 @@ export default class SliderList extends Vue {
                 const response = await ApiSlider.DeleteSlider(ApiEnter.CurrentSessionUUID as string, slider_uuid);
                 if (typeof response == "boolean") {
                     await sweetalert({
-                        title: "Успешно!",
-                        text: "FAQ удален",
+                        title: "Success!",
+                        text: "Slider has deleted",
                         icon: "success"
                     });
 
                     await this.GetSlider()
                 } else {
                     await sweetalert({
-                        title: "Ошибка!",
-                        text: `Во время выполнения запроса, возникла ошибка: ${response}`,
+                        title: "Error!",
+                        text: `Request error: ${response}`,
                         icon: "error"
                     });
                 }
@@ -135,16 +135,16 @@ export default class SliderList extends Vue {
                 });
             } else {
                 await sweetalert({
-                    title: "Ошибка!",
-                    text: `Во время выполнения запроса, возникла ошибка: ${response}`,
+                    title: "Error!",
+                    text: `Request error: ${response}`,
                     icon: "error"
                 });
             }
         } catch (e) {
             console.error(e);
             await sweetalert({
-                title: "Ошибка!",
-                text: "Во время выполнения запроса, возникла ошибка!",
+                title: "Error!",
+                text: "Request error!",
                 icon: "error"
             });
         }

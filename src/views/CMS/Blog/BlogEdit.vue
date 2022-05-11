@@ -59,6 +59,7 @@
                                         v-model="PostName"
                                         hide-details
                                         class="col-7 px-0 mt-5"
+                                        @input="GenerateSeoUrl"
                                     ></v-text-field>
                                     <v-col cols="4" class="px-0">
                                         <v-select
@@ -152,6 +153,7 @@
                                         v-model="BlogSeoUrl"
                                         hide-details
                                         class="col-5 px-0 mt-5"
+                                        @input="ValidateSeoUrl"
                                     ></v-text-field>
                                 </div>
                             </div>
@@ -301,10 +303,10 @@ export default class BlogEdit extends Vue {
     }
 
     private async OnClickSubmit(): Promise<void> {
-        const file_name1 = await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID, this.PostImage1)
-        const file_name2 = await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID, this.PostImage2)
+        const file_name1 = await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID as string, this.PostImage1)
+        const file_name2 = await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID as string, this.PostImage2)
 
-        if (file_name1 || file_name2) {
+        if (file_name1 && file_name2) {
             try {
                 const response = await ApiBlog.UpdateBlogInfo(
                     this.PostName,
@@ -343,6 +345,13 @@ export default class BlogEdit extends Vue {
                 });
             }
         }
+    }
+
+    private GenerateSeoUrl() {
+        this.BlogSeoUrl = this.PostName.replace(/ /ig, '-').toLowerCase()
+    }
+    private ValidateSeoUrl() {
+        this.BlogSeoUrl = this.BlogSeoUrl.replace(/ /ig, '-').toLowerCase()
     }
 
     get computedDateFormatted() {

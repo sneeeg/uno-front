@@ -19,7 +19,7 @@ export default class DataFaq {
         },
         {
             to: "/admin/faq/edit",
-            text: "Qestions",
+            text: "Questions",
             disabled: true
         },
     ];
@@ -35,7 +35,7 @@ export default class DataFaq {
         },
         {
             to: "/faq/questions",
-            text: "Support(FAQ)"
+            text: "Support (FAQ)"
         },
         {
             to: "/admin/faq/edit",

@@ -145,11 +145,13 @@ export default class FilesEdit extends Vue {
             text: 'Home'
         },
         {
-            to: '/admin',
+            to: '/cms/files',
+            exact: true,
             text: 'CMS'
         },
         {
             to: '/cms/files',
+            exact: true,
             text: 'Support (Files)'
         },
         {

@@ -123,11 +123,13 @@ export default class CreateQuestion extends Vue {
             text: 'Home'
         },
         {
-            to: '/faq/question',
+            to: '/faq/questions',
+            exact: true,
             text: 'CMS'
         },
         {
-            to: '/faq/question',
+            to: '/faq/questions',
+            exact: true,
             text: 'Support (FAQ)'
         },
         {

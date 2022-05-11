@@ -128,11 +128,13 @@ export default class FilesCreate extends Vue {
             text: 'Home'
         },
         {
-            to: '/admin',
+            to: '/cms/files',
+            exact: true,
             text: 'CMS'
         },
         {
             to: '/cms/files',
+            exact: true,
             text: 'Support (Files)'
         },
         {

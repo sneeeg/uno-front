@@ -137,6 +137,7 @@
                                         v-model="PostSeoUrl"
                                         hide-details
                                         class="col-5 px-0 mt-5"
+                                        @input="ValidateSeoUrl"
                                     ></v-text-field>
                                 </div>
                             </div>
@@ -212,7 +213,7 @@ export default class BlogCreate extends Vue {
 
     private PostPublish: boolean = true
     private PostName: string= ''
-    private PostDate: Date = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)
+    private PostDate: string = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)
     private PostImage1: File = null
     private PostImage2: File = null
     private PostCardDesign: string = ''
@@ -227,6 +228,10 @@ export default class BlogCreate extends Vue {
 
     private GenerateSeoUrl() {
         this.PostSeoUrl = this.PostName.replace(/ /ig, '-').toLowerCase()
+    }
+
+    private ValidateSeoUrl() {
+        this.PostSeoUrl = this.PostSeoUrl.replace(/ /ig, '-').toLowerCase()
     }
 
     private async OnClickSubmit(): Promise<void> {

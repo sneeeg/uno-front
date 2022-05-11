@@ -14,6 +14,7 @@ export default class DataSupportFiles {
         },
         {
             to: "/cms/files",
+            exact: true,
             text: "Support (Files)"
         },
         {
