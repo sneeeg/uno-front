@@ -28,7 +28,7 @@
                         <template v-slot:item.action="{ item }">
                             <div class="d-flex align-center">
                                 <v-switch hide-details v-model="item.publish" :input-value="item.publish" class="mt-0" @change="ChangeBlogPublish(item)"></v-switch>
-                                <router-link :to="'/admin/blog-edit/' + item.uuid">
+                                <router-link :to="'/admin/blog/edit/' + item.uuid">
                                     <v-btn icon>
                                         <v-icon small color="grey darken-2">
                                             fas fa-pencil-alt
@@ -72,7 +72,11 @@ export default class Blog extends Vue {
     public Breadcrumbs: BreadcrumbsItemType[] = [
         {
             to: '/',
-            text: 'Главная'
+            text: 'Home'
+        },
+        {
+            to: "/admin/blog",
+            text: "CMS"
         },
         {
             to: '/blog',
@@ -104,16 +108,16 @@ export default class Blog extends Vue {
                 });
             } else {
                 await sweetalert({
-                    title: "Ошибка!",
-                    text: `Во время выполнения запроса, возникла ошибка: ${response}`,
+                    title: "Error!",
+                    text: `Request error: ${response}`,
                     icon: "error"
                 });
             }
         } catch (e) {
             console.error(e);
             await sweetalert({
-                title: "Ошибка!",
-                text: "Во время выполнения запроса, возникла ошибка!",
+                title: "Error!",
+                text: "Request error!",
                 icon: "error"
             });
         }
@@ -122,7 +126,7 @@ export default class Blog extends Vue {
     private DeleteBlog(blog_uuid: string): void {
         sweetalert({
             title: "Are you sure?",
-            text: "Вы дейсвительно хотите удалить статью?",
+            text: "You really want to delete the post?",
             icon: "warning",
             buttons: ["No", "Yes"]
         }).then(async isConfirm => {
@@ -131,15 +135,15 @@ export default class Blog extends Vue {
                 if (typeof response == "boolean") {
                     sweetalert({
                         title: "Success!",
-                        text: "Статья удалена",
+                        text: "Post has deleted",
                         icon: "success"
                     });
 
                     this.GetBlogs()
                 } else {
                     sweetalert({
-                        title: "Ошибка!",
-                        text: `Во время выполнения запроса, возникла ошибка: ${response}`,
+                        title: "Error!",
+                        text: `Request error: ${response}`,
                         icon: "error"
                     });
                 }

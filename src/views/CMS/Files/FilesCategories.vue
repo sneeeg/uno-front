@@ -222,11 +222,13 @@ export default class FaqEdit extends Vue {
             text: 'Home'
         },
         {
-            to: '/faq/question',
+            to: '/cms/files',
+            exact: true,
             text: 'CMS'
         },
         {
-            to: '/faq/question',
+            to: '/cms/files',
+            exact: true,
             text: 'Support (Files)'
         },
         {

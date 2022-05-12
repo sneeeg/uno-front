@@ -42,7 +42,7 @@ const routes: Array<RouteConfig> = [
         component: BlogCreate
     },
     {
-        path: "/admin/blog-edit/:blog_uuid",
+        path: "/admin/blog/edit/:blog_uuid",
         name: "BlogEdit",
         component: BlogEdit
     },

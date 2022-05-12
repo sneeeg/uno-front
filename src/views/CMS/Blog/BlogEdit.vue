@@ -59,7 +59,6 @@
                                         v-model="PostName"
                                         hide-details
                                         class="col-7 px-0 mt-5"
-                                        @input="GenerateSeoUrl"
                                     ></v-text-field>
                                     <v-col cols="4" class="px-0">
                                         <v-select
@@ -176,7 +175,7 @@
                                     class="white--text col-1 ml-4"
                                     small
                                     @click="OnClickSubmit()"
-                                    :disabled="PostName === '' || BlogContent === '' ||  BlogCardDesign === '' || !PostImage1 || !PostImage2"
+                                    :disabled="PostName === '' || BlogContent === '' ||  BlogCardDesign === '' || !PostImage1 || !PostImage2 || BlogSeoUrl === ''"
                                     depressed>
                                     Save
                                 </v-btn>
@@ -211,15 +210,20 @@ export default class BlogEdit extends Vue {
     public Breadcrumbs: BreadcrumbsItemType[] = [
         {
             to: '/',
-            text: 'Главная'
+            text: 'Home'
         },
         {
             to: '/admin/blog',
-            text: 'Blog',
-            disabled: false
+            exact: true,
+            text: 'CMS'
         },
         {
-            text: 'Blog Edit',
+            to: '/admin/blog',
+            exact: true,
+            text: 'Blog'
+        },
+        {
+            text: 'Edit',
             disabled: true
         }
     ];
@@ -347,9 +351,6 @@ export default class BlogEdit extends Vue {
         }
     }
 
-    private GenerateSeoUrl() {
-        this.BlogSeoUrl = this.PostName.replace(/ /ig, '-').toLowerCase()
-    }
     private ValidateSeoUrl() {
         this.BlogSeoUrl = this.BlogSeoUrl.replace(/ /ig, '-').toLowerCase()
     }

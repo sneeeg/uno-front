@@ -10,15 +10,15 @@ export default class DataFaq {
             text: "Home",
         },
         {
-            to: "/admin",
+            to: "/faq",
             text: "CMS"
         },
         {
-            to: "/faq/questions",
+            to: "/faq",
             text: "Support(FAQ)"
         },
         {
-            to: "/admin/faq/edit",
+            to: "/faq",
             text: "Questions",
             disabled: true
         },
@@ -30,11 +30,12 @@ export default class DataFaq {
             text: "Home",
         },
         {
-            to: "/admin",
+            to: "/faq",
             text: "CMS"
         },
         {
-            to: "/faq/questions",
+            to: "/faq",
+            exact: true,
             text: "Support (FAQ)"
         },
         {

@@ -9,7 +9,7 @@ export default class DataSupportFiles {
             text: "Home",
         },
         {
-            to: "/admin",
+            to: "/cms/files",
             text: "CMS"
         },
         {

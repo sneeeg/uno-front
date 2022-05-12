@@ -144,7 +144,7 @@
                 <page-header title="Support (FAQ)" back-url="/"/>
 
                 <div class="col-12 mt-5">
-                    <router-link to="/faq/questions">
+                    <router-link to="/faq">
                         <v-btn depressed small color="white">
                             Questions
                         </v-btn>

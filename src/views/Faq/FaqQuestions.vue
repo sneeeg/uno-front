@@ -6,7 +6,7 @@
                 <page-header title="Support (FAQ)" back-url="/"/>
 
                 <div class="col-12 mt-5">
-                    <router-link to="/faq/questions">
+                    <router-link to="/faq">
                         <v-btn depressed small color="light-blue darken-4" class="white--text">
                             Questions
                         </v-btn>
@@ -22,7 +22,7 @@
                 </div>
 
                 <div class="col-12">
-                    <router-link to="/faq/questions/create">
+                    <router-link to="/faq/create">
                         <v-btn
                             color="orange accent-4"
                             class="white--text"
@@ -41,7 +41,7 @@
                         <template v-slot:item.action="{ item }">
                             <div class="d-flex align-center">
                                 <v-switch hide-details v-model="item.publish" :input-value="item.publish" class="mt-0" @change="ChangeFaqPublish(item)"></v-switch>
-                                <router-link :to="'/faq/questions/edit/' + item.uuid">
+                                <router-link :to="'/faq/edit/' + item.uuid">
                                     <v-btn icon>
                                         <v-icon small color="grey darken-2">
                                             fas fa-pencil-alt

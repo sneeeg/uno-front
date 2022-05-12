@@ -40,7 +40,7 @@
                     </div>
                     <div class="name">CMS</div>
                     <div class="menu-items">
-                        <router-link to="/faq/questions" class="menu-item">
+                        <router-link to="/faq" class="menu-item">
                             <i class="fas fa-question"></i> Support (FAQ)
                         </router-link>
                         <router-link to="/cms/files" class="menu-item">

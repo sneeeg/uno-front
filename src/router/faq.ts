@@ -6,17 +6,17 @@ import EditQuestion from "@/views/Faq/EditQuestion.vue";
 
 const routes: Array<RouteConfig> = [
     {
-        path: "/faq/questions",
+        path: "/faq",
         name: "FaqQuestions",
         component: FaqQuestions
     },
     {
-        path: "/faq/questions/create",
+        path: "/faq/create",
         name: "CreateQuestion",
         component: CreateQuestion
     },
     {
-        path: "/faq/questions/edit/:faq_uuid",
+        path: "/faq/edit/:faq_uuid",
         name: "EditQuestion",
         component: EditQuestion
     },

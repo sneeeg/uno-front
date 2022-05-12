@@ -5,7 +5,7 @@
                 <v-breadcrumbs :items="Breadcrumbs" divider="/"/>
                 <page-header title="Support (FAQ)" back-url="/company/list/"/>
                 <div class="col-12 mt-5">
-                    <router-link to="/faq/questions">
+                    <router-link to="/faq">
                         <v-btn depressed small color="light-blue darken-4" class="white--text">
                             Questions
                         </v-btn>
@@ -129,12 +129,12 @@ export default class EditQuestion extends Vue {
             text: 'Home'
         },
         {
-            to: '/faq/questions',
+            to: '/faq',
             exact: true,
             text: 'CMS'
         },
         {
-            to: '/faq/questions',
+            to: '/faq',
             exact: true,
             text: 'Support (FAQ)'
         },
