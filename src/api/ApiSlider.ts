@@ -1,5 +1,4 @@
 import axios, { AxiosResponse } from "axios";
-import IAdminPanelOffersCategoriesList from "@/struct/admin-panel/IAdminPanelOffersCategoriesList";
 
 class ApiSlider {
     public static async GetSlider(session_uuid: string): Promise<any[] | undefined> {
@@ -30,7 +29,7 @@ class ApiSlider {
             return undefined;
         }
     }
-    public static async CreateSlider(session_uuid: string, title: string , subtitle: string, publish: number, display_text: number, image: string, image_m: string, link: string): Promise<string | undefined> {
+    public static async CreateSlider(session_uuid: string, title: string , subtitle: string, publish: number, display_text: number, image: string | undefined, image_m: string | undefined, link: string): Promise<string | undefined> {
         try {
             const result: AxiosResponse<{ response: string }> = await axios.post("/api/admin/create-slider", {
                 title: title ,

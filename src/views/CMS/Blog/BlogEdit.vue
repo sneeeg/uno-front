@@ -315,11 +315,11 @@ export default class BlogEdit extends Vue {
 
     private async OnClickSubmit(): Promise<void> {
         const file_name1 = this.PostImage1?
-            this.PostImage1.name === this.PostImageName1 ? this.PostImageName1
+            this.PostImage1.name === this.PostImageName1.split('/')[8] ? this.PostImageName1
                 : await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID as string, this.PostImage1)
             : ''
         const file_name2 = this.PostImage2?
-            this.PostImage2.name === this.PostImageName2 ? this.PostImageName2
+            this.PostImage2.name === this.PostImageName2.split('/')[8] ? this.PostImageName2
                 : await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID as string, this.PostImage2)
             : ''
 

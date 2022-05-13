@@ -18,12 +18,14 @@
                                         v-model="newPost.publish"
                                         label="Publish"
                                         hide-details
+                                        inset
                                         class="mt-10"
                                     ></v-switch>
                                     <v-switch
                                         v-model="newPost.display_text"
                                         label="Display text on the slide"
                                         hide-details
+                                        inset
                                         class="mt-10"
                                     ></v-switch>
                                     <v-text-field
@@ -36,13 +38,37 @@
                                         label="Slide subtitle"
                                         v-model="newPost.subtitle"
                                         hide-details
-                                        class="col-4 px-0 mt-5"
+                                        class="col-7 px-0 mt-5"
                                     ></v-text-field>
+                                    <v-row class="mt-5">
+                                        <v-col cols="4">
+                                            <h6 class="mb-1">Picture for Slide on desktop screens *</h6>
+                                            <span>The photo must be in .jpg or .png format. Size 1400*800 pixels</span>
+                                            <v-file-input
+                                                v-model="newPost.image"
+                                                show-size
+                                                accept="image/*"
+                                                label="Upload file"
+                                                hide-details
+                                            ></v-file-input>
+                                        </v-col>
+                                        <v-col cols="4" class="ml-15">
+                                            <h6 class="mb-1">Picture for Slide on mobile screens *</h6>
+                                            <span>The photo must be in .jpg or .png format. Size 450*680 pixels</span>
+                                            <v-file-input
+                                                v-model="newPost.image_m"
+                                                show-size
+                                                accept="image/*"
+                                                label="Upload file"
+                                                hide-details
+                                            ></v-file-input>
+                                        </v-col>
+                                    </v-row>
                                     <v-text-field
                                         label="Link for the slide"
                                         v-model="newPost.link"
                                         hide-details
-                                        class="col-4 px-0 mt-5"
+                                        class="col-7 px-0 mt-5"
                                     ></v-text-field>
                                 </div>
                             </div>
@@ -65,7 +91,7 @@
                                     class="white--text ml-2"
                                     small
                                     @click="OnClickSubmit()"
-                                    :disabled="newPost.title === '' || newPost.subtitle === '' || newPost.link === ''"
+                                    :disabled="newPost.title === '' || newPost.subtitle === '' || newPost.link === '' || !newPost.image || !newPost.image_m"
                                     depressed>
                                     Save
                                 </v-btn>
@@ -88,6 +114,7 @@ import StandartTemplate from "@/components/Template/StandartTemplate.vue";
 import PageHeader from "@/components/UI/PageHeader.vue";
 import FormGenerator from "@/components/UI/Form/FormGenerator.vue";
 import Editor from '@tinymce/tinymce-vue'
+import ApiAdmin from "@/api/ApiAdmin";
 
 
 @Component({
@@ -118,21 +145,21 @@ export default class SliderCreate extends Vue {
         subtitle: '',
         publish: true,
         display_text: true,
+        image: null,
+        image_m: null,
         link: ''
     }
 
     private async OnClickSubmit(): Promise<void> {
         if (ApiEnter.CurrentSessionUUID != undefined) {
-            this.$forceUpdate();
-
             const slider_uuid = await ApiSlider.CreateSlider(
                 ApiEnter.CurrentSessionUUID,
                 this.newPost.title,
                 this.newPost.subtitle,
                 this.newPost.publish? 1: 0,
                 this.newPost.display_text? 1: 0,
-                '',
-                '',
+                await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID, this.newPost.image),
+                await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID, this.newPost.image_m),
                 this.newPost.link);
             if (slider_uuid == undefined || slider_uuid.length != 36) {
                 await sweetalert({

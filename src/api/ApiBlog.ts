@@ -73,7 +73,7 @@ class ApiBlog {
             return undefined;
         }
     }
-    public static async UpdateBlogInfo(title: string | boolean, date: string, publish: number, image1: string, image2: string, card_design: string, content: string | boolean, seo_description: string, seo_keywords: string, seo_url: string, session_uuid: string, uuid: string): Promise<boolean | undefined> {
+    public static async UpdateBlogInfo(title: string | boolean, date: string, publish: number, image1: string | undefined, image2: string | undefined, card_design: string, content: string | boolean, seo_description: string, seo_keywords: string, seo_url: string, session_uuid: string, uuid: string): Promise<boolean | undefined> {
         try {
             const result = await axios.post("/api/admin/change-blog-info", {
                 title: title,
