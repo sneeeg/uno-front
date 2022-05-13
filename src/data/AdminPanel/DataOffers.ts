@@ -10,7 +10,12 @@ export default class DataOffers {
             text: "Home",
         },
         {
-            to: "/admin/catalog/offers",
+            to: "/shop/offers",
+            exact: true,
+            text: "Shop",
+        },
+        {
+            to: "/shop/offers",
             text: "Offers",
             disabled: true
         },
@@ -22,12 +27,40 @@ export default class DataOffers {
             text: "Home",
         },
         {
-            to: "/admin/catalog/offers",
+            to: "/shop/offers",
+            exact: true,
+            text: "Shop",
+        },
+        {
+            to: "/shop/offers",
+            exact: true,
             text: "Offers"
         },
         {
             to: "/admin/catalog/offers/create",
             text: "Offer create",
+            disabled: true
+        },
+    ];
+
+    public static OfferEditBreadcrumbs: BreadcrumbsItemType[] = [
+        {
+            to: "/",
+            text: "Home",
+        },
+        {
+            to: "/shop/offers",
+            exact: true,
+            text: "Shop",
+        },
+        {
+            to: "/shop/offers",
+            exact: true,
+            text: "Offers"
+        },
+        {
+            to: "/admin/catalog/offers/create",
+            text: "Offer edit",
             disabled: true
         },
     ];

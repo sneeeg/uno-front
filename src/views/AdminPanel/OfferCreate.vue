@@ -41,6 +41,7 @@
                                 label="Offer name"
                                 v-model="newOffer.name"
                                 hide-details="auto"
+                                @input="GenerateSeoUrl"
                             ></v-text-field>
                         </div>
                         <div class="col-3">
@@ -139,6 +140,7 @@
                                 v-model="newOffer.rates_abroad"
                                 label="Special rates abroad"
                                 color="indigo darken-3"
+                                value="Special rates abroad"
                                 class="m-0"
                                 hide-details
                             ></v-checkbox>
@@ -148,6 +150,7 @@
                                 v-model="newOffer.free"
                                 label="FREE activation"
                                 color="indigo darken-3"
+                                value="FREE activation"
                                 class="m-0"
                                 hide-details
                             ></v-checkbox>
@@ -409,16 +412,14 @@ import Editor from '@tinymce/tinymce-vue'
 import ApiOffer from "@/api/ApiOffer";
 import ApiBlog from "@/api/ApiBlog";
 import sweetalert from "sweetalert";
-import dayjs from "dayjs";
 
 @Component({
     components: { StandartTemplate, PageHeader, Editor }
 })
-export default class OfferEdit extends Vue {
-    private Breadcrumbs: BreadcrumbsItemType[] = DataOffers.OfferEditBreadcrumbs;
+export default class OfferCreate extends Vue {
+    private Breadcrumbs: BreadcrumbsItemType[] = DataOffers.OfferCreateBreadcrumbs;
     private NewCategoryCardDesign: string[] = ['Blue', 'Orange', 'Transparent']
 
-    private CurrentOfferUUID!: string
     private OfferCategory: any = []
     private OffersCategories: IAdminPanelOffersCategoriesList[] | undefined = []
 
@@ -426,7 +427,7 @@ export default class OfferEdit extends Vue {
         name: '',
         priority: '',
         publish: true,
-        category: '',
+        category: '123123132321',
         price: '',
         data: '',
         sms: '',
@@ -447,7 +448,7 @@ export default class OfferEdit extends Vue {
         display_offers: true,
         display_home: true,
         display_slider: true,
-        active: '',
+        active: 'active',
         prospects_info: '',
         contract: '',
         activation_price: '',
@@ -460,36 +461,12 @@ export default class OfferEdit extends Vue {
         url: ''
     }
 
-    private async GetOfferInfo(): Promise<void> {
+    private GenerateSeoUrl() {
+        this.newOffer.url = this.newOffer.name.replace(/ /ig, '-').toLowerCase()
+    }
 
-        const offerInfo: any = await ApiOffer.GetOfferByUUID(ApiEnter.CurrentSessionUUID as string, this.CurrentOfferUUID);
-        if (offerInfo == undefined) {
-            sweetalert({
-                title: "Oop!",
-                text: "Request error, not all data was loaded!",
-                icon: "error"
-            }).then(() => {
-                this.$router.go(-1);
-            });
-            return;
-        }
-
-        this.newOffer.name = offerInfo.name
-        this.newOffer.priority = offerInfo.priority
-        this.newOffer.publish = offerInfo.publish
-
-        this.newOffer.price = offerInfo.price
-        this.newOffer.data = offerInfo.data
-        this.newOffer.sms = offerInfo.sms
-        this.newOffer.min = offerInfo.min
-        this.newOffer.additional_data = offerInfo.additional_data
-        this.newOffer.int_min = offerInfo.int_min
-        this.newOffer.countries = offerInfo.countries
-        this.newOffer.rates_abroad = !!offerInfo.rates_abroad
-        this.newOffer.free = offerInfo.free
-        this.newOffer.activation_info = offerInfo.activation_info
-
-        this.newOffer.design = offerInfo.design
+    private ValidateSeoUrl() {
+        this.newOffer.url = this.newOffer.url.replace(/ /ig, '-').toLowerCase()
     }
 
     private async getOffersCategories(): Promise<void> {
@@ -556,19 +533,13 @@ export default class OfferEdit extends Vue {
                 icon: "success"
             }).then(() => {
                 this.$forceUpdate()
-                this.$router.push(`/admin/catalog/offers`);
+                this.$router.push(`/shop/offers`);
             })
         }
     }
 
-    private ValidateSeoUrl() {
-        this.newOffer.url = this.newOffer.url.replace(/ /ig, '-').toLowerCase()
-    }
-
     async mounted() {
-        this.CurrentOfferUUID = this.$route.params.offer_uuid;
         await this.getOffersCategories()
-        await this.GetOfferInfo()
     }
 }
 </script>

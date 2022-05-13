@@ -144,12 +144,12 @@
                 <page-header title="Offers" back-url="/"/>
 
                 <div class="col-12 mt-5">
-                    <router-link to="/admin/catalog/offers">
+                    <router-link to="/shop/offers">
                         <v-btn depressed small color="white">
                             Offers
                         </v-btn>
                     </router-link>
-                    <router-link to="/admin/catalog/categories" class="ml-3">
+                    <router-link to="/shop/offers/categories" class="ml-3">
                         <v-btn depressed small color="light-blue darken-4" class="white--text">
                             Categories
                         </v-btn>
@@ -283,16 +283,16 @@ export default class OffersCategories extends Vue {
                 });
             } else {
                 await sweetalert({
-                    title: "Ошибка!",
-                    text: `Во время выполнения запроса, возникла ошибка: ${response}`,
+                    title: "Error!",
+                    text: `Request error: ${response}`,
                     icon: "error"
                 });
             }
         } catch (e) {
             console.error(e);
             await sweetalert({
-                title: "Ошибка!",
-                text: "Во время выполнения запроса, возникла ошибка!",
+                title: "Error!",
+                text: "Request error!",
                 icon: "error"
             });
         }

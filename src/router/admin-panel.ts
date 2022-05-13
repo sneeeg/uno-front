@@ -7,7 +7,8 @@ import Blog from "@/views/CMS/Blog/Blogs.vue";
 import BlogCreate from "@/views/CMS/Blog/BlogsCreate.vue";
 import BlogEdit from "@/views/CMS/Blog/BlogEdit.vue";
 import Offers from "@/views/AdminPanel/Offers.vue";
-import OffersCreate from "@/views/AdminPanel/OfferEdit.vue";
+import OffersCreate from "@/views/AdminPanel/OfferCreate.vue";
+import OfferEdit from "@/views/AdminPanel/OfferEdit.vue";
 import OffersCategories from "@/views/AdminPanel/OffersCategories.vue";
 import Options from "@/views/AdminPanel/Options.vue";
 
@@ -47,17 +48,22 @@ const routes: Array<RouteConfig> = [
         component: BlogEdit
     },
     {
-        path: "/admin/catalog/offers",
+        path: "/shop/offers",
         name: "Offers",
         component: Offers
     },
     {
-        path: "/admin/catalog/offers/create",
+        path: "/shop/offers/create",
         name: "OffersCreate",
         component: OffersCreate
     },
     {
-        path: "/admin/catalog/categories",
+        path: "/shop/offers/edit/:offer_uuid",
+        name: "OfferEdit",
+        component: OfferEdit
+    },
+    {
+        path: "/shop/offers/categories",
         name: "OffersCategories",
         component: OffersCategories
     },

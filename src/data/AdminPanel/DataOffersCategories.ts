@@ -10,8 +10,13 @@ export default class DataOffersCategories {
             text: "Home",
         },
         {
-            to: "/admin/catalog/categories",
-            text: "Categories",
+            to: "/shop/offers",
+            exact: true,
+            text: "Shop",
+        },
+        {
+            to: "/shop/offers",
+            text: "Offers",
             disabled: true
         },
     ];

@@ -15,6 +15,21 @@ class ApiOffer {
             throw new Error("Error get offers");
         }
     }
+    public static async GetOfferByUUID(session_uuid: string, offer_uuid: string): Promise<any | undefined> {
+        try {
+            const result = await axios.post("/api/shop/offer/get-offer-by", {
+                offer_uuid: offer_uuid
+            }, {
+                headers: {
+                    "x-tenant": "null",
+                    "x-session-token": session_uuid
+                }
+            });
+            return result.data.data;
+        } catch (e) {
+            return undefined;
+        }
+    }
     public static async CreateOffer(session_uuid: string,
                                     name: string,
                                     priority: string,
@@ -52,7 +67,7 @@ class ApiOffer {
                                     keywords: string,
                                     url: string): Promise<string | undefined> {
         try {
-            const result: AxiosResponse<{ response: string }> = await axios.post("/api/admin/offer-create", {
+            const result: AxiosResponse<{ response: string }> = await axios.post("/api/shop/offer/offer-create", {
                 name: name,
                 priority: priority,
                 publish: publish,
@@ -102,6 +117,22 @@ class ApiOffer {
             }
         }
         return undefined;
+    }
+    public static async UpdateOfferPublish(publish: number, session_uuid: string, uuid: string): Promise<boolean | undefined> {
+        try {
+            const result = await axios.post("/api/shop/offer/change-offer-publish", {
+                uuid: uuid,
+                publish: publish
+            }, {
+                headers: {
+                    "x-tenant": "null",
+                    "x-session-token": session_uuid
+                }
+            });
+            return result.data.response;
+        } catch (e) {
+            throw new Error("Error");
+        }
     }
     public static async DeleteOffer(session_uuid: string, uuid: string): Promise<boolean | undefined> {
         try {

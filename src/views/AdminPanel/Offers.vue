@@ -6,12 +6,12 @@
                 <page-header title="Offers" back-url="/"/>
 
                 <div class="col-12 mt-5">
-                    <router-link to="/admin/catalog/offers">
+                    <router-link to="/shop/offers">
                         <v-btn depressed small color="light-blue darken-4" class="white--text">
                             Offers
                         </v-btn>
                     </router-link>
-                    <router-link to="/admin/catalog/categories" class="ml-3">
+                    <router-link to="/shop/offers/categories" class="ml-3">
                         <v-btn depressed small color="white">
                             Categories
                         </v-btn>
@@ -22,7 +22,7 @@
                 </div>
 
                 <div class="col-12">
-                    <router-link to="/admin/catalog/offers/create">
+                    <router-link to="/shop/offers/create">
                         <v-btn
                             color="orange accent-4"
                             class="white--text"
@@ -37,8 +37,8 @@
                     <v-data-table dense :headers="TableHeaders" :items="TableItems" :items-per-page="15" item-key="offer" class="elevation-1">
                         <template v-slot:item.action="{ item }">
                             <div class="d-flex align-center">
-                                <v-switch hide-details v-model="item.publish" :input-value="item.publish" class="mt-0" @change="ChangeSliderPublish(item)"></v-switch>
-                                <router-link :to="'/admin/catalog/offers/edit/' + item.uuid">
+                                <v-switch hide-details v-model="item.publish" :input-value="item.publish" class="mt-0" @change="ChangeOfferPublish(item)"></v-switch>
+                                <router-link :to="'/shop/offers/edit/' + item.uuid">
                                     <v-btn icon>
                                         <v-icon small color="grey darken-2">
                                             fas fa-pencil-alt
@@ -86,6 +86,32 @@ export default class Offers extends Vue {
             this.TableItems = await ApiOffer.GetOffers(ApiEnter.CurrentSessionUUID as string);
         } catch (e) {
             console.error(e);
+        }
+    }
+    private async ChangeOfferPublish(item: any): Promise<void> {
+        try {
+            const response = await ApiOffer.UpdateOfferPublish(item.publish? 1: 0, ApiEnter.CurrentSessionUUID as string, item.uuid);
+            if (typeof response == "boolean") {
+                sweetalert({
+                    title: "Success!",
+                    text: "Offer has updated"
+                }).then(() => {
+                    this.getOffers();
+                });
+            } else {
+                await sweetalert({
+                    title: "Error!",
+                    text: `Request error: ${response}`,
+                    icon: "error"
+                });
+            }
+        } catch (e) {
+            console.error(e);
+            await sweetalert({
+                title: "Error!",
+                text: "Request error!",
+                icon: "error"
+            });
         }
     }
     private deleteOffer(offer_uuid: string): void {

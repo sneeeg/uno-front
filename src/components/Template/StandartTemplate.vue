@@ -58,7 +58,7 @@
                     </div>
                     <div class="name">E-SHOP</div>
                     <div class="menu-items">
-                        <router-link to="/admin/catalog/offers" class="menu-item">
+                        <router-link to="/shop/offers" class="menu-item">
                             <i class="fab fa-buffer"></i> Offers
                         </router-link>
                         <router-link to="/admin/options" class="menu-item">
