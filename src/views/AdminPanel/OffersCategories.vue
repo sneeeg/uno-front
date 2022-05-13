@@ -206,22 +206,14 @@ import dayjs from "dayjs";
 import DataOffersCategories from "@/data/AdminPanel/DataOffersCategories";
 import sweetalert from "sweetalert";
 import IAdminPanelOffersCategoriesList from "@/struct/admin-panel/IAdminPanelOffersCategoriesList";
-import ApiSupportFiles from "@/api/ApiSupportFiles";
 
 @Component({
     components: { StandartTemplate, PageHeader }
 })
 export default class OffersCategories extends Vue {
     private Breadcrumbs: BreadcrumbsItemType[] = DataOffersCategories.Breadcrumbs;
-
     private TableHeaders: TableHeaderItemType[] = DataOffersCategories.TableHeaders;
-
     private TableItems: IAdminPanelOffersCategoriesList[] | undefined = [];
-
-    private NewCategoryPublish: boolean = true
-    private NewCategoryName: string = ''
-    private NewCategoryPriority: string = ''
-    private CategoryCreated: string = ''
 
     public isOpenDialog: boolean = false;
     private isOpenEditDialog: boolean = false;
@@ -278,7 +270,6 @@ export default class OffersCategories extends Vue {
             console.error(e);
         }
     }
-
 
     private async ChangeOfferCategoryPublish(item: any): Promise<void> {
         try {
@@ -337,10 +328,10 @@ export default class OffersCategories extends Vue {
 
     private DialogToggle(): void {
         if(this.isOpenDialog) {
-            this.NewCategoryPublish = false
-            this.NewCategoryPriority = ''
-            this.NewCategoryName = ''
-            this.CategoryCreated = ''
+            this.newCategory.publish = false
+            this.newCategory.priority = ''
+            this.newCategory.name = ''
+            this.newCategory.created = ''
         }
         this.isOpenDialog = !this.isOpenDialog
     }
