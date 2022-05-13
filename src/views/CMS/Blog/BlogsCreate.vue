@@ -160,7 +160,7 @@
                                     class="white--text col-1 ml-4"
                                     small
                                     @click="OnClickSubmit()"
-                                    :disabled="PostName === '' || PostContent === '' ||  PostCardDesign === '' || !PostImage1 || !PostImage2"
+                                    :disabled="PostName === '' || PostContent === '' ||  PostCardDesign === ''"
                                     depressed>
                                     Save
                                 </v-btn>
@@ -174,7 +174,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import BreadcrumbsItemType from "@/struct/ui/breadcrumbs/BreadcrumbsItemType";
 import sweetalert from "sweetalert";
 import ApiEnter from "@/api/ApiEnter";
@@ -214,8 +214,8 @@ export default class BlogCreate extends Vue {
     private PostPublish: boolean = true
     private PostName: string= ''
     private PostDate: string = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)
-    private PostImage1: File = null
-    private PostImage2: File = null
+    private PostImage1: File | null = null
+    private PostImage2: File | null = null
     private PostCardDesign: string = ''
     private PostContent: string = ''
     private PostSeoDescription: string = ''
@@ -236,42 +236,37 @@ export default class BlogCreate extends Vue {
 
     private async OnClickSubmit(): Promise<void> {
         if (ApiEnter.CurrentSessionUUID != undefined) {
-            this.$forceUpdate();
-
-            const file_name1 = await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID, this.PostImage1)
-            const file_name2 = await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID, this.PostImage2)
-
-            if (file_name1 && file_name2) {
-                const post_uuid = await ApiBlog.CreateBlog(
-                    ApiEnter.CurrentSessionUUID,
-                    this.PostName,
-                    dayjs(this.PostDate).format('YYYY-MM-DD'),
-                    this.PostPublish? 1: 0,
-                    file_name1,
-                    file_name2,
-                    this.PostCardDesign,
-                    this.PostContent,
-                    this.PostSeoDescription,
-                    this.PostSeoKeywords,
-                    this.PostSeoUrl);
-                if (post_uuid == undefined || post_uuid.length != 36) {
-                    await sweetalert({
-                        title: "Request error!",
-                        text: "Error creating Post: " + post_uuid,
-                        icon: "info"
-                    });
-                    return;
-                }
-
-                sweetalert({
-                    title: "Success!",
-                    text: `Post has created!`,
-                    icon: "success"
-                }).then(() => {
-                    this.$forceUpdate()
-                    this.$router.push(`/admin/blog`);
-                })
+            const file_name1 = this.PostImage1 !== null? await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID, this.PostImage1) : ''
+            const file_name2 = this.PostImage2 !== null? await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID, this.PostImage2) : ''
+            const post_uuid = await ApiBlog.CreateBlog(
+                ApiEnter.CurrentSessionUUID,
+                this.PostName,
+                dayjs(this.PostDate).format('YYYY-MM-DD'),
+                this.PostPublish? 1: 0,
+                file_name1,
+                file_name2,
+                this.PostCardDesign,
+                this.PostContent,
+                this.PostSeoDescription,
+                this.PostSeoKeywords,
+                this.PostSeoUrl);
+            if (post_uuid == undefined || post_uuid.length != 36) {
+                await sweetalert({
+                    title: "Request error!",
+                    text: "Error creating Post: " + post_uuid,
+                    icon: "info"
+                });
+                return;
             }
+
+            sweetalert({
+                title: "Success!",
+                text: `Post has created!`,
+                icon: "success"
+            }).then(() => {
+                this.$forceUpdate()
+                this.$router.push(`/admin/blog`);
+            })
         }
     }
 }

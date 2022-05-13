@@ -85,6 +85,7 @@
                                                 <button
                                                     @click="DownloadFile1"
                                                     class="mt-3 pa-2"
+                                                    :disabled="PostImageName1 === ''"
                                                 >
                                                     Download file
                                                 </button>
@@ -103,6 +104,7 @@
                                                 <button
                                                     @click="DownloadFile2"
                                                     class="mt-3 pa-2"
+                                                    :disabled="PostImageName2 === ''"
                                                 >
                                                     Download file
                                                 </button>
@@ -175,7 +177,7 @@
                                     class="white--text col-1 ml-4"
                                     small
                                     @click="OnClickSubmit()"
-                                    :disabled="PostName === '' || BlogContent === '' ||  BlogCardDesign === '' || !PostImage1 || !PostImage2 || BlogSeoUrl === ''"
+                                    :disabled="PostName === '' || BlogContent === '' ||  BlogCardDesign === '' || BlogSeoUrl === ''"
                                     depressed>
                                     Save
                                 </v-btn>
@@ -234,10 +236,10 @@ export default class BlogEdit extends Vue {
     private CurrentBlogUUID!: string;
     private PostPublish: boolean = true
     private PostName: string= ''
-    private PostDate: Date = null
-    private PostImage1: File = null
+    private PostDate: string = ''
+    private PostImage1: File | null = null
     private PostImageName1: string = ''
-    private PostImage2: File = null
+    private PostImage2: File | null = null
     private PostImageName2: string = ''
     private BlogCardDesign: string = ''
     private BlogContent: string = ''
@@ -251,8 +253,8 @@ export default class BlogEdit extends Vue {
         const blogInfo: any = await ApiBlog.GetBlogByUUID(ApiEnter.CurrentSessionUUID as string, this.CurrentBlogUUID);
         if (blogInfo == undefined) {
             sweetalert({
-                title: "Упс!",
-                text: "Во время загрузки информации - возникла ошибка, не все данные были заружены!",
+                title: "Oop!",
+                text: "Request error, not all data was loaded!",
                 icon: "error"
             }).then(() => {
                 this.$router.go(-1);
@@ -277,14 +279,19 @@ export default class BlogEdit extends Vue {
     }
 
     private async GetFiles(file_name1: string, file_name2: string): Promise<void> {
-        await ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, file_name1)
-            .then((response) => {
-                this.PostImage1 = new File([new Blob([response.data])], file_name1.split('/')[8])
-            })
-        await ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, file_name2)
-            .then((response) => {
-                this.PostImage2 = new File([new Blob([response.data])], file_name2.split('/')[8])
-            })
+        if (file_name1 !== '') {
+            await ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, file_name1)
+                .then((response) => {
+                    this.PostImage1 = new File([new Blob([response.data])], file_name1.split('/')[8])
+                })
+        }
+
+        if (file_name2 !== '') {
+            await ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, file_name2)
+                .then((response) => {
+                    this.PostImage2 = new File([new Blob([response.data])], file_name2.split('/')[8])
+                })
+        }
     }
 
     private async DownloadFile1(): Promise<void> {
@@ -307,47 +314,51 @@ export default class BlogEdit extends Vue {
     }
 
     private async OnClickSubmit(): Promise<void> {
-        const file_name1 = await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID as string, this.PostImage1)
-        const file_name2 = await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID as string, this.PostImage2)
+        const file_name1 = this.PostImage1?
+            this.PostImage1.name === this.PostImageName1 ? this.PostImageName1
+                : await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID as string, this.PostImage1)
+            : ''
+        const file_name2 = this.PostImage2?
+            this.PostImage2.name === this.PostImageName2 ? this.PostImageName2
+                : await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID as string, this.PostImage2)
+            : ''
 
-        if (file_name1 && file_name2) {
-            try {
-                const response = await ApiBlog.UpdateBlogInfo(
-                    this.PostName,
-                    dayjs(this.PostDate).format('YYYY-MM-DD'),
-                    this.PostPublish? 1: 0,
-                    file_name1,
-                    file_name2,
-                    this.BlogCardDesign,
-                    this.BlogContent,
-                    this.BlogSeoDescription,
-                    this.BlogSeoKeywords,
-                    this.BlogSeoUrl,
-                    ApiEnter.CurrentSessionUUID as string,
-                    this.CurrentBlogUUID);
-                if (typeof response == "boolean") {
-                    sweetalert({
-                        title: "Success!",
-                        text: "Post has updated",
-                        icon: "success"
-                    }).then(() => {
-                        this.$router.go(-1);
-                    });
-                } else {
-                    sweetalert({
-                        title: "Error!",
-                        text: `Request error: ${response}`,
-                        icon: "error"
-                    });
-                }
-            } catch (e) {
-                console.error(e);
+        try {
+            const response = await ApiBlog.UpdateBlogInfo(
+                this.PostName,
+                dayjs(this.PostDate).format('YYYY-MM-DD'),
+                this.PostPublish? 1: 0,
+                file_name1,
+                file_name2,
+                this.BlogCardDesign,
+                this.BlogContent,
+                this.BlogSeoDescription,
+                this.BlogSeoKeywords,
+                this.BlogSeoUrl,
+                ApiEnter.CurrentSessionUUID as string,
+                this.CurrentBlogUUID);
+            if (typeof response == "boolean") {
+                sweetalert({
+                    title: "Success!",
+                    text: "Post has updated",
+                    icon: "success"
+                }).then(() => {
+                    this.$router.go(-1);
+                });
+            } else {
                 sweetalert({
                     title: "Error!",
-                    text: "Request error!",
+                    text: `Request error: ${response}`,
                     icon: "error"
                 });
             }
+        } catch (e) {
+            console.error(e);
+            sweetalert({
+                title: "Error!",
+                text: "Request error!",
+                icon: "error"
+            });
         }
     }
 
