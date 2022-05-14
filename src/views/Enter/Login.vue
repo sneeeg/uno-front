@@ -1,11 +1,11 @@
 <template>
     <div class="page-container login-page">
-        <enter-template title-text="Личный кабинет" sub-title-text="Ваш уневерсальный помошник и CRM система для Uno!">
+        <enter-template title-text="BACKOFFICE" sub-title-text="Content management system, E-Shop management">
             <template v-slot>
                 <div class="enter-form wrapper-layer">
                     <div class="front-layer">
-                        <h1 class="logo"> Uno<span>CRM</span></h1>
-                        <h2> Вход в Личный Кабинет </h2>
+                        <div class="d-flex justify-center"><img src="@/assets/img/enter-logo.svg" alt="logo"></div>
+                        <h2> Log in to proceed </h2>
                         <div :class="'mb-3 mt-5' + GetClass_FormRow(Form.Email)">
                             <input-text-from-enter name="Email">
                                 <template v-slot:input>
@@ -13,24 +13,24 @@
                                 </template>
                                 <template v-slot:tooltip>
                                     <ul>
-                                        <li>Введите корректны Email адрес.</li>
+                                        <li>Enter correct Email.</li>
                                     </ul>
                                 </template>
                             </input-text-from-enter>
                         </div>
                         <div :class="'mb-3' + GetClass_FormRow(Form.Password)">
-                            <input-text-from-enter name="Пароль">
+                            <input-text-from-enter name="Password">
                                 <template v-slot:input>
                                     <input type="password" maxlength="32" autocomplete="off" autocapitalize="off" aria-autocomplete="none" tabindex="2" @keyup.enter="OnSubmit()" v-model="Form.Password.value" @input="OnInputChanged(Form.Password)" @change="OnInputChanged(Form.Password)" @focusout="OnInputFocusOut(Form.Password)" @focusin="OnInputFocusIn(Form.Password)"
                                            :class="GetClass_FormRowInput(Form.Password)">
                                 </template>
                                 <template v-slot:tooltip>
                                     <ul>
-                                        <li>Пароль должен быть от 6 до 32 символов.</li>
+                                        <li>Password must be from 6 to 32 symbols.</li>
                                     </ul>
                                 </template>
                                 <template v-slot:name-link>
-                                    <router-link to="/enter/forgot-password" tabindex="-1">Забыли пароль?</router-link>
+                                    <router-link to="/enter/forgot-password" tabindex="-1">Forgot password?</router-link>
                                 </template>
                             </input-text-from-enter>
                         </div>
@@ -38,15 +38,15 @@
                             <div class="col-xxl-7 col-xl-6 col-lg-12 mb-3 mt-2">
                                 <label class="custom-control custom-checkbox m-0">
                                     <input type="checkbox" name="remember" tabindex="-1" checked disabled class="custom-control-input">
-                                    <span class="custom-control-label">Запомнить меня</span>
+                                    <span class="custom-control-label">Remember me</span>
                                 </label>
                             </div>
                             <div class="col-xxl-5 col-xl-6 col-lg-12">
-                                <input type="button" value="Войти" tabindex="3" :disabled="!HasValidForm || HasLoginRequest" @click="OnSubmit()" class="btn btn-primary btn-block">
+                                <input type="button" value="Log In" tabindex="3" :disabled="!HasValidForm || HasLoginRequest" @click="OnSubmit()" class="btn btn-primary btn-block">
                             </div>
                         </div>
-                        <div class="text-center text-muted"> У вас нет личного кабинета?
-                            <router-link to="/enter/registration/" class="" tabindex="4">Зарегистрируйтесь</router-link>
+                        <div class="text-center text-muted"> Don't have an account?
+                            <router-link to="/enter/registration/" class="" tabindex="4">Create an account</router-link>
                         </div>
                     </div>
                 </div>

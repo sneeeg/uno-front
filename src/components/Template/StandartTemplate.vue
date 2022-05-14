@@ -2,12 +2,11 @@
     <div class="template-container standart-template">
         <div class="left-wrapper">
             <div class="logo">
-                UnoCRM
+                <img src="@/assets/img/logo.svg" alt="logo">
             </div>
 
             <div class="menu-wrapper">
                 <div class="menu-category">
-                    <div class="name">Menu</div>
                     <div class="menu-items">
                         <router-link to="/" class="menu-item" exact>
                             <i class="fas fa-home"></i> Home
@@ -29,15 +28,6 @@
                     </div>
                 </div>
                 <div class="menu-category" v-if="GetCurrentSessionUser.system_role == SystemRole.Admin || GetCurrentSessionUser.system_role == SystemRole.SuperAdmin">
-                    <div class="name">ADMIN</div>
-                    <div class="menu-items">
-<!--                        <router-link to="/admin/companies" class="menu-item">
-                            <i class="fas fa-building"></i> Управ. компаниями
-                        </router-link>-->
-                        <router-link to="/admin/users" class="menu-item">
-                            <i class="fas fa-users-cog"></i> Users
-                        </router-link>
-                    </div>
                     <div class="name">CMS</div>
                     <div class="menu-items">
                         <router-link to="/faq" class="menu-item">
@@ -66,6 +56,15 @@
                         </router-link>
                         <router-link to="/shop/orders" class="menu-item">
                             <i class="fas fa-shopping-cart"></i> Order management
+                        </router-link>
+                    </div>
+                    <div class="name">Settings</div>
+                    <div class="menu-items">
+                        <!--                        <router-link to="/admin/companies" class="menu-item">
+                                                    <i class="fas fa-building"></i> Управ. компаниями
+                                                </router-link>-->
+                        <router-link to="/admin/users" class="menu-item">
+                            <i class="fas fa-users-cog"></i> Users managment
                         </router-link>
                     </div>
                 </div>

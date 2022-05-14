@@ -15,7 +15,7 @@ class ApiBlog {
             throw new Error("Error get blog");
         }
     }
-    public static async CreateBlog(session_uuid: string, title: string | boolean, date: string, publish: number, image1: string, image2: string, card_design: string, content: string | boolean, seo_description: string, seo_keywords: string, seo_url: string): Promise<string | undefined> {
+    public static async CreateBlog(session_uuid: string, title: string | boolean, date: string, publish: number, image1: string | undefined, image2: string | undefined, card_design: string, content: string | boolean, seo_description: string, seo_keywords: string, seo_url: string): Promise<string | undefined> {
         try {
             const result: AxiosResponse<{ response: string }> = await axios.post("/api/admin/create-blog", {
                 title: title,

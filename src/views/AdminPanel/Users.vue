@@ -3,7 +3,7 @@
         <div class="container">
             <div class="row mt-1">
                 <v-breadcrumbs :items="Breadcrumbs" divider="/" />
-                <page-header title="Администрование пользователей" back-url="/" />
+                <page-header title="Users managment" back-url="/" />
 
                 <div class="col-12">
                     <v-data-table dense :headers="TableHeaders" :items="TableItems" :items-per-page="15" item-key="user" class="elevation-1">

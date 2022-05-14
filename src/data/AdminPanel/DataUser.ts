@@ -7,11 +7,11 @@ export default class DataUser {
     public static Breadcrumbs: BreadcrumbsItemType[] = [
         {
             to: "/",
-            text: "Главная",
+            text: "Home",
         },
         {
             to: "/admin/users",
-            text: "Администрирование пользователей",
+            text: "Users managment",
             disabled: true
         },
     ];
