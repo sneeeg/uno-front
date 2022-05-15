@@ -182,7 +182,7 @@ export default class EditQuestion extends Vue {
                     this.currentFaq.publish = true
                     this.currentFaq.category = ''
                     this.currentFaq.created = ''
-                    this.$router.push(`/faq/questions`);
+                    this.$router.push(`/faq`);
                 })
             } else {
                 await sweetalert({

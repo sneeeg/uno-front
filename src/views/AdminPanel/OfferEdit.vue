@@ -407,7 +407,6 @@ import ApiEnter from "@/api/ApiEnter";
 import IAdminPanelOffersCategoriesList from "@/struct/admin-panel/IAdminPanelOffersCategoriesList";
 import Editor from '@tinymce/tinymce-vue'
 import ApiOffer from "@/api/ApiOffer";
-import ApiBlog from "@/api/ApiBlog";
 import sweetalert from "sweetalert";
 import dayjs from "dayjs";
 
@@ -556,7 +555,7 @@ export default class OfferEdit extends Vue {
                 icon: "success"
             }).then(() => {
                 this.$forceUpdate()
-                this.$router.push(`/admin/catalog/offers`);
+                this.$router.push(`/shop/offers`);
             })
         }
     }

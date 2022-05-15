@@ -179,7 +179,7 @@ export default class CreateQuestion extends Vue {
                 this.newPost.priority = ''
                 this.newPost.publish = true
                 this.newPost.category = ''
-                this.$router.push(`/faq/questions`);
+                this.$router.push(`/faq`);
             })
         }
     }

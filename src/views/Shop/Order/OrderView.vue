@@ -1,6 +1,10 @@
 <template>
     <div class="page-container">
         <delivery-tracking :is-open="isOpenDeliveryTracking" @closeModal="isOpenDeliveryTracking = false"/>
+        <note :is-open="isOpenNoteEdit" @closeModal="isOpenNoteEdit = false"/>
+        <contact-information :is-open="isOpenContactInformation" @closeModal="isOpenContactInformation = false"/>
+        <delivery-adress :is-open="isOpenDeliveryAddress" @closeModal="isOpenDeliveryAddress = false"/>
+        <residential-address :is-open="isOpenResidentialAddress" @closeModal="isOpenResidentialAddress = false"/>
         <standart-template>
             <div class="container">
                 <div class="row mt-1">
@@ -286,7 +290,12 @@
                                         <v-row>
                                             <v-col class="d-flex align-center justify-space-between">
                                                 <h6>Note</h6>
-                                                <v-btn text color="indigo darken-3" height="auto" class="text-capitalize text-body-2 ml-7 pa-2">Edit</v-btn>
+                                                <v-btn
+                                                    text
+                                                    color="indigo darken-3"
+                                                    height="auto"
+                                                    class="text-capitalize text-body-2 ml-7 pa-2"
+                                                    @click.stop="isOpenNoteEdit = true">Edit</v-btn>
                                             </v-col>
                                         </v-row>
                                     </v-expansion-panel-header>
@@ -364,7 +373,12 @@
                                         <v-row>
                                             <v-col class="d-flex align-center justify-space-between">
                                                 <h6>Contact information</h6>
-                                                <v-btn text color="indigo darken-3" height="auto" class="text-capitalize text-body-2 ml-7 pa-2">Edit</v-btn>
+                                                <v-btn
+                                                    text
+                                                    color="indigo darken-3"
+                                                    height="auto"
+                                                    class="text-capitalize text-body-2 ml-7 pa-2"
+                                                    @click.stop="isOpenContactInformation = true">Edit</v-btn>
                                             </v-col>
                                         </v-row>
                                     </v-expansion-panel-header>
@@ -393,7 +407,12 @@
                                         <v-row>
                                             <v-col class="d-flex align-center justify-space-between">
                                                 <h6>Delivery address</h6>
-                                                <v-btn text color="indigo darken-3" height="auto" class="text-capitalize text-body-2 ml-7 pa-2">Edit</v-btn>
+                                                <v-btn
+                                                    text
+                                                    color="indigo darken-3"
+                                                    height="auto"
+                                                    class="text-capitalize text-body-2 ml-7 pa-2"
+                                                    @click.stop="isOpenDeliveryAddress = true">Edit</v-btn>
                                             </v-col>
                                         </v-row>
                                     </v-expansion-panel-header>
@@ -446,7 +465,12 @@
                                         <v-row>
                                             <v-col class="d-flex align-center justify-space-between">
                                                 <h6>Residential address</h6>
-                                                <v-btn text color="indigo darken-3" height="auto" class="text-capitalize text-body-2 ml-7 pa-2">Edit</v-btn>
+                                                <v-btn
+                                                    text
+                                                    color="indigo darken-3"
+                                                    height="auto"
+                                                    class="text-capitalize text-body-2 ml-7 pa-2"
+                                                    @click.stop="isOpenResidentialAddress = true">Edit</v-btn>
                                             </v-col>
                                         </v-row>
                                     </v-expansion-panel-header>
@@ -580,15 +604,23 @@ import LeftMenuTab from "@/components/LeftMenu/LeftMenuTab.vue";
 import PageHeader from "@/components/UI/PageHeader.vue";
 import DataOrder from "@/data/Shop/Order/DataOrder";
 import DeliveryTracking from "@/components/Modals/Order/DeliveryTracking.vue";
+import Note from "@/components/Modals/Order/Note.vue";
+import ContactInformation from "@/components/Modals/Order/ContactInformation.vue";
+import DeliveryAdress from "@/components/Modals/Order/DeliveryAdress.vue";
+import ResidentialAddress from "@/components/Modals/Order/ResidentialAddress.vue";
 
 
 @Component({
-    components: { DeliveryTracking, PageHeader, StandartTemplate, LeftMenuTab },
+    components: { ResidentialAddress, DeliveryAdress, ContactInformation, Note, DeliveryTracking, PageHeader, StandartTemplate, LeftMenuTab },
 })
 
 export default class OrderView extends Vue {
     public Breadcrumbs: BreadcrumbsItemType[] = DataOrder.Breadcrumbs;
     isOpenDeliveryTracking: boolean = false
+    isOpenNoteEdit: boolean = false
+    isOpenContactInformation: boolean = false
+    isOpenDeliveryAddress: boolean = false
+    isOpenResidentialAddress: boolean = false
 
     panels1 = [0, 1, 2, 3]
     panels2 = [0, 1, 2, 3, 4, 5, 6]
