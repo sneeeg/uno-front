@@ -10,8 +10,24 @@ export default class DataOptions {
             text: "Home",
         },
         {
-            to: "/admin/options",
+            to: "/shop/options",
             text: "Options and Services",
+            disabled: true
+        },
+    ];
+
+    public static BreadcrumbsCreate: BreadcrumbsItemType[] = [
+        {
+            to: "/",
+            text: "Home",
+        },
+        {
+            to: "/shop/options",
+            exact: true,
+            text: "Options and Services",
+        },
+        {
+            text: "Create",
             disabled: true
         },
     ];
@@ -19,15 +35,18 @@ export default class DataOptions {
     public static TableHeaders: TableHeaderItemType[] = [
         {
             text: "Sorting",
-            value: "priority"
+            value: "priority",
+            width: '15%'
         },
         {
             text: "Option name",
-            value: "name"
+            value: "name",
+            width: '25%'
         },
         {
             text: "Price, €",
-            value: "price"
+            value: "price",
+            width: '45%'
         },
         {
             text: "Action",

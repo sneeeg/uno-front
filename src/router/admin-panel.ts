@@ -10,7 +10,7 @@ import Offers from "@/views/AdminPanel/Offers.vue";
 import OffersCreate from "@/views/AdminPanel/OfferCreate.vue";
 import OfferEdit from "@/views/AdminPanel/OfferEdit.vue";
 import OffersCategories from "@/views/AdminPanel/OffersCategories.vue";
-import Options from "@/views/AdminPanel/Options.vue";
+import Options from "@/views/Shop/Options/Options.vue";
 
 const routes: Array<RouteConfig> = [
     {
@@ -66,11 +66,6 @@ const routes: Array<RouteConfig> = [
         path: "/shop/offers/categories",
         name: "OffersCategories",
         component: OffersCategories
-    },
-    {
-        path: "/admin/options",
-        name: "Options",
-        component: Options
     }
 ];
 

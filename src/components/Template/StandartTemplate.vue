@@ -51,7 +51,7 @@
                         <router-link to="/shop/offers" class="menu-item">
                             <i class="fab fa-buffer"></i> Offers
                         </router-link>
-                        <router-link to="/admin/options" class="menu-item">
+                        <router-link to="/shop/options" class="menu-item">
                             <i class="fas fa-cogs"></i> Options and Extras
                         </router-link>
                         <router-link to="/shop/orders" class="menu-item">
