@@ -193,18 +193,21 @@
                 </v-row>
                 <div class="col-12">
                     <div class="col-12 row bg-light">
-                        <v-btn
-                            color="grey lighten-1"
-                            class="white--text col-1 ml-2"
-                            small
-                            depressed>
-                            Cancel
-                        </v-btn>
+                        <router-link to="/shop/options">
+                            <v-btn
+                                color="grey lighten-1"
+                                class="white--text col-1 ml-2"
+                                small
+                                depressed>
+                                Cancel
+                            </v-btn>
+                        </router-link>
                         <v-btn
                             color="orange accent-4"
                             class="white--text col-1 ml-4"
                             small
                             depressed
+                            :disabled="newOption.name ==='' || newOption.price === '' || newOption.value === '' || newOption.seo_url === ''"
                             @click="OnClickSubmit">
                             Save
                         </v-btn>
