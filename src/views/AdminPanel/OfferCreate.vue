@@ -175,7 +175,8 @@
                                 :init="{
                                              height: 200,
                                              menubar: false,
-                                             plugins: []
+                                             toolbar: 'undo redo | bold italic underline strikethrough | fontsizeselect | formatselect | alignleft aligncenter alignright alignjustify | indent outdent | bullist numlist | anchor',
+                                             plugins: ['anchor', 'lists advlist']
                                        }"/>
                         </div>
                         <div class="col-12">
@@ -187,7 +188,8 @@
                                 :init="{
                                              height: 200,
                                              menubar: false,
-                                             plugins: []
+                                             toolbar: 'undo redo | bold italic underline strikethrough | fontsizeselect | formatselect | alignleft aligncenter alignright alignjustify | indent outdent | bullist numlist | anchor',
+                                             plugins: ['anchor', 'lists advlist']
                                        }"/>
                         </div>
                         <v-divider class="col-12 p-0"></v-divider>
@@ -462,7 +464,7 @@ export default class OfferCreate extends Vue {
     }
 
     private GenerateSeoUrl() {
-        this.newOffer.url = this.newOffer.name.replace(/ /ig, '-').toLowerCase()
+        this.newOffer.url = this.newOffer.name.replace(/[. ,:-=&+#$|%]+/g, "-").toLowerCase()
     }
 
     private ValidateSeoUrl() {

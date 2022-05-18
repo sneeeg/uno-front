@@ -102,7 +102,8 @@
                                         :init="{
                                              height: 200,
                                              menubar: false,
-                                             plugins: []
+                                             toolbar: 'undo redo | bold italic underline strikethrough | fontsizeselect | formatselect | alignleft aligncenter alignright alignjustify | indent outdent | bullist numlist | anchor',
+                                             plugins: ['anchor', 'lists advlist']
                                        }"/>
                                 </div>
                                 <div class="col-12">
@@ -227,7 +228,7 @@ export default class BlogCreate extends Vue {
     }
 
     private GenerateSeoUrl() {
-        this.PostSeoUrl = this.PostName.replace(/ /ig, '-').toLowerCase()
+        this.PostSeoUrl = this.PostName.replace(/[. ,:-=&+#$|%]+/g, "-").toLowerCase()
     }
 
     private ValidateSeoUrl() {

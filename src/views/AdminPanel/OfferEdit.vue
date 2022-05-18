@@ -172,7 +172,8 @@
                                 :init="{
                                              height: 200,
                                              menubar: false,
-                                             plugins: []
+                                             toolbar: 'undo redo | bold italic underline strikethrough | fontsizeselect | formatselect | alignleft aligncenter alignright alignjustify | indent outdent | bullist numlist | anchor',
+                                             plugins: ['anchor', 'lists advlist']
                                        }"/>
                         </div>
                         <div class="col-12">
@@ -184,7 +185,8 @@
                                 :init="{
                                              height: 200,
                                              menubar: false,
-                                             plugins: []
+                                             toolbar: 'undo redo | bold italic underline strikethrough | fontsizeselect | formatselect | alignleft aligncenter alignright alignjustify | indent outdent | bullist numlist | anchor',
+                                             plugins: ['anchor', 'lists advlist']
                                        }"/>
                         </div>
                         <v-divider class="col-12 p-0"></v-divider>
