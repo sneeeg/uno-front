@@ -247,8 +247,8 @@
                         ></v-text-field>
                     </div>
                 </v-row>
-                <div class="col-12">
-                    <div class="col-12 row bg-light">
+                <div class="col-12 px-0">
+                    <div class="col-12 bg-light">
                         <router-link to="/shop/options">
                             <v-btn
                                 color="grey lighten-1"
@@ -315,11 +315,11 @@ export default class OptionsCreate extends Vue {
     }
 
     private GenerateSeoUrl() {
-        this.newOption.seo_url = this.newOption.name.replace(/[. ,:-=&+#$|%]+/g, "-").toLowerCase()
+        this.newOption.seo_url = this.newOption.name.replace(/[. ,:-=&+#$?|%@!^(){}'*]+/g, "-").toLowerCase()
     }
 
     private ValidateSeoUrl() {
-        this.newOption.seo_url = this.newOption.seo_url.replace(/ /ig, '-').toLowerCase()
+        this.newOption.seo_url = this.newOption.seo_url.replace(/[. ,$@!^()'*]+/g, '-').toLowerCase()
     }
 
     private async OnClickSubmit(): Promise<void> {

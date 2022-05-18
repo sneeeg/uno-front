@@ -518,11 +518,11 @@ export default class OfferCreate extends Vue {
     }
 
     private GenerateSeoUrl() {
-        this.newOffer.url = this.newOffer.name.replace(/[. ,:-=&+#$|%]+/g, "-").toLowerCase()
+        this.newOffer.url = this.newOffer.name.replace(/[. ,:-=&+#$?|%@!^(){}'*]+/g, "-").toLowerCase()
     }
 
     private ValidateSeoUrl() {
-        this.newOffer.url = this.newOffer.url.replace(/ /ig, '-').toLowerCase()
+        this.newOffer.url = this.newOffer.url.replace(/[. ,$@!^()'*]+/g, '-').toLowerCase()
     }
 
     private async getOffersCategories(): Promise<void> {

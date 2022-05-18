@@ -255,11 +255,11 @@ export default class BlogCreate extends Vue {
     }
 
     private GenerateSeoUrl() {
-        this.PostSeoUrl = this.PostName.replace(/[. ,:-=&+#$|%]+/g, "-").toLowerCase()
+        this.PostSeoUrl = this.PostName.replace(/[. ,:-=&+#$?|%@!^(){}'*]+/g, "-").toLowerCase()
     }
 
     private ValidateSeoUrl() {
-        this.PostSeoUrl = this.PostSeoUrl.replace(/ /ig, '-').toLowerCase()
+        this.PostSeoUrl = this.PostSeoUrl.replace(/[. ,$@!^()'*]+/g, '-').toLowerCase()
     }
 
     private async OnClickSubmit(): Promise<void> {

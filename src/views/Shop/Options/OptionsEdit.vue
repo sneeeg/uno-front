@@ -320,11 +320,11 @@ export default class OptionsEdit extends Vue {
     }
 
     private GenerateSeoUrl() {
-        this.newOption.seo_url = this.newOption.name.replace(/[. ,:-=&+#$|%]+/g, "-").toLowerCase()
+        this.newOption.seo_url = this.newOption.name.replace(/[. ,:-=&+#$?|%@!^(){}'*]+/g, "-").toLowerCase()
     }
 
     private ValidateSeoUrl() {
-        this.newOption.seo_url = this.newOption.seo_url.replace(/ /ig, '-').toLowerCase()
+        this.newOption.seo_url = this.newOption.seo_url.replace(/[. ,$@!^()'*]+/g, '-').toLowerCase()
     }
 
     private async OnClickSubmit(): Promise<void> {

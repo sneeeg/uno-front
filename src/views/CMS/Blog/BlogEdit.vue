@@ -391,7 +391,7 @@ export default class BlogEdit extends Vue {
     }
 
     private ValidateSeoUrl() {
-        this.BlogSeoUrl = this.BlogSeoUrl.replace(/ /ig, '-').toLowerCase()
+        this.BlogSeoUrl = this.BlogSeoUrl.replace(/[. ,$@!^()'*]+/g, '-').toLowerCase()
     }
 
     get computedDateFormatted() {

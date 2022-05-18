@@ -617,7 +617,7 @@ export default class OfferEdit extends Vue {
     }
 
     private ValidateSeoUrl() {
-        this.newOffer.url = this.newOffer.url.replace(/ /ig, '-').toLowerCase()
+        this.newOffer.url = this.newOffer.url.replace(/[. ,$@!^()'*]+/g, '-').toLowerCase()
     }
 
     async mounted() {
