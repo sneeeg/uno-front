@@ -108,10 +108,37 @@
                                 v-model="newOption.overview"
                                 class="mt-4"
                                 :init="{
-                                             height: 200,
+                                             height: 500,
                                              menubar: false,
-                                             toolbar: 'undo redo | bold italic underline strikethrough | fontsizeselect | formatselect | alignleft aligncenter alignright alignjustify | indent outdent | bullist numlist | anchor',
-                                             plugins: ['anchor', 'lists advlist']
+                                             toolbar: 'undo redo | bold italic underline strikethrough | fontsizeselect | formatselect | alignleft aligncenter alignright alignjustify | indent outdent | bullist numlist | forecolor backcolor casechange formatpainter removeformat | pagebreak | emoticons charmap | link image media pageembed anchor | table',
+                                             plugins: 'anchor lists advlist image media link pagebreak emoticons charmap casechange formatpainter code pageembed table',
+                                             formats: {
+                                                borderstyle: { selector: 'td,th', styles: { borderTopStyle: 'solid', borderRightStyle: 'solid', borderBottomStyle: 'solid', borderLeftStyle: 'solid', }, remove_similar: true },
+                                                bordercolor: { selector: 'td,th', styles: { borderTopColor: '#32CD32', borderRightColor: '#32CD32', borderBottomColor: '#32CD32', borderLeftColor: '#32CD32' }, remove_similar: true },
+                                                backgroundcolor: { selector: 'td,th', styles: { backgroundColor: '#006400' }, remove_similar: true },
+                                                formatpainter_removeformat: [
+                                                  { selector: 'b,strong,em,i,font,u,strike,sub,sup,dfn,code,samp,kbd,var,cite,mark,q,del,ins',
+                                                    remove: 'all',
+                                                    split: true,
+                                                    expand: false,
+                                                    block_expand: true,
+                                                    deep: true
+                                                  },
+                                                  { selector: 'span',
+                                                    attributes: ['style', 'class'],
+                                                    remove: 'empty',
+                                                    split: true,
+                                                    expand: false,
+                                                    deep: true
+                                                  },
+                                                  { selector: '*:not(tr,td,th,table)',
+                                                    attributes: ['style', 'class'],
+                                                    split: false,
+                                                    expand: false,
+                                                    deep: true
+                                                  }
+                                                ]
+                                              },
                                        }"/>
                         </div>
                         <div class="col-12">
@@ -121,10 +148,37 @@
                                 class="mt-4"
                                 v-model="newOption.note"
                                 :init="{
-                                             height: 200,
+                                             height: 500,
                                              menubar: false,
-                                             toolbar: 'undo redo | bold italic underline strikethrough | fontsizeselect | formatselect | alignleft aligncenter alignright alignjustify | indent outdent | bullist numlist | anchor',
-                                             plugins: ['anchor', 'lists advlist']
+                                             toolbar: 'undo redo | bold italic underline strikethrough | fontsizeselect | formatselect | alignleft aligncenter alignright alignjustify | indent outdent | bullist numlist | forecolor backcolor casechange formatpainter removeformat | pagebreak | emoticons charmap | link image media pageembed anchor | table',
+                                             plugins: 'anchor lists advlist image media link pagebreak emoticons charmap casechange formatpainter code pageembed table',
+                                             formats: {
+                                                borderstyle: { selector: 'td,th', styles: { borderTopStyle: 'solid', borderRightStyle: 'solid', borderBottomStyle: 'solid', borderLeftStyle: 'solid', }, remove_similar: true },
+                                                bordercolor: { selector: 'td,th', styles: { borderTopColor: '#32CD32', borderRightColor: '#32CD32', borderBottomColor: '#32CD32', borderLeftColor: '#32CD32' }, remove_similar: true },
+                                                backgroundcolor: { selector: 'td,th', styles: { backgroundColor: '#006400' }, remove_similar: true },
+                                                formatpainter_removeformat: [
+                                                  { selector: 'b,strong,em,i,font,u,strike,sub,sup,dfn,code,samp,kbd,var,cite,mark,q,del,ins',
+                                                    remove: 'all',
+                                                    split: true,
+                                                    expand: false,
+                                                    block_expand: true,
+                                                    deep: true
+                                                  },
+                                                  { selector: 'span',
+                                                    attributes: ['style', 'class'],
+                                                    remove: 'empty',
+                                                    split: true,
+                                                    expand: false,
+                                                    deep: true
+                                                  },
+                                                  { selector: '*:not(tr,td,th,table)',
+                                                    attributes: ['style', 'class'],
+                                                    split: false,
+                                                    expand: false,
+                                                    deep: true
+                                                  }
+                                                ]
+                                              },
                                        }"/>
                         </div>
                         <v-divider class="col-12 p-0"></v-divider>
