@@ -38,17 +38,21 @@
                         </div>
                         <div class="col-6">
                             <v-text-field
-                                label="Offer name"
+                                label="Offer name *"
                                 v-model="newOffer.name"
                                 hide-details="auto"
+                                :rules="[() => !!newOffer.name || 'This field is required']"
+                                required
                                 @input="GenerateSeoUrl"
                             ></v-text-field>
                         </div>
                         <div class="col-3">
                             <v-text-field
-                                label="Priority (sorting)"
+                                label="Priority (sorting) *"
                                 type="number"
                                 v-model="newOffer.priority"
+                                :rules="[() => !!newOffer.priority || 'This field is required']"
+                                required
                                 hide-details="auto"
                             ></v-text-field>
                         </div>
@@ -79,8 +83,10 @@
                         <div class="col-12 row">
                             <div class="col-2">
                                 <v-text-field
-                                    label="Price, €"
+                                    label="Price, € *"
                                     v-model="newOffer.price"
+                                    :rules="[() => !!newOffer.price || 'This field is required']"
+                                    required
                                     type="number"
                                     hide-details="auto"
                                 ></v-text-field>
@@ -89,6 +95,7 @@
                                 <v-text-field
                                     label="Data, GB"
                                     v-model="newOffer.data"
+                                    type="number"
                                     hide-details="auto"
                                 ></v-text-field>
                             </div>
@@ -96,6 +103,7 @@
                                 <v-text-field
                                     label="SMS"
                                     v-model="newOffer.sms"
+                                    type="number"
                                     hide-details="auto"
                                 ></v-text-field>
                             </div>
@@ -103,6 +111,7 @@
                                 <v-text-field
                                     label="Minutes"
                                     v-model="newOffer.min"
+                                    type="number"
                                     hide-details="auto"
                                 ></v-text-field>
                             </div>
@@ -169,7 +178,7 @@
                         <div class="col-12">
                             <p>Offer overview</p>
                             <editor
-                                api-key="no-api-key"
+                                api-key="nqotow8s9iolgxioaipdmhd8w1vxs3wljhwp09z8l82bi2xb"
                                 v-model="newOffer.overview"
                                 class="mt-4"
                                 :init="{
@@ -209,7 +218,7 @@
                         <div class="col-12">
                             <p>Note</p>
                             <editor
-                                api-key="no-api-key"
+                                api-key="nqotow8s9iolgxioaipdmhd8w1vxs3wljhwp09z8l82bi2xb"
                                 class="mt-4"
                                 v-model="newOffer.note"
                                 :init="{
@@ -252,7 +261,9 @@
                             <v-select
                                 :items="NewCategoryCardDesign"
                                 v-model="newOffer.design"
-                                label="Card design"
+                                label="Card design *"
+                                :rules="[() => !!newOffer.design || 'This field is required']"
+                                required
                                 outlined
                             ></v-select>
                         </div>
@@ -327,33 +338,73 @@
                                 ></v-radio>
                                 <v-radio
                                     :label="'Offerte non più attivabili'"
-                                    :value="'non'"
+                                    :value="'non_active'"
                                 ></v-radio>
                             </v-radio-group>
                         </div>
                         <div class="col-12">
                             <p>Overview for Tariff transparency</p>
+                            <editor
+                                api-key="nqotow8s9iolgxioaipdmhd8w1vxs3wljhwp09z8l82bi2xb"
+                                class="mt-4"
+                                v-model="newOffer.tariff_overview"
+                                :init="{
+                                             height: 500,
+                                             menubar: false,
+                                             toolbar: 'undo redo | bold italic underline strikethrough | fontsizeselect | formatselect | alignleft aligncenter alignright alignjustify | indent outdent | bullist numlist | forecolor backcolor casechange formatpainter removeformat | pagebreak | emoticons charmap | link image media pageembed anchor | table',
+                                             plugins: 'anchor lists advlist image media link pagebreak emoticons charmap casechange formatpainter code pageembed table',
+                                             formats: {
+                                                borderstyle: { selector: 'td,th', styles: { borderTopStyle: 'solid', borderRightStyle: 'solid', borderBottomStyle: 'solid', borderLeftStyle: 'solid', }, remove_similar: true },
+                                                bordercolor: { selector: 'td,th', styles: { borderTopColor: '#32CD32', borderRightColor: '#32CD32', borderBottomColor: '#32CD32', borderLeftColor: '#32CD32' }, remove_similar: true },
+                                                backgroundcolor: { selector: 'td,th', styles: { backgroundColor: '#006400' }, remove_similar: true },
+                                                formatpainter_removeformat: [
+                                                  { selector: 'b,strong,em,i,font,u,strike,sub,sup,dfn,code,samp,kbd,var,cite,mark,q,del,ins',
+                                                    remove: 'all',
+                                                    split: true,
+                                                    expand: false,
+                                                    block_expand: true,
+                                                    deep: true
+                                                  },
+                                                  { selector: 'span',
+                                                    attributes: ['style', 'class'],
+                                                    remove: 'empty',
+                                                    split: true,
+                                                    expand: false,
+                                                    deep: true
+                                                  },
+                                                  { selector: '*:not(tr,td,th,table)',
+                                                    attributes: ['style', 'class'],
+                                                    split: false,
+                                                    expand: false,
+                                                    deep: true
+                                                  }
+                                                ]
+                                              },
+                                       }"/>
+
                         </div>
                         <div class="col-12 row">
                             <div class="col-4">
                                 <h6>Informative prospect</h6>
                                 <span>The file must be in PDF format</span>
-                                <v-text-field
-                                    label="Photo URL"
+                                <v-file-input
+                                    show-size
+                                    label="Upload file"
                                     v-model="newOffer.prospects_info"
-                                    hide-details="auto"
-                                ></v-text-field>
+                                    hide-details
+                                ></v-file-input>
                             </div>
                             <div class="col-4 ml-10">
                                 <h6>Contract summary</h6>
                                 <span>
                                     The file must be in PDF format
                                 </span>
-                                <v-text-field
-                                    label="Photo URL"
+                                <v-file-input
+                                    show-size
+                                    label="Upload file"
                                     v-model="newOffer.contract"
-                                    hide-details="auto"
-                                ></v-text-field>
+                                    hide-details
+                                ></v-file-input>
                             </div>
                         </div>
                         <v-divider class="col-12 p-0 mt-10"></v-divider>
@@ -361,14 +412,19 @@
                         <div class="col-12 row">
                             <div class="col-2">
                                 <v-text-field
-                                    label="Price, €"
+                                    label="Price, € *"
                                     hide-details="auto"
+                                    v-model="newOffer.shop_price"
+                                    :rules="[() => !!newOffer.shop_price || 'This field is required']"
+                                    type="number"
+                                    required
                                 ></v-text-field>
                             </div>
                             <div class="col-3">
                                 <v-text-field
                                     label="Activation price (for NEW user)"
                                     v-model="newOffer.activation_price"
+                                    type="number"
                                     hide-details="auto"
                                 ></v-text-field>
                             </div>
@@ -384,8 +440,11 @@
                         <div class="col-12 row">
                             <div class="col-3">
                                 <v-text-field
-                                    label="Activation price for Vodafone group"
+                                    label="Activation price for Vodafone *"
                                     v-model="newOffer.price_vodafone"
+                                    :rules="[() => !!newOffer.price_vodafone || 'This field is required']"
+                                    required
+                                    type="number"
                                     hide-details="auto"
                                 ></v-text-field>
                             </div>
@@ -393,6 +452,7 @@
                                 <v-text-field
                                     label="Activation price for other operators"
                                     v-model="newOffer.price_others"
+                                    type="number"
                                     hide-details="auto"
                                 ></v-text-field>
                             </div>
@@ -446,6 +506,7 @@
                             class="white--text col-1 ml-4"
                             small
                             depressed
+                            :disabled="!newOffer.name || !newOffer.priority || !newOffer.price || !newOffer.design || !newOffer.shop_price || !newOffer.price_vodafone"
                             @click="OnClickSubmit">
                             Save
                         </v-btn>
@@ -468,6 +529,7 @@ import Editor from '@tinymce/tinymce-vue'
 import ApiOffer from "@/api/ApiOffer";
 import ApiBlog from "@/api/ApiBlog";
 import sweetalert from "sweetalert";
+import ApiAdmin from "@/api/ApiAdmin";
 
 @Component({
     components: { StandartTemplate, PageHeader, Editor }
@@ -502,11 +564,13 @@ export default class OfferCreate extends Vue {
         photo_slide: '',
         photo_slide_m: '',
         display_offers: true,
-        display_home: true,
-        display_slider: true,
+        display_home: false,
+        display_slider: false,
         active: 'active',
-        prospects_info: '',
-        contract: '',
+        tariff_overview: '',
+        prospects_info: null,
+        contract: null,
+        shop_price: '',
         activation_price: '',
         is_porting: true,
         price_vodafone: '',
@@ -564,8 +628,10 @@ export default class OfferCreate extends Vue {
                 this.newOffer.display_home? 1 : 0,
                 this.newOffer.display_slider? 1 : 0,
                 this.newOffer.active === 'active'? 1: 0,
-                this.newOffer.prospects_info,
-                this.newOffer.contract,
+                this.newOffer.tariff_overview,
+                this.newOffer.prospects_info != null? await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID, this.newOffer.prospects_info) as string : '',
+                this.newOffer.contract != null? await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID, this.newOffer.contract) as string : '',
+                this.newOffer.shop_price,
                 this.newOffer.activation_price,
                 this.newOffer.is_porting? 1: 0,
                 this.newOffer.price_vodafone,

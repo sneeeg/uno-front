@@ -64,7 +64,7 @@
                                 <div class="col-12">
                                     <h6>Answer</h6>
                                     <editor
-                                        api-key="no-api-key"
+                                        api-key="nqotow8s9iolgxioaipdmhd8w1vxs3wljhwp09z8l82bi2xb"
                                         v-model="currentFaq.answer"
                                         :init="{
                                              height: 500,

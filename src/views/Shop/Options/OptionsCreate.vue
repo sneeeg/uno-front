@@ -105,7 +105,7 @@
                         <div class="col-12">
                             <p>Overview</p>
                             <editor
-                                api-key="no-api-key"
+                                api-key="nqotow8s9iolgxioaipdmhd8w1vxs3wljhwp09z8l82bi2xb"
                                 v-model="newOption.overview"
                                 class="mt-4"
                                 :init="{
@@ -145,7 +145,7 @@
                         <div class="col-12">
                             <p>Note</p>
                             <editor
-                                api-key="no-api-key"
+                                api-key="nqotow8s9iolgxioaipdmhd8w1vxs3wljhwp09z8l82bi2xb"
                                 class="mt-4"
                                 v-model="newOption.note"
                                 :init="{

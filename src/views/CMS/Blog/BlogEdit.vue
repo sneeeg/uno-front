@@ -114,7 +114,7 @@
                                 </div>
                                 <div class="col-12">
                                     <editor
-                                        api-key="no-api-key"
+                                        api-key="nqotow8s9iolgxioaipdmhd8w1vxs3wljhwp09z8l82bi2xb"
                                         v-model="BlogContent"
                                         :init="{
                                              height: 500,
