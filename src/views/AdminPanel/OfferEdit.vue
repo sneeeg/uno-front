@@ -149,7 +149,6 @@
                                 v-model="newOffer.rates_abroad"
                                 label="Special rates abroad"
                                 color="indigo darken-3"
-                                value="Special rates abroad"
                                 class="m-0"
                                 hide-details
                             ></v-checkbox>
@@ -159,7 +158,6 @@
                                 v-model="newOffer.free"
                                 label="FREE activation"
                                 color="indigo darken-3"
-                                value="FREE activation"
                                 class="m-0"
                                 hide-details
                             ></v-checkbox>
@@ -273,6 +271,7 @@
                                 <span>The photo must be in .jpg or .png format. Size 700*350 pixels</span>
                                 <v-file-input
                                     show-size
+                                    v-model="newOffer.photo_list"
                                     label="Upload file"
                                     hide-details
                                 ></v-file-input>
@@ -286,6 +285,7 @@
                                 </span>
                                 <v-file-input
                                     show-size
+                                    v-model="newOffer.photo_slide"
                                     label="Upload file"
                                     hide-details
                                 ></v-file-input>
@@ -299,6 +299,7 @@
                                 </span>
                                 <v-file-input
                                     show-size
+                                    v-model="newOffer.photo_slide_m"
                                     label="Upload file"
                                     hide-details
                                 ></v-file-input>
@@ -434,7 +435,6 @@
                             label="Offer can be PORTING"
                             class="col-12"
                             color="indigo darken-3"
-                            value="Per tutti"
                             hide-details
                         ></v-checkbox>
                         <div class="col-12 row">
@@ -529,6 +529,7 @@ import Editor from '@tinymce/tinymce-vue'
 import ApiOffer from "@/api/ApiOffer";
 import sweetalert from "sweetalert";
 import dayjs from "dayjs";
+import ApiAdmin from "@/api/ApiAdmin";
 
 @Component({
     components: { StandartTemplate, PageHeader, Editor }
@@ -560,9 +561,9 @@ export default class OfferEdit extends Vue {
         overview: '',
         note: '',
         design: '',
-        photo_list: '',
-        photo_slide: '',
-        photo_slide_m: '',
+        photo_list: null,
+        photo_slide: null,
+        photo_slide_m: null,
         display_offers: true,
         display_home: false,
         display_slider: false,
@@ -606,7 +607,7 @@ export default class OfferEdit extends Vue {
         this.newOffer.additional_data = offerInfo.additional_data
         this.newOffer.int_min = offerInfo.int_min
         this.newOffer.countries = offerInfo.countries
-        this.newOffer.rates_abroad = !!offerInfo.rates_abroad
+        this.newOffer.rates_abroad = offerInfo.rates_abroad
         this.newOffer.free = offerInfo.free
         this.newOffer.activation_info = offerInfo.activation_info
 
@@ -615,17 +616,32 @@ export default class OfferEdit extends Vue {
         this.newOffer.note = offerInfo.note
 
         this.newOffer.design = offerInfo.design
-        this.newOffer.photo_list = offerInfo.photo_list
-        this.newOffer.photo_slide = offerInfo.photo_slide
-        this.newOffer.photo_slide_m = offerInfo.photo_slide_m
+        this.newOffer.photo_list = offerInfo.photo_list ? ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, offerInfo.photo_list)
+                .then((response) => {
+                    this.newOffer.photo_list = new File([new Blob([response.data])], offerInfo.photo_list.split('/')[8])
+                }) : null
+        this.newOffer.photo_slide = offerInfo.photo_slide ? ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, offerInfo.photo_slide)
+            .then((response) => {
+                this.newOffer.photo_slide = new File([new Blob([response.data])], offerInfo.photo_slide.split('/')[8])
+            }) : null
+        this.newOffer.photo_slide_m = offerInfo.photo_slide_m ? ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, offerInfo.photo_slide_m)
+            .then((response) => {
+                this.newOffer.photo_slide_m = new File([new Blob([response.data])], offerInfo.photo_slide_m.split('/')[8])
+            }) : null
         this.newOffer.display_offers = offerInfo.display_offers
         this.newOffer.display_home = offerInfo.display_home
         this.newOffer.display_slider = offerInfo.display_slider
 
         this.newOffer.active = offerInfo.active === 1? 'active' : 'non_active'
         this.newOffer.tariff_overview = offerInfo.tariff_overview
-        this.newOffer.prospects_info = null
-        this.newOffer.contract = null
+        this.newOffer.prospects_info = offerInfo.prospects_info ? ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, offerInfo.prospects_info)
+            .then((response) => {
+                this.newOffer.prospects_info = new File([new Blob([response.data])], offerInfo.prospects_info.split('/')[8])
+            }) : null
+        this.newOffer.contract = offerInfo.contract ? ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, offerInfo.contract)
+            .then((response) => {
+                this.newOffer.contract = new File([new Blob([response.data])], offerInfo.contract.split('/')[8])
+            }) : null
 
         this.newOffer.shop_price = offerInfo.shop_price
         this.newOffer.activation_price = offerInfo.activation_price
@@ -659,6 +675,10 @@ export default class OfferEdit extends Vue {
                 this.$router.push(`/shop/offers`);
             })
         }
+    }
+
+    private GenerateSeoUrl() {
+        this.newOffer.url = this.newOffer.name.replace(/[. ,:-=&+#$?|%@!^(){}'*]+/g, "-").toLowerCase()
     }
 
     private ValidateSeoUrl() {

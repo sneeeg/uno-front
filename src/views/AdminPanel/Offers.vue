@@ -35,6 +35,9 @@
 
                 <div class="col-12">
                     <v-data-table dense :headers="TableHeaders" :items="TableItems" :items-per-page="15" item-key="offer" class="elevation-1">
+                        <template v-slot:item.active="{ item }">
+                            {{ item.active? 'Offerte attivabili' : 'Offerte non più attivabili' }}
+                        </template>
                         <template v-slot:item.action="{ item }">
                             <div class="d-flex align-center">
                                 <v-switch hide-details v-model="item.publish" :input-value="item.publish" class="mt-0" @change="ChangeOfferPublish(item)"></v-switch>

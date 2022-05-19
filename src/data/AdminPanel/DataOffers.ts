@@ -80,7 +80,7 @@ export default class DataOffers {
         },
         {
             text: "Tariff transparency",
-            value: "sex"
+            value: "active"
         },
         {
             text: "Price, €",

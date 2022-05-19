@@ -149,7 +149,6 @@
                                 v-model="newOffer.rates_abroad"
                                 label="Special rates abroad"
                                 color="indigo darken-3"
-                                value="Special rates abroad"
                                 class="m-0"
                                 hide-details
                             ></v-checkbox>
@@ -159,7 +158,6 @@
                                 v-model="newOffer.free"
                                 label="FREE activation"
                                 color="indigo darken-3"
-                                value="FREE activation"
                                 class="m-0"
                                 hide-details
                             ></v-checkbox>
@@ -273,6 +271,7 @@
                                 <span>The photo must be in .jpg or .png format. Size 700*350 pixels</span>
                                 <v-file-input
                                     show-size
+                                    v-model="newOffer.photo_list"
                                     label="Upload file"
                                     hide-details
                                 ></v-file-input>
@@ -286,6 +285,7 @@
                                 </span>
                                 <v-file-input
                                     show-size
+                                    v-model="newOffer.photo_slide"
                                     label="Upload file"
                                     hide-details
                                 ></v-file-input>
@@ -299,6 +299,7 @@
                                 </span>
                                 <v-file-input
                                     show-size
+                                    v-model="newOffer.photo_slide_m"
                                     label="Upload file"
                                     hide-details
                                 ></v-file-input>
@@ -434,7 +435,6 @@
                             label="Offer can be PORTING"
                             class="col-12"
                             color="indigo darken-3"
-                            value="Per tutti"
                             hide-details
                         ></v-checkbox>
                         <div class="col-12 row">
@@ -560,9 +560,9 @@ export default class OfferCreate extends Vue {
         overview: '',
         note: '',
         design: '',
-        photo_list: '',
-        photo_slide: '',
-        photo_slide_m: '',
+        photo_list: null,
+        photo_slide: null,
+        photo_slide_m: null,
         display_offers: true,
         display_home: false,
         display_slider: false,
@@ -621,9 +621,9 @@ export default class OfferCreate extends Vue {
                 this.newOffer.overview,
                 this.newOffer.note,
                 this.newOffer.design,
-                this.newOffer.photo_list,
-                this.newOffer.photo_slide,
-                this.newOffer.photo_slide_m,
+                this.newOffer.photo_list != null? await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID, this.newOffer.photo_list) as string : '',
+                this.newOffer.photo_slide != null? await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID, this.newOffer.photo_slide) as string : '',
+                this.newOffer.photo_slide_m != null? await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID, this.newOffer.photo_slide_m) as string : '',
                 this.newOffer.display_offers? 1 : 0,
                 this.newOffer.display_home? 1 : 0,
                 this.newOffer.display_slider? 1 : 0,
