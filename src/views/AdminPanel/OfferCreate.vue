@@ -493,14 +493,16 @@
                     </div>
                 </v-row>
                 <div class="col-12">
-                    <div class="col-12 row bg-light">
-                        <v-btn
-                            color="grey lighten-1"
-                            class="white--text col-1 ml-2"
-                            small
-                            depressed>
-                            Cancel
-                        </v-btn>
+                    <div class="col-12 bg-light">
+                        <router-link to="/shop/offers">
+                            <v-btn
+                                color="grey lighten-1"
+                                class="white--text col-1 ml-2"
+                                small
+                                depressed>
+                                Cancel
+                            </v-btn>
+                        </router-link>
                         <v-btn
                             color="orange accent-4"
                             class="white--text col-1 ml-4"

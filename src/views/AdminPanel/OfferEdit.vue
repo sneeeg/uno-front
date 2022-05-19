@@ -493,14 +493,16 @@
                     </div>
                 </v-row>
                 <div class="col-12">
-                    <div class="col-12 row bg-light">
-                        <v-btn
-                            color="grey lighten-1"
-                            class="white--text col-1 ml-2"
-                            small
-                            depressed>
-                            Cancel
-                        </v-btn>
+                    <div class="col-12 bg-light">
+                        <router-link to="/shop/offers">
+                            <v-btn
+                                color="grey lighten-1"
+                                class="white--text col-1 ml-2"
+                                small
+                                depressed>
+                                Cancel
+                            </v-btn>
+                        </router-link>
                         <v-btn
                             color="orange accent-4"
                             class="white--text col-1 ml-4"
@@ -530,6 +532,7 @@ import ApiOffer from "@/api/ApiOffer";
 import sweetalert from "sweetalert";
 import dayjs from "dayjs";
 import ApiAdmin from "@/api/ApiAdmin";
+import ApiBlog from "@/api/ApiBlog";
 
 @Component({
     components: { StandartTemplate, PageHeader, Editor }
@@ -664,16 +667,69 @@ export default class OfferEdit extends Vue {
     }
 
     private async OnClickSubmit(): Promise<void> {
-        if (ApiEnter.CurrentSessionUUID != undefined) {
-
-            sweetalert({
-                title: "Success!",
-                text: `Offer has updated!`,
-                icon: "success"
-            }).then(() => {
-                this.$forceUpdate()
-                this.$router.push(`/shop/offers`);
-            })
+        try {
+            const response = await ApiOffer.UpdateOfferInfo(
+                this.newOffer.name,
+                this.newOffer.priority,
+                this.newOffer.publish? 1: 0,
+                this.newOffer.category,
+                this.newOffer.price,
+                this.newOffer.data,
+                this.newOffer.sms,
+                this.newOffer.min,
+                this.newOffer.additional_data,
+                this.newOffer.int_min,
+                this.newOffer.countries,
+                this.newOffer.rates_abroad? 1 : 0,
+                this.newOffer.free? 1: 0,
+                this.newOffer.activation_info,
+                this.newOffer.display_roaming? 1: 0,
+                this.newOffer.overview,
+                this.newOffer.note,
+                this.newOffer.design,
+                this.newOffer.photo_list != null? await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID as string, this.newOffer.photo_list) as string : '',
+                this.newOffer.photo_slide != null? await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID as string, this.newOffer.photo_slide) as string : '',
+                this.newOffer.photo_slide_m != null? await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID as string, this.newOffer.photo_slide_m) as string : '',
+                this.newOffer.display_offers? 1 : 0,
+                this.newOffer.display_home? 1 : 0,
+                this.newOffer.display_slider? 1 : 0,
+                this.newOffer.active === 'active'? 1: 0,
+                this.newOffer.tariff_overview,
+                this.newOffer.prospects_info != null? await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID as string, this.newOffer.prospects_info) as string : '',
+                this.newOffer.contract != null? await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID as string, this.newOffer.contract) as string : '',
+                this.newOffer.shop_price,
+                this.newOffer.activation_price,
+                this.newOffer.is_porting? 1: 0,
+                this.newOffer.price_vodafone,
+                this.newOffer.price_others,
+                this.newOffer.title,
+                this.newOffer.description,
+                this.newOffer.keywords,
+                this.newOffer.url,
+                ApiEnter.CurrentSessionUUID as string,
+                this.CurrentOfferUUID);
+            if (typeof response == "boolean") {
+                sweetalert({
+                    title: "Success!",
+                    text: "Offer has updated",
+                    icon: "success"
+                }).then(() => {
+                    this.$router.go(-1);
+                });
+            } else {
+                await sweetalert({
+                    title: "Error!",
+                    text: `Request error: ${response}`,
+                    icon: "error"
+                });
+            }
+        } catch (e) {
+            console.error(e);
+            await sweetalert({
+                title: "Error!",
+                text: "Request error!",
+                icon: "error"
+            });
         }
     }
 
