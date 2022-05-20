@@ -102,6 +102,9 @@
                                 v-model="newFile.file"
                                 hide-details
                             ></v-file-input>
+                            <button class="mt-4" @click="DownloadFile">
+                                Download file
+                            </button>
                         </div>
                         <div class="col">
                             <v-text-field
@@ -109,7 +112,7 @@
                                 v-model="currentFile.description"
                                 hide-details
                                 dense
-                                class="mt-2"
+                                class="mt-4"
                             ></v-text-field>
                         </div>
                     </v-card-text>
@@ -353,8 +356,8 @@ export default class SourceFiles extends Vue {
         this.currentFile.file_name = fileInfo.file_name
         this.currentFile.publish = fileInfo.publish
         this.currentFile.description = fileInfo.description
-        this.currentFile.update = dayjs(fileInfo.update).format('DD.MM.YYYY')
-        this.currentFile.created = dayjs(fileInfo.create_at).format('DD.MM.YYYY')
+        this.currentFile.update = dayjs(fileInfo.update).format('DD.MM.YYYY HH:mm:s')
+        this.currentFile.created = dayjs(fileInfo.create_at).format('DD.MM.YYYY HH:mm:s')
         this.currentFile.uuid = fileInfo.uuid
 
         ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, fileInfo.file_name)
@@ -397,6 +400,16 @@ export default class SourceFiles extends Vue {
         } catch (e) {
             console.error(e);
         }
+    }
+
+    private async DownloadFile(): Promise<void> {
+        await ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, this.currentFile.file_name).then((response) => {
+            let a = document.createElement("a")
+            let file = new Blob([response])
+            a.href = URL.createObjectURL(file);
+            a.download = this.currentFile.file_name.split('/')[8];
+            a.click();
+        })
     }
 
     private formatDate(item: string) {
