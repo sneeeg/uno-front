@@ -275,6 +275,7 @@
                                     label="Upload file"
                                     hide-details
                                 ></v-file-input>
+                                <button class="mt-2" v-if="newOffer.photo_list_name" @click="DownloadPhotoList">Download file</button>
                             </div>
                             <div class="col-4">
                                 <h6>Photo for Slide on desktop screens</h6>
@@ -289,6 +290,7 @@
                                     label="Upload file"
                                     hide-details
                                 ></v-file-input>
+                                <button class="mt-2" v-if="newOffer.photo_slide_name" @click="DownloadPhotoSlide">Download file</button>
                             </div>
                             <div class="col-4">
                                 <h6>Photo for Slide on mobile screens</h6>
@@ -303,6 +305,7 @@
                                     label="Upload file"
                                     hide-details
                                 ></v-file-input>
+                                <button class="mt-2" v-if="newOffer.photo_slide_m_name" @click="DownloadPhotoSlideM">Download file</button>
                             </div>
                         </div>
                         <h6 class="col-12">Where display</h6>
@@ -394,6 +397,7 @@
                                     v-model="newOffer.prospects_info"
                                     hide-details
                                 ></v-file-input>
+                                <button class="mt-2" v-if="newOffer.prospects_info_name" @click="DownloadProspectsInfo">Download file</button>
                             </div>
                             <div class="col-4 ml-10">
                                 <h6>Contract summary</h6>
@@ -406,6 +410,7 @@
                                     v-model="newOffer.contract"
                                     hide-details
                                 ></v-file-input>
+                                <button class="mt-2" v-if="newOffer.contract_name" @click="DownloadContract">Download file</button>
                             </div>
                         </div>
                         <v-divider class="col-12 p-0 mt-10"></v-divider>
@@ -565,15 +570,20 @@ export default class OfferEdit extends Vue {
         note: '',
         design: '',
         photo_list: null,
+        photo_list_name: '',
         photo_slide: null,
+        photo_slide_name: '',
         photo_slide_m: null,
+        photo_slide_m_name: '',
         display_offers: true,
         display_home: false,
         display_slider: false,
         active: 'active',
         tariff_overview: '',
         prospects_info: null,
+        prospects_info_name: '',
         contract: null,
+        contract_name: '',
         shop_price: '',
         activation_price: '',
         is_porting: true,
@@ -623,14 +633,17 @@ export default class OfferEdit extends Vue {
                 .then((response) => {
                     this.newOffer.photo_list = new File([new Blob([response.data])], offerInfo.photo_list.split('/')[8])
                 }) : null
+        this.newOffer.photo_list_name = offerInfo.photo_list
         this.newOffer.photo_slide = offerInfo.photo_slide ? ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, offerInfo.photo_slide)
             .then((response) => {
                 this.newOffer.photo_slide = new File([new Blob([response.data])], offerInfo.photo_slide.split('/')[8])
             }) : null
+        this.newOffer.photo_slide_name = offerInfo.photo_slide
         this.newOffer.photo_slide_m = offerInfo.photo_slide_m ? ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, offerInfo.photo_slide_m)
             .then((response) => {
                 this.newOffer.photo_slide_m = new File([new Blob([response.data])], offerInfo.photo_slide_m.split('/')[8])
             }) : null
+        this.newOffer.photo_slide_m_name = offerInfo.photo_slide_m
         this.newOffer.display_offers = offerInfo.display_offers
         this.newOffer.display_home = offerInfo.display_home
         this.newOffer.display_slider = offerInfo.display_slider
@@ -641,10 +654,12 @@ export default class OfferEdit extends Vue {
             .then((response) => {
                 this.newOffer.prospects_info = new File([new Blob([response.data])], offerInfo.prospects_info.split('/')[8])
             }) : null
+        this.newOffer.prospects_info_name = offerInfo.prospects_info
         this.newOffer.contract = offerInfo.contract ? ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, offerInfo.contract)
             .then((response) => {
                 this.newOffer.contract = new File([new Blob([response.data])], offerInfo.contract.split('/')[8])
             }) : null
+        this.newOffer.contract_name = offerInfo.contract
 
         this.newOffer.shop_price = offerInfo.shop_price
         this.newOffer.activation_price = offerInfo.activation_price
@@ -739,6 +754,56 @@ export default class OfferEdit extends Vue {
 
     private ValidateSeoUrl() {
         this.newOffer.url = this.newOffer.url.replace(/[. ,$@!^()'*]+/g, '-').toLowerCase()
+    }
+
+    private async DownloadPhotoList(): Promise<void> {
+        await ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, this.newOffer.photo_list_name).then((response) => {
+            let a = document.createElement("a")
+            let file = new Blob([response])
+            a.href = URL.createObjectURL(file);
+            a.download = this.newOffer.photo_list_name.split('/')[8];
+            a.click();
+        })
+    }
+
+    private async DownloadPhotoSlide(): Promise<void> {
+        await ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, this.newOffer.photo_slide_name).then((response) => {
+            let a = document.createElement("a")
+            let file = new Blob([response])
+            a.href = URL.createObjectURL(file);
+            a.download = this.newOffer.photo_slide_name.split('/')[8];
+            a.click();
+        })
+    }
+
+    private async DownloadPhotoSlideM(): Promise<void> {
+        await ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, this.newOffer.photo_slide_m_name).then((response) => {
+            let a = document.createElement("a")
+            let file = new Blob([response])
+            a.href = URL.createObjectURL(file);
+            a.download = this.newOffer.photo_slide_m_name.split('/')[8];
+            a.click();
+        })
+    }
+
+    private async DownloadProspectsInfo(): Promise<void> {
+        await ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, this.newOffer.prospects_info_name).then((response) => {
+            let a = document.createElement("a")
+            let file = new Blob([response])
+            a.href = URL.createObjectURL(file);
+            a.download = this.newOffer.prospects_info_name.split('/')[8];
+            a.click();
+        })
+    }
+
+    private async DownloadContract(): Promise<void> {
+        await ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, this.newOffer.contract_name).then((response) => {
+            let a = document.createElement("a")
+            let file = new Blob([response])
+            a.href = URL.createObjectURL(file);
+            a.download = this.newOffer.contract_name.split('/')[8];
+            a.click();
+        })
     }
 
     async mounted() {
