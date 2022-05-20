@@ -293,7 +293,7 @@ export default class OptionsCreate extends Vue {
     private Breadcrumbs: BreadcrumbsItemType[] = DataOptions.BreadcrumbsCreate;
 
     private PeriodTypes: string[] = ['ora', 'giorno', 'settimana', 'mese', 'anno']
-    private MeasureTypes: string[] = ['SMS', 'GB', 'SIM', 'Minutes']
+    private MeasureTypes: string[] = ['SMS', 'Giga', 'SIM', 'Minuti']
 
     private newOption: any = {
         name: '',
