@@ -14,6 +14,7 @@ import slider from "@/router/slider";
 import files from "@/router/files";
 import feedback from "@/router/feedback";
 import shop from "@/router/shop";
+import SourceFiles from "@/views/CMS/SourceFiles/SourceFiles.vue";
 
 Vue.use(VueRouter);
 
@@ -47,6 +48,11 @@ const routes: Array<RouteConfig> = [
         path: "/enter/forgot-password",
         name: "EnterForgotPassword",
         component: ForgotPassword
+    },
+    {
+        path: "/cms/source-files",
+        name: "SourceFiles",
+        component: SourceFiles
     },
     ...company,
     ...companyEmployee,
