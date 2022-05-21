@@ -15,6 +15,7 @@ import files from "@/router/files";
 import feedback from "@/router/feedback";
 import shop from "@/router/shop";
 import SourceFiles from "@/views/CMS/SourceFiles/SourceFiles.vue";
+import EmailNotifications from "@/views/Settings/EmailNotification/EmailNotifications.vue";
 
 Vue.use(VueRouter);
 
@@ -53,6 +54,16 @@ const routes: Array<RouteConfig> = [
         path: "/cms/source-files",
         name: "SourceFiles",
         component: SourceFiles
+    },
+    {
+        path: "/settings/email-notifications",
+        name: "EmailNotifications",
+        component: EmailNotifications
+    },
+    {
+        path: "/settings/email-notifications/edit/:email_uuid",
+        name: "EnterLoginFromEmail",
+        component: Login
     },
     ...company,
     ...companyEmployee,

@@ -69,6 +69,9 @@
                         <router-link to="/admin/users" class="menu-item">
                             <i class="fas fa-users-cog"></i> Users managment
                         </router-link>
+                        <router-link to="/settings/email-notifications" class="menu-item">
+                            <i class="far fa-envelope-open"></i> Email Notifications
+                        </router-link>
                     </div>
                 </div>
             </div>
