@@ -3,7 +3,7 @@
         <div class="container">
             <div class="row mt-1">
                 <v-breadcrumbs :items="Breadcrumbs" divider="/"/>
-                <page-header title="Posts" back-url="/company/list/"/>
+                <page-header title="Email Notifications" back-url="/company/list/"/>
                 <div class="col-12 px-6">
                     <v-divider></v-divider>
                 </div>
@@ -13,67 +13,44 @@
                         <div class="well-wrapper">
                             <div class="row">
                                 <div class="col-12">
-                                    <v-col>
-                                        <h5 class="font-weight-medium">Main information</h5>
-                                    </v-col>
                                     <div class="d-flex mt-6">
-                                        <span class="font-weight-medium">Created</span>
+                                        <p class="font-weight-medium">Updated</p>
                                         <p class="ml-10 mb-0">{{ PostCreated }}</p>
                                     </div>
-                                    <v-col cols="3">
-                                        <v-menu
-                                            v-model="isOpenDate"
-                                            :close-on-content-click="false"
-                                            :nudge-right="40"
-                                            transition="scale-transition"
-                                            offset-y
-                                            min-width="auto"
-                                        >
-                                            <template v-slot:activator="{ on, attrs }">
-                                                <v-text-field
-                                                    v-model="computedDateFormatted"
-                                                    label="Date"
-                                                    prepend-icon="mdi-calendar"
-                                                    hide-details
-                                                    readonly
-                                                    v-bind="attrs"
-                                                    v-on="on"
-                                                ></v-text-field>
-                                            </template>
-                                            <v-date-picker
-                                                v-model="PostDate"
-                                                locale="en"
-                                                @input="isOpenDate = false"
-                                            ></v-date-picker>
-                                        </v-menu>
-                                    </v-col>
+                                    <div class="d-flex mt-6">
+                                        <p class="font-weight-medium">TemplateID</p>
+                                        <p class="ml-10 mb-0">{{ PostCreated }}</p>
+                                    </div>
                                     <v-switch
                                         v-model="PostPublish"
                                         label="Publish"
                                         inset
                                         hide-details
-                                        class="mt-9"
+                                        class="mt-9 col-2"
                                     ></v-switch>
                                     <v-text-field
-                                        label="Post name"
+                                        label="Template name *"
                                         v-model="PostName"
                                         hide-details
                                         class="col-7 px-0 mt-5"
                                     ></v-text-field>
-                                    <v-col cols="4" class="px-0">
-                                        <v-select
-                                            :items="CardDesignData"
-                                            v-model="BlogCardDesign"
-                                            label="Card design"
-                                            hide-details
-                                            outlined
-                                        ></v-select>
-                                    </v-col>
+                                    <v-text-field
+                                        label="Topic name *"
+                                        v-model="PostName"
+                                        hide-details
+                                        class="col-7 px-0 mt-5"
+                                    ></v-text-field>
+                                    <v-text-field
+                                        label="Send TO *"
+                                        v-model="PostName"
+                                        hide-details
+                                        class="col-7 px-0 mt-5"
+                                    ></v-text-field>
                                     <v-col>
                                         <v-row class="mt-5">
                                             <v-col cols="4">
-                                                <h6 class="mb-1">Post image size1</h6>
-                                                <span>The photo must be in .jpg or .png format. Size 1365*505 pixels</span>
+                                                <p class="mb-1 text-body-2">HTML file of E-mail template</p>
+                                                <span>The file must be in HTML format</span>
                                                 <v-file-input
                                                     v-model="PostImage1"
                                                     show-size
@@ -90,100 +67,32 @@
                                                     Download file
                                                 </button>
                                             </v-col>
-                                            <v-col cols="4" class="ml-15">
-                                                <h6 class="mb-1">Post image size2</h6>
-                                                <span>The photo must be in .jpg or .png format. Size 680*450 pixels</span>
-                                                <v-file-input
-                                                    v-model="PostImage2"
-                                                    show-size
-                                                    accept="image/*"
-                                                    label="Upload file"
-                                                    hide-details
-                                                    class="mt-3"
-                                                ></v-file-input>
-                                                <button
-                                                    @click="DownloadFile2"
-                                                    class="mt-3 pa-2"
-                                                    :disabled="PostImageName2 === ''"
-                                                >
-                                                    Download file
-                                                </button>
-                                            </v-col>
                                         </v-row>
                                     </v-col>
-                                </div>
-                                <div class="col-12">
-                                    <editor
-                                        api-key="nqotow8s9iolgxioaipdmhd8w1vxs3wljhwp09z8l82bi2xb"
-                                        v-model="BlogContent"
-                                        :init="{
-                                             height: 500,
-                                             menubar: false,
-                                             toolbar: 'undo redo | bold italic underline strikethrough | fontsizeselect | formatselect | alignleft aligncenter alignright alignjustify | indent outdent | bullist numlist | forecolor backcolor casechange formatpainter removeformat | pagebreak | emoticons charmap | link image media pageembed anchor | table',
-                                             plugins: 'anchor lists advlist image media link pagebreak emoticons charmap casechange formatpainter code pageembed table',
-                                             formats: {
-                                                borderstyle: { selector: 'td,th', styles: { borderTopStyle: 'solid', borderRightStyle: 'solid', borderBottomStyle: 'solid', borderLeftStyle: 'solid', }, remove_similar: true },
-                                                bordercolor: { selector: 'td,th', styles: { borderTopColor: '#32CD32', borderRightColor: '#32CD32', borderBottomColor: '#32CD32', borderLeftColor: '#32CD32' }, remove_similar: true },
-                                                backgroundcolor: { selector: 'td,th', styles: { backgroundColor: '#006400' }, remove_similar: true },
-                                                formatpainter_removeformat: [
-                                                  { selector: 'b,strong,em,i,font,u,strike,sub,sup,dfn,code,samp,kbd,var,cite,mark,q,del,ins',
-                                                    remove: 'all',
-                                                    split: true,
-                                                    expand: false,
-                                                    block_expand: true,
-                                                    deep: true
-                                                  },
-                                                  { selector: 'span',
-                                                    attributes: ['style', 'class'],
-                                                    remove: 'empty',
-                                                    split: true,
-                                                    expand: false,
-                                                    deep: true
-                                                  },
-                                                  { selector: '*:not(tr,td,th,table)',
-                                                    attributes: ['style', 'class'],
-                                                    split: false,
-                                                    expand: false,
-                                                    deep: true
-                                                  }
-                                                ]
-                                              },
-                                       }"/>
                                 </div>
                                 <div class="col-12">
                                     <v-divider></v-divider>
                                 </div>
                                 <div class="col-12">
-                                    <h5 class="font-weight-medium">SEO Section</h5>
-                                    <v-textarea
-                                        outlined
-                                        name="input-7-4"
-                                        height="100"
-                                        no-resize
-                                        hide-details
-                                        class="col-5 px-0 mt-10"
-                                        label="Description"
-                                        v-model="BlogSeoDescription"
-                                        value=""
-                                    ></v-textarea>
-                                    <v-textarea
-                                        outlined
-                                        name="input-7-4"
-                                        height="100"
-                                        no-resize
-                                        hide-details
-                                        class="col-5 px-0 mt-5"
-                                        label="Keywords"
-                                        v-model="BlogSeoKeywords"
-                                        value=""
-                                    ></v-textarea>
-                                    <v-text-field
-                                        label="URL"
-                                        v-model="BlogSeoUrl"
-                                        hide-details
-                                        class="col-5 px-0 mt-5"
-                                        @input="ValidateSeoUrl"
-                                    ></v-text-field>
+                                    <p class="font-weight-bold">The available variables</p>
+                                    <ul class="pl-4 mt-2">
+                                        <li><span>{{</span>name<span>}} - customer Name</span></li>
+                                        <li><span>{{</span>email<span>}} - customer Email</span></li>
+                                        <li><span>{{</span>order_number<span>}} - order number</span></li>
+                                        <li><span>{{</span>order_status<span>}} - current order status</span></li>
+                                        <li><span>{{</span>payment_status<span>}} - current order status</span></li>
+                                        <li><span>{{</span>payment_amount<span>}} - total sum</span></li>
+                                        <li><span>{{</span>tracking_number<span>}} - tracking number</span></li>
+                                    </ul>
+
+                                    <ul class="pl-4">
+                                        <li><span>{{</span>shipping_address<span>}} - delivery address</span></li>
+                                        <li><span>{{</span>billing_address<span>}} - residence address</span></li>
+                                        <li><span>{{</span>payment_method<span>}} - payment method</span></li>
+                                        <li><span>{{</span>order_items<span>}} - a complete list of order items and their prices</span></li>
+                                        <li><span>{{</span>order_cards<span>}} - list of physical goods in the order that are sent to the address of the customer</span></li>
+                                        <li><span>{{</span>tracking_link<span>}} - link to check delivery tracking</span></li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -191,7 +100,7 @@
                     <div class="row">
                         <div class="col-12 px-6">
                             <div class="col-12 py-6 bg-light">
-                                <router-link to="/admin/blog">
+                                <router-link to="/settings/email-notifications">
                                     <v-btn
                                         color="grey lighten-1"
                                         class="white--text col-1 ml-2"
@@ -229,6 +138,7 @@ import PageHeader from "@/components/UI/PageHeader.vue";
 import Editor from '@tinymce/tinymce-vue'
 import dayjs from "dayjs";
 import ApiAdmin from "@/api/ApiAdmin";
+import ApiSettings from "@/api/ApiSettings";
 
 
 @Component({
@@ -257,11 +167,8 @@ export default class EmailNotificationsEdit extends Vue {
             disabled: true
         }
     ];
-    private CardDesignData: string[] = ['Blue', 'Orange', 'White', 'With image']
 
-    private isOpenDate: boolean = false
-
-    private CurrentBlogUUID!: string;
+    private CurrentUUID!: string;
     private PostPublish: boolean = true
     private PostName: string= ''
     private PostDate: string = ''
@@ -278,7 +185,7 @@ export default class EmailNotificationsEdit extends Vue {
 
     private async DoLoadForm(): Promise<void> {
 
-        const blogInfo: any = await ApiBlog.GetBlogByUUID(ApiEnter.CurrentSessionUUID as string, this.CurrentBlogUUID);
+        const blogInfo: any = await ApiSettings.GetEmailNotificationByUUID(ApiEnter.CurrentSessionUUID as string, this.CurrentUUID);
         if (blogInfo == undefined) {
             sweetalert({
                 title: "Oop!",
@@ -364,7 +271,7 @@ export default class EmailNotificationsEdit extends Vue {
                 this.BlogSeoKeywords,
                 this.BlogSeoUrl,
                 ApiEnter.CurrentSessionUUID as string,
-                this.CurrentBlogUUID);
+                this.CurrentUUID);
             if (typeof response == "boolean") {
                 sweetalert({
                     title: "Success!",
@@ -399,7 +306,7 @@ export default class EmailNotificationsEdit extends Vue {
     }
 
     public mounted() {
-        this.CurrentBlogUUID = this.$route.params.blog_uuid;
+        this.CurrentUUID = this.$route.params.email_uuid;
         this.DoLoadForm();
     }
 }
