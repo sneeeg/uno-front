@@ -181,71 +181,6 @@ export default class EmailNotificationsCreate extends Vue {
     private BlogSeoUrl: string = ''
     private PostCreated: string= ''
 
-    private async DoLoadForm(): Promise<void> {
-
-        const blogInfo: any = await ApiSettings.GetEmailNotificationByUUID(ApiEnter.CurrentSessionUUID as string, this.CurrentUUID);
-        if (blogInfo == undefined) {
-            sweetalert({
-                title: "Oop!",
-                text: "Request error, not all data was loaded!",
-                icon: "error"
-            }).then(() => {
-                this.$router.go(-1);
-            });
-            return;
-        }
-
-        this.PostName = blogInfo.title
-        this.PostDate = blogInfo.date
-        await this.GetFiles(blogInfo.image1, blogInfo.image2)
-        this.PostImageName1 = blogInfo.image1
-        this.PostImageName2 = blogInfo.image2
-        this.BlogCardDesign = blogInfo.card_design
-        this.PostPublish = blogInfo.publish
-        this.BlogContent = blogInfo.content
-        this.BlogSeoDescription = blogInfo.seo_description
-        this.BlogSeoKeywords = blogInfo.seo_keywords
-        this.BlogSeoUrl = blogInfo.seo_url
-        this.PostCreated = dayjs(blogInfo.create_at).format('DD.MM.YYYY HH:mm')
-
-        this.$forceUpdate();
-    }
-
-    private async GetFiles(file_name1: string, file_name2: string): Promise<void> {
-        if (file_name1 !== '') {
-            await ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, file_name1)
-                .then((response) => {
-                    this.PostImage1 = new File([new Blob([response.data])], file_name1.split('/')[8])
-                })
-        }
-
-        if (file_name2 !== '') {
-            await ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, file_name2)
-                .then((response) => {
-                    this.PostImage2 = new File([new Blob([response.data])], file_name2.split('/')[8])
-                })
-        }
-    }
-
-    private async DownloadFile1(): Promise<void> {
-        await ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, this.PostImageName1).then((response) => {
-            let a = document.createElement("a")
-            let file = new Blob([response])
-            a.href = URL.createObjectURL(file);
-            a.download = this.PostImageName1.split('/')[8];
-            a.click();
-        })
-    }
-    private async DownloadFile2(): Promise<void> {
-        await ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, this.PostImageName2).then((response) => {
-            let a = document.createElement("a")
-            let file = new Blob([response])
-            a.href = URL.createObjectURL(file);
-            a.download = this.PostImageName2.split('/')[8];
-            a.click();
-        })
-    }
-
     private async OnClickSubmit(): Promise<void> {
         const file_name1 = this.PostImage1?
             this.PostImage1.name === this.PostImageName1.split('/')[8] ? this.PostImageName1
@@ -293,19 +228,6 @@ export default class EmailNotificationsCreate extends Vue {
                 icon: "error"
             });
         }
-    }
-
-    private ValidateSeoUrl() {
-        this.BlogSeoUrl = this.BlogSeoUrl.replace(/[. ,$@!^()'*]+/g, '-').toLowerCase()
-    }
-
-    get computedDateFormatted() {
-        return dayjs(this.PostDate).format('DD.MM.YYYY')
-    }
-
-    public mounted() {
-        this.CurrentUUID = this.$route.params.email_uuid;
-        this.DoLoadForm();
     }
 }
 </script>
