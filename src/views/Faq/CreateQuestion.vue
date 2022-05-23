@@ -30,6 +30,7 @@
                                         v-model="newPost.publish"
                                         label="Publish"
                                         hide-details
+                                        inset
                                         class="mt-10"
                                     ></v-switch>
                                     <v-text-field

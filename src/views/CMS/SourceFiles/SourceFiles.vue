@@ -92,6 +92,7 @@
                                 v-model="currentFile.publish"
                                 label="Publish"
                                 class="mt-0"
+                                inset
                                 hide-details
                             ></v-switch>
                         </div>
@@ -172,7 +173,7 @@
                         </template>
                         <template v-slot:item.action="{ item }">
                             <div class="d-flex align-center">
-                                <v-switch hide-details v-model="item.publish" :input-value="item.publish" class="mt-0" @change="ChangeFilePublish(item)"></v-switch>
+                                <v-switch hide-details inset v-model="item.publish" :input-value="item.publish" class="mt-0" @change="ChangeFilePublish(item)"></v-switch>
                                 <v-btn icon @click="openEditDialog(item.uuid)">
                                     <v-icon small color="grey darken-2">
                                         fas fa-pencil-alt
@@ -198,7 +199,6 @@ import BreadcrumbsItemType from "@/struct/ui/breadcrumbs/BreadcrumbsItemType";
 import sweetalert from "sweetalert";
 import ApiEnter from "@/api/ApiEnter";
 import ApiSourceFiles from "@/api/ApiSourceFiles";
-import ApiSupportFiles from "@/api/ApiSupportFiles";
 import StandartTemplate from "@/components/Template/StandartTemplate.vue";
 import LeftMenuTab from "@/components/LeftMenu/LeftMenuTab.vue";
 import PageHeader from "@/components/UI/PageHeader.vue";

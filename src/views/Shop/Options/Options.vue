@@ -25,7 +25,7 @@
                     <v-data-table dense :headers="TableHeaders" :items="TableItems" :items-per-page="15" item-key="offer" class="elevation-1">
                         <template v-slot:item.action="{ item }">
                             <div class="d-flex align-center">
-                                <v-switch hide-details v-model="item.publish" :input-value="item.publish" class="mt-0" @change="ChangeOptionPublish(item)"></v-switch>
+                                <v-switch hide-details inset v-model="item.publish" :input-value="item.publish" class="mt-0" @change="ChangeOptionPublish(item)"></v-switch>
                                 <router-link :to="'/shop/options/edit/' + item.uuid">
                                     <v-btn icon>
                                         <v-icon small color="grey darken-2">

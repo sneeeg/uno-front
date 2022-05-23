@@ -18,6 +18,46 @@ export default class DataEmailNotifications {
         },
     ];
 
+    public static BreadcrumbsEdit: BreadcrumbsItemType[] = [
+        {
+            to: "/",
+            text: "Home",
+        },
+        {
+            to: "/",
+            text: "Settings"
+        },
+        {
+            to: "/settings/email-notifications",
+            exact: true,
+            text: "Email Notifications",
+        },
+        {
+            text: "Edit",
+            disabled: true
+        },
+    ];
+
+    public static BreadcrumbsCreate: BreadcrumbsItemType[] = [
+        {
+            to: "/",
+            text: "Home",
+        },
+        {
+            to: "/",
+            text: "Settings"
+        },
+        {
+            to: "/settings/email-notifications",
+            exact: true,
+            text: "Email Notifications",
+        },
+        {
+            text: "Create",
+            disabled: true
+        },
+    ];
+
     public static TableHeaders: TableHeaderItemType[] = [
         {
             text: "Updated",

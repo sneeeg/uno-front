@@ -40,7 +40,7 @@
                         </template>
                         <template v-slot:item.action="{ item }">
                             <div class="d-flex align-center">
-                                <v-switch hide-details v-model="item.publish" :input-value="item.publish" class="mt-0" @change="ChangeOfferPublish(item)"></v-switch>
+                                <v-switch hide-details v-model="item.publish" inset :input-value="item.publish" class="mt-0" @change="ChangeOfferPublish(item)"></v-switch>
                                 <router-link :to="'/shop/offers/edit/' + item.uuid">
                                     <v-btn icon>
                                         <v-icon small color="grey darken-2">
@@ -67,14 +67,12 @@ import { Component, Vue } from "vue-property-decorator";
 import PageHeader from "@/components/UI/PageHeader.vue";
 import BreadcrumbsItemType from "@/struct/ui/breadcrumbs/BreadcrumbsItemType";
 import TableHeaderItemType from "@/struct/ui/Table/TableHeaderItemType";
-import ApiAdmin from "@/api/ApiAdmin";
 import ApiEnter from "@/api/ApiEnter";
 import IAdminPanelUserList from "@/struct/admin-panel/IAdminPanelUserList";
 import StandartTemplate from "@/components/Template/StandartTemplate.vue";
 import DataOffers from "@/data/AdminPanel/DataOffers";
 import ApiOffer from "@/api/ApiOffer";
 import sweetalert from "sweetalert";
-import ApiSupportFiles from "@/api/ApiSupportFiles";
 
 @Component({
     components: { StandartTemplate, PageHeader }

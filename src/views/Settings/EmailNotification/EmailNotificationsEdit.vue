@@ -15,14 +15,14 @@
                                 <div class="col-12">
                                     <div class="d-flex mt-6">
                                         <p class="font-weight-medium">Updated</p>
-                                        <p class="ml-10 mb-0">{{ PostCreated }}</p>
+                                        <p class="ml-10 mb-0">{{ EmailNotification.update }}</p>
                                     </div>
                                     <div class="d-flex mt-6">
                                         <p class="font-weight-medium">TemplateID</p>
-                                        <p class="ml-10 mb-0">{{ PostCreated }}</p>
+                                        <p class="ml-10 mb-0">{{ EmailNotification.template_id }}</p>
                                     </div>
                                     <v-switch
-                                        v-model="PostPublish"
+                                        v-model="EmailNotification.publish"
                                         label="Publish"
                                         inset
                                         hide-details
@@ -30,19 +30,19 @@
                                     ></v-switch>
                                     <v-text-field
                                         label="Template name *"
-                                        v-model="PostName"
+                                        v-model="EmailNotification.template_name"
                                         hide-details
                                         class="col-7 px-0 mt-5"
                                     ></v-text-field>
                                     <v-text-field
                                         label="Topic name *"
-                                        v-model="PostName"
+                                        v-model="EmailNotification.topic_name"
                                         hide-details
                                         class="col-7 px-0 mt-5"
                                     ></v-text-field>
                                     <v-text-field
                                         label="Send TO *"
-                                        v-model="PostName"
+                                        v-model="EmailNotification.send_to"
                                         hide-details
                                         class="col-7 px-0 mt-5"
                                     ></v-text-field>
@@ -52,9 +52,9 @@
                                                 <p class="mb-1 text-body-2">HTML file of E-mail template</p>
                                                 <span>The file must be in HTML format</span>
                                                 <v-file-input
-                                                    v-model="PostImage1"
+                                                    v-model="EmailNotification.file"
                                                     show-size
-                                                    accept="image/*"
+                                                    accept=".html"
                                                     label="Upload file"
                                                     hide-details
                                                     class="mt-3"
@@ -62,7 +62,7 @@
                                                 <button
                                                     @click="DownloadFile1"
                                                     class="mt-3 pa-2"
-                                                    :disabled="PostImageName1 === ''"
+                                                    :disabled="EmailNotification.file_name === ''"
                                                 >
                                                     Download file
                                                 </button>
@@ -114,7 +114,7 @@
                                     class="white--text col-1 ml-4"
                                     small
                                     @click="OnClickSubmit()"
-                                    :disabled="PostName === '' || BlogContent === '' ||  BlogCardDesign === '' || BlogSeoUrl === ''"
+                                    :disabled="EmailNotification.template_name === '' || EmailNotification.topic_name === '' ||  EmailNotification.send_to === ''"
                                     depressed>
                                     Save
                                 </v-btn>
@@ -132,13 +132,13 @@ import { Component, Vue } from "vue-property-decorator";
 import BreadcrumbsItemType from "@/struct/ui/breadcrumbs/BreadcrumbsItemType";
 import sweetalert from "sweetalert";
 import ApiEnter from "@/api/ApiEnter";
-import ApiBlog from "@/api/ApiBlog";
 import StandartTemplate from "@/components/Template/StandartTemplate.vue";
 import PageHeader from "@/components/UI/PageHeader.vue";
 import Editor from '@tinymce/tinymce-vue'
 import dayjs from "dayjs";
 import ApiAdmin from "@/api/ApiAdmin";
 import ApiSettings from "@/api/ApiSettings";
+import DataEmailNotifications from "@/data/AdminPanel/DataEmailNotifications";
 
 
 @Component({
@@ -146,47 +146,24 @@ import ApiSettings from "@/api/ApiSettings";
 })
 
 export default class EmailNotificationsEdit extends Vue {
-
-    public Breadcrumbs: BreadcrumbsItemType[] = [
-        {
-            to: '/',
-            text: 'Home'
-        },
-        {
-            to: '/admin/blog',
-            exact: true,
-            text: 'CMS'
-        },
-        {
-            to: '/admin/blog',
-            exact: true,
-            text: 'Blog'
-        },
-        {
-            text: 'Edit',
-            disabled: true
-        }
-    ];
+    public Breadcrumbs: BreadcrumbsItemType[] = DataEmailNotifications.BreadcrumbsEdit;
 
     private CurrentUUID!: string;
-    private PostPublish: boolean = true
-    private PostName: string= ''
-    private PostDate: string = ''
-    private PostImage1: File | null = null
-    private PostImageName1: string = ''
-    private PostImage2: File | null = null
-    private PostImageName2: string = ''
-    private BlogCardDesign: string = ''
-    private BlogContent: string = ''
-    private BlogSeoDescription: string = ''
-    private BlogSeoKeywords: string = ''
-    private BlogSeoUrl: string = ''
-    private PostCreated: string= ''
+    private EmailNotification: any = {
+        publish: true,
+        template_id: '',
+        template_name: '',
+        topic_name: '',
+        send_to: '',
+        file: null,
+        file_name: '',
+        update: '',
+    }
 
     private async DoLoadForm(): Promise<void> {
 
-        const blogInfo: any = await ApiSettings.GetEmailNotificationByUUID(ApiEnter.CurrentSessionUUID as string, this.CurrentUUID);
-        if (blogInfo == undefined) {
+        const emailNotificationInfo: any = await ApiSettings.GetEmailNotificationByUUID(ApiEnter.CurrentSessionUUID as string, this.CurrentUUID);
+        if (emailNotificationInfo == undefined) {
             sweetalert({
                 title: "Oop!",
                 text: "Request error, not all data was loaded!",
@@ -197,91 +174,51 @@ export default class EmailNotificationsEdit extends Vue {
             return;
         }
 
-        this.PostName = blogInfo.title
-        this.PostDate = blogInfo.date
-        await this.GetFiles(blogInfo.image1, blogInfo.image2)
-        this.PostImageName1 = blogInfo.image1
-        this.PostImageName2 = blogInfo.image2
-        this.BlogCardDesign = blogInfo.card_design
-        this.PostPublish = blogInfo.publish
-        this.BlogContent = blogInfo.content
-        this.BlogSeoDescription = blogInfo.seo_description
-        this.BlogSeoKeywords = blogInfo.seo_keywords
-        this.BlogSeoUrl = blogInfo.seo_url
-        this.PostCreated = dayjs(blogInfo.create_at).format('DD.MM.YYYY HH:mm')
+        this.EmailNotification.publish = emailNotificationInfo.publish
+        this.EmailNotification.template_id = emailNotificationInfo.template_id
+        this.EmailNotification.template_name = emailNotificationInfo.template_name
+        this.EmailNotification.topic_name = emailNotificationInfo.topic_name
+        this.EmailNotification.send_to = emailNotificationInfo.send_to
+        this.EmailNotification.update = dayjs(emailNotificationInfo.update).format('DD.MM.YYYY HH:mm')
+        this.EmailNotification.file = emailNotificationInfo.file ? ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, emailNotificationInfo.file)
+            .then((response) => {
+                this.EmailNotification.file = new File([new Blob([response.data])], emailNotificationInfo.file.split('/')[8])
+            }) : null
+        this.EmailNotification.file_name = emailNotificationInfo.file
 
         this.$forceUpdate();
     }
 
-    private async GetFiles(file_name1: string, file_name2: string): Promise<void> {
-        if (file_name1 !== '') {
-            await ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, file_name1)
-                .then((response) => {
-                    this.PostImage1 = new File([new Blob([response.data])], file_name1.split('/')[8])
-                })
-        }
-
-        if (file_name2 !== '') {
-            await ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, file_name2)
-                .then((response) => {
-                    this.PostImage2 = new File([new Blob([response.data])], file_name2.split('/')[8])
-                })
-        }
-    }
-
     private async DownloadFile1(): Promise<void> {
-        await ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, this.PostImageName1).then((response) => {
+        await ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, this.EmailNotification.file_name).then((response) => {
             let a = document.createElement("a")
             let file = new Blob([response])
             a.href = URL.createObjectURL(file);
-            a.download = this.PostImageName1.split('/')[8];
-            a.click();
-        })
-    }
-    private async DownloadFile2(): Promise<void> {
-        await ApiAdmin.GetFiles(ApiEnter.CurrentSessionUUID as string, this.PostImageName2).then((response) => {
-            let a = document.createElement("a")
-            let file = new Blob([response])
-            a.href = URL.createObjectURL(file);
-            a.download = this.PostImageName2.split('/')[8];
+            a.download = this.EmailNotification.file_name.split('/')[8];
             a.click();
         })
     }
 
     private async OnClickSubmit(): Promise<void> {
-        const file_name1 = this.PostImage1?
-            this.PostImage1.name === this.PostImageName1.split('/')[8] ? this.PostImageName1
-                : await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID as string, this.PostImage1)
-            : ''
-        const file_name2 = this.PostImage2?
-            this.PostImage2.name === this.PostImageName2.split('/')[8] ? this.PostImageName2
-                : await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID as string, this.PostImage2)
-            : ''
-
         try {
-            const response = await ApiBlog.UpdateBlogInfo(
-                this.PostName,
-                dayjs(this.PostDate).format('YYYY-MM-DD'),
-                this.PostPublish? 1: 0,
-                file_name1,
-                file_name2,
-                this.BlogCardDesign,
-                this.BlogContent,
-                this.BlogSeoDescription,
-                this.BlogSeoKeywords,
-                this.BlogSeoUrl,
+            const response = await ApiSettings.UpdateEmailNotification(
+                this.EmailNotification.template_name,
+                this.EmailNotification.topic_name,
+                this.EmailNotification.send_to,
+                this.EmailNotification.file != null? await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID as string, this.EmailNotification.file) as string : '',
+                this.EmailNotification.publish,
                 ApiEnter.CurrentSessionUUID as string,
                 this.CurrentUUID);
             if (typeof response == "boolean") {
                 sweetalert({
                     title: "Success!",
-                    text: "Post has updated",
+                    text: "Email notification has updated",
                     icon: "success"
                 }).then(() => {
                     this.$router.go(-1);
                 });
             } else {
-                sweetalert({
+                await sweetalert({
                     title: "Error!",
                     text: `Request error: ${response}`,
                     icon: "error"
@@ -289,20 +226,12 @@ export default class EmailNotificationsEdit extends Vue {
             }
         } catch (e) {
             console.error(e);
-            sweetalert({
+            await sweetalert({
                 title: "Error!",
                 text: "Request error!",
                 icon: "error"
             });
         }
-    }
-
-    private ValidateSeoUrl() {
-        this.BlogSeoUrl = this.BlogSeoUrl.replace(/[. ,$@!^()'*]+/g, '-').toLowerCase()
-    }
-
-    get computedDateFormatted() {
-        return dayjs(this.PostDate).format('DD.MM.YYYY')
     }
 
     public mounted() {

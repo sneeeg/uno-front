@@ -40,7 +40,7 @@
                         </template>
                         <template v-slot:item.action="{ item }">
                             <div class="d-flex align-center">
-                                <v-switch hide-details v-model="item.publish" :input-value="item.publish" class="mt-0" @change="ChangeSliderPublish(item)"></v-switch>
+                                <v-switch hide-details inset v-model="item.publish" :input-value="item.publish" class="mt-0" @change="ChangeSliderPublish(item)"></v-switch>
                                 <router-link :to="'/slider/edit/' + item.uuid">
                                     <v-btn icon>
                                         <v-icon small color="grey darken-2">

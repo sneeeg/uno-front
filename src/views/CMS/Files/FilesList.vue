@@ -40,7 +40,7 @@
                         </template>
                         <template v-slot:item.action="{ item }">
                             <div class="d-flex align-center">
-                                <v-switch hide-details v-model="item.publish" :input-value="item.publish" class="mt-0" @change="ChangeFilePublish(item)"></v-switch>
+                                <v-switch hide-details inset v-model="item.publish" :input-value="item.publish" class="mt-0" @change="ChangeFilePublish(item)"></v-switch>
                                 <router-link :to="'/cms/files/edit/' + item.uuid">
                                     <v-btn icon>
                                         <v-icon small color="grey darken-2">
@@ -71,9 +71,7 @@ import ApiSupportFiles from "@/api/ApiSupportFiles";
 import StandartTemplate from "@/components/Template/StandartTemplate.vue";
 import LeftMenuTab from "@/components/LeftMenu/LeftMenuTab.vue";
 import PageHeader from "@/components/UI/PageHeader.vue";
-import IAdminPanelCompanyList from "@/struct/admin-panel/IAdminPanelCompanyList";
 import TableHeaderItemType from "@/struct/ui/Table/TableHeaderItemType";
-import DataFaq from "@/data/AdminPanel/DataFaq";
 import DataSupportFiles from "@/data/Files/DataSupportFiles";
 
 

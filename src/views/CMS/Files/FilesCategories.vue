@@ -23,6 +23,7 @@
                             <v-switch
                                 v-model="newCategory.publish"
                                 label="Publish"
+                                inset
                                 class="mt-0"
                                 hide-details
                             ></v-switch>
@@ -93,6 +94,7 @@
                                 v-model="currentCategory.publish"
                                 label="Publish"
                                 class="mt-0"
+                                inset
                                 hide-details
                             ></v-switch>
                         </div>
@@ -174,7 +176,7 @@
                     <v-data-table dense :headers="TableHeaders" sort-by="priority" :items="TableItems" :items-per-page="15" item-key="offer" class="elevation-1">
                         <template v-slot:item.action="{ item }">
                             <div class="d-flex align-center">
-                                <v-switch hide-details v-model="item.publish" :input-value="item.publish" class="mt-0" @change="ChangeFaqCategoryPublish(item)"></v-switch>
+                                <v-switch hide-details inset v-model="item.publish" :input-value="item.publish" class="mt-0" @change="ChangeFaqCategoryPublish(item)"></v-switch>
                                 <v-btn icon @click="openEditDialog(item.uuid)">
                                     <v-icon small color="grey darken-2">
                                         fas fa-pencil-alt
@@ -199,7 +201,6 @@ import { Component, Vue } from "vue-property-decorator";
 import BreadcrumbsItemType from "@/struct/ui/breadcrumbs/BreadcrumbsItemType";
 import sweetalert from "sweetalert";
 import ApiEnter from "@/api/ApiEnter";
-import ApiFaq from "@/api/ApiFaq";
 import ApiSupportFiles from "@/api/ApiSupportFiles";
 import StandartTemplate from "@/components/Template/StandartTemplate.vue";
 import LeftMenuTab from "@/components/LeftMenu/LeftMenuTab.vue";

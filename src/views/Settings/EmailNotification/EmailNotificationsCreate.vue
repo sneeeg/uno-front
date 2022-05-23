@@ -7,40 +7,40 @@
                 <div class="col-12 px-6">
                     <v-divider></v-divider>
                 </div>
-                <h6 class="px-6 font-weight-bold text-uppercase">Edit</h6>
+                <h6 class="px-6 font-weight-bold text-uppercase">Create</h6>
                 <div class="col-12">
                     <div class="well mb-0">
                         <div class="well-wrapper">
                             <div class="row">
                                 <div class="col-12">
                                     <v-switch
-                                        v-model="PostPublish"
+                                        v-model="EmailNotification.publish"
                                         label="Publish"
                                         inset
                                         hide-details
-                                        class="mt-9 col-2"
+                                        class="col-2"
                                     ></v-switch>
                                     <v-text-field
                                         label="Template ID *"
-                                        v-model="PostName"
+                                        v-model="EmailNotification.template_id"
                                         hide-details
                                         class="col-7 px-0 mt-5"
                                     ></v-text-field>
                                     <v-text-field
                                         label="Template name *"
-                                        v-model="PostName"
+                                        v-model="EmailNotification.template_name"
                                         hide-details
                                         class="col-7 px-0 mt-5"
                                     ></v-text-field>
                                     <v-text-field
                                         label="Topic name *"
-                                        v-model="PostName"
+                                        v-model="EmailNotification.topic_name"
                                         hide-details
                                         class="col-7 px-0 mt-5"
                                     ></v-text-field>
                                     <v-text-field
                                         label="Send TO *"
-                                        v-model="PostName"
+                                        v-model="EmailNotification.send_to"
                                         hide-details
                                         class="col-7 px-0 mt-5"
                                     ></v-text-field>
@@ -50,20 +50,13 @@
                                                 <p class="mb-1 text-body-2">HTML file of E-mail template</p>
                                                 <span>The file must be in HTML format</span>
                                                 <v-file-input
-                                                    v-model="PostImage1"
+                                                    v-model="EmailNotification.file"
                                                     show-size
-                                                    accept="image/*"
+                                                    accept=".html"
                                                     label="Upload file"
                                                     hide-details
                                                     class="mt-3"
                                                 ></v-file-input>
-                                                <button
-                                                    @click="DownloadFile1"
-                                                    class="mt-3 pa-2"
-                                                    :disabled="PostImageName1 === ''"
-                                                >
-                                                    Download file
-                                                </button>
                                             </v-col>
                                         </v-row>
                                     </v-col>
@@ -112,7 +105,7 @@
                                     class="white--text col-1 ml-4"
                                     small
                                     @click="OnClickSubmit()"
-                                    :disabled="PostName === '' || BlogContent === '' ||  BlogCardDesign === '' || BlogSeoUrl === ''"
+                                    :disabled="EmailNotification.template_id === '' || EmailNotification.template_name === '' ||  EmailNotification.topic_name === '' || EmailNotification.send_to === ''"
                                     depressed>
                                     Save
                                 </v-btn>
@@ -130,13 +123,12 @@ import { Component, Vue } from "vue-property-decorator";
 import BreadcrumbsItemType from "@/struct/ui/breadcrumbs/BreadcrumbsItemType";
 import sweetalert from "sweetalert";
 import ApiEnter from "@/api/ApiEnter";
-import ApiBlog from "@/api/ApiBlog";
 import StandartTemplate from "@/components/Template/StandartTemplate.vue";
 import PageHeader from "@/components/UI/PageHeader.vue";
 import Editor from '@tinymce/tinymce-vue'
-import dayjs from "dayjs";
 import ApiAdmin from "@/api/ApiAdmin";
 import ApiSettings from "@/api/ApiSettings";
+import DataEmailNotifications from "@/data/AdminPanel/DataEmailNotifications";
 
 
 @Component({
@@ -144,89 +136,45 @@ import ApiSettings from "@/api/ApiSettings";
 })
 
 export default class EmailNotificationsCreate extends Vue {
+    public Breadcrumbs: BreadcrumbsItemType[] = DataEmailNotifications.BreadcrumbsCreate;
 
-    public Breadcrumbs: BreadcrumbsItemType[] = [
-        {
-            to: '/',
-            text: 'Home'
-        },
-        {
-            to: '/admin/blog',
-            exact: true,
-            text: 'CMS'
-        },
-        {
-            to: '/admin/blog',
-            exact: true,
-            text: 'Blog'
-        },
-        {
-            text: 'Edit',
-            disabled: true
-        }
-    ];
-
-    private CurrentUUID!: string;
-    private PostPublish: boolean = true
-    private PostName: string= ''
-    private PostDate: string = ''
-    private PostImage1: File | null = null
-    private PostImageName1: string = ''
-    private PostImage2: File | null = null
-    private PostImageName2: string = ''
-    private BlogCardDesign: string = ''
-    private BlogContent: string = ''
-    private BlogSeoDescription: string = ''
-    private BlogSeoKeywords: string = ''
-    private BlogSeoUrl: string = ''
-    private PostCreated: string= ''
+    private EmailNotification: any = {
+        publish: true,
+        template_id: '',
+        template_name: '',
+        topic_name: '',
+        send_to: '',
+        file: null,
+        update: '',
+    }
 
     private async OnClickSubmit(): Promise<void> {
-        const file_name1 = this.PostImage1?
-            this.PostImage1.name === this.PostImageName1.split('/')[8] ? this.PostImageName1
-                : await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID as string, this.PostImage1)
-            : ''
-        const file_name2 = this.PostImage2?
-            this.PostImage2.name === this.PostImageName2.split('/')[8] ? this.PostImageName2
-                : await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID as string, this.PostImage2)
-            : ''
-
-        try {
-            const response = await ApiBlog.UpdateBlogInfo(
-                this.PostName,
-                dayjs(this.PostDate).format('YYYY-MM-DD'),
-                this.PostPublish? 1: 0,
-                file_name1,
-                file_name2,
-                this.BlogCardDesign,
-                this.BlogContent,
-                this.BlogSeoDescription,
-                this.BlogSeoKeywords,
-                this.BlogSeoUrl,
+        if (ApiEnter.CurrentSessionUUID != undefined) {
+            const email_notification_uuid = await ApiSettings.CreateEmailNotification(
                 ApiEnter.CurrentSessionUUID as string,
-                this.CurrentUUID);
-            if (typeof response == "boolean") {
-                sweetalert({
-                    title: "Success!",
-                    text: "Post has updated",
-                    icon: "success"
-                }).then(() => {
-                    this.$router.go(-1);
+                this.EmailNotification.publish? 1: 0,
+                this.EmailNotification.template_id,
+                this.EmailNotification.template_name,
+                this.EmailNotification.topic_name,
+                this.EmailNotification.send_to,
+                this.EmailNotification.file != null? await ApiAdmin.UploadFile(ApiEnter.CurrentSessionUUID as string, this.EmailNotification.file) as string : '',);
+            if (email_notification_uuid == undefined || email_notification_uuid.length != 36) {
+                await sweetalert({
+                    title: "Request error!",
+                    text: "Creating error Email notification: " + email_notification_uuid,
+                    icon: "info"
                 });
-            } else {
-                sweetalert({
-                    title: "Error!",
-                    text: `Request error: ${response}`,
-                    icon: "error"
-                });
+                return;
             }
-        } catch (e) {
-            console.error(e);
+
             sweetalert({
-                title: "Error!",
-                text: "Request error!",
-                icon: "error"
-            });
+                title: "Success!",
+                text: `Email notification has created!`,
+                icon: "success"
+            }).then(() => {
+                this.$forceUpdate()
+                this.$router.push(`/settings/email-notifications`);
+            })
         }
     }
 }
