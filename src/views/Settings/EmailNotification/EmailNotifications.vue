@@ -10,6 +10,18 @@
                 </div>
 
                 <div class="col-12">
+                    <router-link to="/settings/email-notifications/create">
+                        <v-btn
+                            color="orange accent-4"
+                            class="white--text"
+                            small
+                            depressed>
+                            Add email notification
+                        </v-btn>
+                    </router-link>
+                </div>
+
+                <div class="col-12">
                     <v-data-table dense :headers="TableHeaders" sort-by="priority" :items="TableItems" :items-per-page="15" item-key="offer" class="elevation-1">
                         <template v-slot:item.update="{ item }">
                             {{ formatDate(item.update) }}
