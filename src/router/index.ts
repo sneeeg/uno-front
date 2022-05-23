@@ -16,6 +16,7 @@ import feedback from "@/router/feedback";
 import shop from "@/router/shop";
 import SourceFiles from "@/views/CMS/SourceFiles/SourceFiles.vue";
 import EmailNotifications from "@/views/Settings/EmailNotification/EmailNotifications.vue";
+import EmailNotificationsCreate from "@/views/Settings/EmailNotification/EmailNotificationsCreate.vue";
 import EmailNotificationsEdit from "@/views/Settings/EmailNotification/EmailNotificationsEdit.vue";
 
 Vue.use(VueRouter);
@@ -60,6 +61,11 @@ const routes: Array<RouteConfig> = [
         path: "/settings/email-notifications",
         name: "EmailNotifications",
         component: EmailNotifications
+    },
+    {
+        path: "/settings/email-notifications/create",
+        name: "EmailNotificationsCreate",
+        component: EmailNotificationsCreate
     },
     {
         path: "/settings/email-notifications/edit/:email_uuid",
