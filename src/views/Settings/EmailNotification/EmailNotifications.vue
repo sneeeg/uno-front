@@ -36,6 +36,11 @@
                                         </v-icon>
                                     </v-btn>
                                 </router-link>
+                                <v-btn icon @click="DeleteItem(item.uuid)">
+                                    <v-icon small color="red darken-3">
+                                        far fa-trash-alt
+                                    </v-icon>
+                                </v-btn>
                             </div>
                         </template>
                     </v-data-table>
@@ -95,6 +100,31 @@ export default class EmailNotifications extends Vue {
                 icon: "error"
             });
         }
+    }
+    private async DeleteItem(uuid: string): Promise<void> {
+        sweetalert({
+            title: "Are you sure?",
+            text: "You really want to delete this Email notification?",
+            buttons: ["No, Cancel!", "Yes, I'm sure!"]
+        }).then(async isConfirm => {
+            if (isConfirm == true) {
+                const response = await ApiSettings.DeleteEmailNotification(ApiEnter.CurrentSessionUUID as string, uuid);
+                if (typeof response == "boolean") {
+                    await sweetalert({
+                        title: "Success!",
+                        text: "Email notification has deleted"
+                    });
+
+                    await this.GetEmailNotifications()
+                } else {
+                    await sweetalert({
+                        title: "Error!",
+                        text: `Request error: ${response}`,
+                        icon: "error"
+                    });
+                }
+            }
+        });
     }
 
     private async GetEmailNotifications(): Promise<void> {

@@ -89,6 +89,21 @@ class ApiSettings {
             throw new Error("Error");
         }
     }
+    public static async DeleteEmailNotification(session_uuid: string, uuid: string): Promise<boolean | undefined> {
+        try {
+            const result = await axios.post("/api/settings/delete-email-notifications", {
+                uuid: uuid
+            }, {
+                headers: {
+                    "x-tenant": "null",
+                    "x-session-token": session_uuid
+                }
+            });
+            return result.data.response;
+        } catch (e) {
+            return undefined;
+        }
+    }
 }
 
 export default ApiSettings
