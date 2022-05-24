@@ -60,12 +60,12 @@
                             <p>Category</p>
                             <div class="row d-flex">
                                 <v-checkbox
-                                    v-model="OfferCategory"
+                                    v-model="newOffer.category"
                                     v-for="item in OffersCategories"
                                     :key="item.uuid"
                                     :label="item.name"
                                     color="indigo darken-3"
-                                    :value="item.name"
+                                    :value="item.uuid"
                                     class="col-2 mt-1"
                                     hide-details
                                 ></v-checkbox>
@@ -535,9 +535,7 @@ import IAdminPanelOffersCategoriesList from "@/struct/admin-panel/IAdminPanelOff
 import Editor from '@tinymce/tinymce-vue'
 import ApiOffer from "@/api/ApiOffer";
 import sweetalert from "sweetalert";
-import dayjs from "dayjs";
 import ApiAdmin from "@/api/ApiAdmin";
-import ApiBlog from "@/api/ApiBlog";
 
 @Component({
     components: { StandartTemplate, PageHeader, Editor }
@@ -545,16 +543,14 @@ import ApiBlog from "@/api/ApiBlog";
 export default class OfferEdit extends Vue {
     private Breadcrumbs: BreadcrumbsItemType[] = DataOffers.OfferEditBreadcrumbs;
     private NewCategoryCardDesign: string[] = ['Blue', 'Orange', 'Transparent']
-
     private CurrentOfferUUID!: string
-    private OfferCategory: any = []
     private OffersCategories: IAdminPanelOffersCategoriesList[] | undefined = []
 
     private newOffer: any = {
         name: '',
         priority: '',
         publish: true,
-        category: '123123132321',
+        category: [],
         price: '',
         data: '',
         sms: '',
@@ -612,6 +608,7 @@ export default class OfferEdit extends Vue {
         this.newOffer.name = offerInfo.name
         this.newOffer.priority = offerInfo.priority
         this.newOffer.publish = offerInfo.publish
+        this.newOffer.category = offerInfo.category.split(",")
 
         this.newOffer.price = offerInfo.price
         this.newOffer.data = offerInfo.data
@@ -687,7 +684,7 @@ export default class OfferEdit extends Vue {
                 this.newOffer.name,
                 this.newOffer.priority,
                 this.newOffer.publish? 1: 0,
-                this.newOffer.category,
+                this.newOffer.category.join(),
                 this.newOffer.price,
                 this.newOffer.data,
                 this.newOffer.sms,

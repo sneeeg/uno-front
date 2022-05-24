@@ -60,12 +60,12 @@
                             <p>Category</p>
                             <div class="row d-flex">
                                 <v-checkbox
-                                    v-model="OfferCategory"
+                                    v-model="newOffer.category"
                                     v-for="item in OffersCategories"
                                     :key="item.uuid"
                                     :label="item.name"
                                     color="indigo darken-3"
-                                    :value="item.name"
+                                    :value="item.uuid"
                                     class="col-2 mt-1"
                                     hide-details
                                 ></v-checkbox>
@@ -529,7 +529,6 @@ import ApiEnter from "@/api/ApiEnter";
 import IAdminPanelOffersCategoriesList from "@/struct/admin-panel/IAdminPanelOffersCategoriesList";
 import Editor from '@tinymce/tinymce-vue'
 import ApiOffer from "@/api/ApiOffer";
-import ApiBlog from "@/api/ApiBlog";
 import sweetalert from "sweetalert";
 import ApiAdmin from "@/api/ApiAdmin";
 
@@ -539,15 +538,13 @@ import ApiAdmin from "@/api/ApiAdmin";
 export default class OfferCreate extends Vue {
     private Breadcrumbs: BreadcrumbsItemType[] = DataOffers.OfferCreateBreadcrumbs;
     private NewCategoryCardDesign: string[] = ['Blue', 'Orange', 'Transparent']
-
-    private OfferCategory: any = []
     private OffersCategories: IAdminPanelOffersCategoriesList[] | undefined = []
 
     private newOffer: any = {
         name: '',
         priority: '',
         publish: true,
-        category: '123123132321',
+        category: [],
         price: '',
         data: '',
         sms: '',
@@ -608,7 +605,7 @@ export default class OfferCreate extends Vue {
                 this.newOffer.name,
                 this.newOffer.priority,
                 this.newOffer.publish? 1: 0,
-                this.newOffer.category,
+                this.newOffer.category.join(),
                 this.newOffer.price,
                 this.newOffer.data,
                 this.newOffer.sms,
