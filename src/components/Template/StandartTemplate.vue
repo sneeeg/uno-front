@@ -55,7 +55,7 @@
                             <i class="fab fa-buffer"></i> Offers
                         </router-link>
                         <router-link to="/shop/options" class="menu-item">
-                            <i class="fas fa-cogs"></i> Options and Extras
+                            <i class="fas fa-cogs"></i> Extras and Services
                         </router-link>
                         <router-link to="/shop/orders" class="menu-item">
                             <i class="fas fa-shopping-cart"></i> Order management
@@ -156,7 +156,7 @@ export default class StandartTemplate extends Vue {
     private IsLoginOnAdminPanel: boolean = false;
     private UserOnLogin!: PersonalUserItemType | undefined
 
-    private created() {
+    public created() {
         this.IsLoggedOn()
     }
 }

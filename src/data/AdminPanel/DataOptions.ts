@@ -11,7 +11,7 @@ export default class DataOptions {
         },
         {
             to: "/shop/options",
-            text: "Options and Services",
+            text: "Extras and Services",
             disabled: true
         },
     ];
@@ -24,10 +24,26 @@ export default class DataOptions {
         {
             to: "/shop/options",
             exact: true,
-            text: "Options and Services",
+            text: "Extras and Services",
         },
         {
             text: "Create",
+            disabled: true
+        },
+    ];
+
+    public static BreadcrumbsEdit: BreadcrumbsItemType[] = [
+        {
+            to: "/",
+            text: "Home",
+        },
+        {
+            to: "/shop/options",
+            exact: true,
+            text: "Extras and Services",
+        },
+        {
+            text: "Edit",
             disabled: true
         },
     ];
@@ -39,14 +55,19 @@ export default class DataOptions {
             width: '15%'
         },
         {
-            text: "Option name",
+            text: "Name",
             value: "name",
+            width: '25%'
+        },
+        {
+            text: "Type",
+            value: "type",
             width: '25%'
         },
         {
             text: "Price, €",
             value: "price",
-            width: '45%'
+            width: '25%'
         },
         {
             text: "Action",

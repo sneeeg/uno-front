@@ -3,7 +3,7 @@
         <div class="container">
             <div class="row mt-1">
                 <v-breadcrumbs :items="Breadcrumbs" divider="/"/>
-                <page-header title="Options and Services" back-url="/"/>
+                <page-header title="Extras and Services" back-url="/"/>
 
                 <div class="col-12">
                     <v-divider></v-divider>
@@ -16,7 +16,7 @@
                             class="white--text"
                             small
                             depressed>
-                            Add option
+                            ADD EXTRA OR SERVICE
                         </v-btn>
                     </router-link>
                 </div>

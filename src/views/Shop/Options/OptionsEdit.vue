@@ -3,7 +3,7 @@
         <div class="container">
             <div class="row mt-1">
                 <v-breadcrumbs :items="Breadcrumbs" divider="/"/>
-                <page-header title="Options and Services" back-url="/"/>
+                <page-header title="Extras and Services" back-url="/"/>
 
                 <div class="col-12">
                     <v-divider></v-divider>
@@ -26,7 +26,7 @@
                         </div>
                         <div class="col-6">
                             <v-text-field
-                                label="Option name"
+                                label="Name"
                                 v-model="newOption.name"
                                 hide-details="auto"
                             ></v-text-field>
@@ -41,7 +41,7 @@
                         </div>
                         <v-divider class="col-12 p-0"></v-divider>
                         <div class="col-6">
-                            <h6>Option parameters</h6>
+                            <h6>Parameters</h6>
                             <span>
                                 A parameter with an empty value will
                                 not be displayed on the site. The value 0 is not empty.* -
@@ -113,7 +113,7 @@
                                              toolbar: 'undo redo | bold italic underline strikethrough | fontsizeselect | formatselect | alignleft aligncenter alignright alignjustify | indent outdent | bullist numlist | forecolor backcolor casechange formatpainter removeformat | pagebreak | emoticons charmap | link image media pageembed anchor | table',
                                              plugins: 'anchor lists advlist image media link pagebreak emoticons charmap casechange formatpainter code pageembed table',
                                              formats: {
-                                                borderstyle: { selector: 'td,th', styles: { borderTopStyle: 'solid', borderRightStyle: 'solid', borderBottomStyle: 'solid', borderLeftStyle: 'solid', }, remove_similar: true },
+                                                borderstyle: { selector: 'td,th', styles: { borderTopStyle: 'solid', borderRightStyle: 'solid', borderBottomStyle: 'solid', borderLeftStyle: 'solid' }, remove_similar: true },
                                                 bordercolor: { selector: 'td,th', styles: { borderTopColor: '#32CD32', borderRightColor: '#32CD32', borderBottomColor: '#32CD32', borderLeftColor: '#32CD32' }, remove_similar: true },
                                                 backgroundcolor: { selector: 'td,th', styles: { backgroundColor: '#006400' }, remove_similar: true },
                                                 formatpainter_removeformat: [
@@ -138,7 +138,7 @@
                                                     deep: true
                                                   }
                                                 ]
-                                              },
+                                              }
                                        }"/>
                         </div>
                         <div class="col-12">
@@ -153,7 +153,7 @@
                                              toolbar: 'undo redo | bold italic underline strikethrough | fontsizeselect | formatselect | alignleft aligncenter alignright alignjustify | indent outdent | bullist numlist | forecolor backcolor casechange formatpainter removeformat | pagebreak | emoticons charmap | link image media pageembed anchor | table',
                                              plugins: 'anchor lists advlist image media link pagebreak emoticons charmap casechange formatpainter code pageembed table',
                                              formats: {
-                                                borderstyle: { selector: 'td,th', styles: { borderTopStyle: 'solid', borderRightStyle: 'solid', borderBottomStyle: 'solid', borderLeftStyle: 'solid', }, remove_similar: true },
+                                                borderstyle: { selector: 'td,th', styles: { borderTopStyle: 'solid', borderRightStyle: 'solid', borderBottomStyle: 'solid', borderLeftStyle: 'solid' }, remove_similar: true },
                                                 bordercolor: { selector: 'td,th', styles: { borderTopColor: '#32CD32', borderRightColor: '#32CD32', borderBottomColor: '#32CD32', borderLeftColor: '#32CD32' }, remove_similar: true },
                                                 backgroundcolor: { selector: 'td,th', styles: { backgroundColor: '#006400' }, remove_similar: true },
                                                 formatpainter_removeformat: [
@@ -178,7 +178,7 @@
                                                     deep: true
                                                   }
                                                 ]
-                                              },
+                                              }
                                        }"/>
                         </div>
                         <v-divider class="col-12 p-0"></v-divider>
@@ -280,19 +280,16 @@ import BreadcrumbsItemType from "@/struct/ui/breadcrumbs/BreadcrumbsItemType";
 import StandartTemplate from "@/components/Template/StandartTemplate.vue";
 import ApiEnter from "@/api/ApiEnter";
 import Editor from '@tinymce/tinymce-vue'
-import ApiOffer from "@/api/ApiOffer";
 import ApiShopOptions from "@/api/ApiShopOptions";
 import sweetalert from "sweetalert";
 import DataOptions from "@/data/AdminPanel/DataOptions";
-import ApiSlider from "@/api/ApiSlider";
 import dayjs from "dayjs";
-import ApiAdmin from "@/api/ApiAdmin";
 
 @Component({
     components: { StandartTemplate, PageHeader, Editor }
 })
 export default class OptionsEdit extends Vue {
-    private Breadcrumbs: BreadcrumbsItemType[] = DataOptions.BreadcrumbsCreate;
+    private Breadcrumbs: BreadcrumbsItemType[] = DataOptions.BreadcrumbsEdit;
 
     private CurrentOptionUUID!: string
 
@@ -317,10 +314,6 @@ export default class OptionsEdit extends Vue {
         seo_keywords: '',
         seo_url: '',
         created: ''
-    }
-
-    private GenerateSeoUrl() {
-        this.newOption.seo_url = this.newOption.name.replace(/[. ,:-=&+#$?|%@!^(){}'*]+/g, "-").toLowerCase()
     }
 
     private ValidateSeoUrl() {
