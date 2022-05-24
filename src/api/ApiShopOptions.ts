@@ -29,17 +29,19 @@ class ApiShopOptions {
             return undefined;
         }
     }
-    public static async CreateOption(session_uuid: string, name: string , priority: string, publish: number, price: string, period: string, value: string, measure: string, connect: string, limits: string, overview: string, note: string, bss: string, seo_title: string, seo_description: string, seo_keywords: string, seo_url: string): Promise<string | undefined> {
+    public static async CreateOption(session_uuid: string, name: string , priority: string, publish: number, type: string, price: string, period: string, value: string, measure: string, connect: string, link_for_button: string, limits: string, overview: string, note: string, bss: string, seo_title: string, seo_description: string, seo_keywords: string, seo_url: string): Promise<string | undefined> {
         try {
             const result: AxiosResponse<{ response: string }> = await axios.post("/api/shop/options/create-option", {
                 name: name,
                 priority: priority,
                 publish: publish,
+                type: type,
                 price: price,
                 period: period,
                 value: value,
                 measure: measure,
                 connect: connect,
+                link_for_button: link_for_button,
                 limits: limits,
                 overview: overview,
                 note: note,
@@ -79,18 +81,20 @@ class ApiShopOptions {
             throw new Error("Error");
         }
     }
-    public static async UpdateOptionInfo(name: string , priority: string, publish: number, price: string, period: string, value: string, measure: string, connect: string, limits: string, overview: string, note: string, bss: string, seo_title: string, seo_description: string, seo_keywords: string, seo_url: string, session_uuid: string, uuid: string): Promise<boolean | undefined> {
+    public static async UpdateOptionInfo(name: string , priority: string, publish: number, type: string, price: string, period: string, value: string, measure: string, connect: string, link_for_button: string, limits: string, overview: string, note: string, bss: string, seo_title: string, seo_description: string, seo_keywords: string, seo_url: string, session_uuid: string, uuid: string): Promise<boolean | undefined> {
         try {
             const result = await axios.post("/api/shop/options/change-option-info", {
                 uuid: uuid,
                 name: name,
                 priority: priority,
                 publish: publish,
+                type: type,
                 price: price,
                 period: period,
                 value: value,
                 measure: measure,
                 connect: connect,
+                link_for_button: link_for_button,
                 limits: limits,
                 overview: overview,
                 note: note,

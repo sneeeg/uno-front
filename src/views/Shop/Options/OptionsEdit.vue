@@ -24,6 +24,20 @@
                                 inset
                             ></v-switch>
                         </div>
+                        <div class="col-5">
+                            <v-radio-group row v-model="newOption.type">
+                                <v-radio
+                                    :label="'Extra'"
+                                    :value="'extra'"
+                                    color="indigo darken-3"
+                                ></v-radio>
+                                <v-radio
+                                    :label="'Service'"
+                                    :value="'service'"
+                                    color="indigo darken-3"
+                                ></v-radio>
+                            </v-radio-group>
+                        </div>
                         <div class="col-6">
                             <v-text-field
                                 label="Name"
@@ -91,6 +105,13 @@
                             <v-text-field
                                 label="How to connect"
                                 v-model="newOption.connect"
+                                hide-details="auto"
+                            ></v-text-field>
+                        </div>
+                        <div class="col-6">
+                            <v-text-field
+                                label="Link for Button «How to connect»"
+                                v-model="newOption.link_for_button"
                                 hide-details="auto"
                             ></v-text-field>
                         </div>
@@ -247,7 +268,7 @@
                     </div>
                 </v-row>
                 <div class="col-12">
-                    <div class="col-12 row bg-light">
+                    <div class="col-12 bg-light">
                         <router-link to="/shop/options">
                             <v-btn
                                 color="grey lighten-1"
@@ -300,11 +321,13 @@ export default class OptionsEdit extends Vue {
         name: '',
         priority: '',
         publish: true,
+        type: '',
         price: '',
         period: '',
         value: '',
         measure: '',
         connect: '',
+        link_for_button: '',
         limits: '',
         overview: '',
         note: '',
@@ -326,11 +349,13 @@ export default class OptionsEdit extends Vue {
                 this.newOption.name,
                 this.newOption.priority,
                 this.newOption.publish? 1: 0,
+                this.newOption.type,
                 this.newOption.price,
                 this.newOption.period,
                 this.newOption.value,
                 this.newOption.measure,
                 this.newOption.connect,
+                this.newOption.link_for_button,
                 this.newOption.limits,
                 this.newOption.overview,
                 this.newOption.note,
@@ -383,11 +408,13 @@ export default class OptionsEdit extends Vue {
         this.newOption.name = optionInfo.name
         this.newOption.priority = optionInfo.priority
         this.newOption.publish = optionInfo.publish
+        this.newOption.type = optionInfo.type
         this.newOption.price = optionInfo.price
         this.newOption.period = optionInfo.period
         this.newOption.value = optionInfo.value
         this.newOption.measure = optionInfo.measure
         this.newOption.connect = optionInfo.connect
+        this.newOption.link_for_button = optionInfo.link_for_button
         this.newOption.limits = optionInfo.limits
         this.newOption.overview = optionInfo.overview
         this.newOption.note = optionInfo.note
