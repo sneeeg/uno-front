@@ -40,7 +40,7 @@
                         </div>
                         <div class="col-6">
                             <v-text-field
-                                label="Name"
+                                label="Name *"
                                 v-model="newOption.name"
                                 hide-details="auto"
                                 @input="GenerateSeoUrl"
@@ -48,7 +48,7 @@
                         </div>
                         <div class="col-3">
                             <v-text-field
-                                label="Priority (sorting)"
+                                label="Priority (sorting) *"
                                 type="number"
                                 v-model="newOption.priority"
                                 hide-details="auto"
@@ -66,7 +66,7 @@
                         <div class="col-12 row d-flex align-center">
                             <div class="col-2">
                                 <v-text-field
-                                    label="Price, €"
+                                    label="Price, € *"
                                     v-model="newOption.price"
                                     type="number"
                                     hide-details="auto"
@@ -76,7 +76,7 @@
                                 <v-select
                                     :items="PeriodTypes"
                                     v-model="newOption.period"
-                                    label="Period"
+                                    label="Period *"
                                     hide-details
                                     dense
                                     outlined
@@ -284,7 +284,7 @@
                             class="white--text col-1 ml-4"
                             small
                             depressed
-                            :disabled="newOption.name ==='' || newOption.price === '' || newOption.value === '' || newOption.seo_url === ''"
+                            :disabled="newOption.name ==='' || newOption.priority === '' || newOption.price === '' || newOption.value === '' || newOption.period === ''"
                             @click="OnClickSubmit">
                             Save
                         </v-btn>
