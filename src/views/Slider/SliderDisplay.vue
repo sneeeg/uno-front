@@ -31,9 +31,9 @@
                         <template v-slot:item.from="{ item }">
                             {{ item.image? 'Slider' : 'Offer' }}
                         </template>
-                        <template v-slot:item.action="{ item }">
+                        <template v-slot:item.action>
                             <div class="d-flex align-center">
-                                <button :to="'/slider/edit/' + item.uuid">
+                                <button>
                                     <v-btn icon>
                                         <v-icon small color="grey darken-2">
                                             fas fa-pencil-alt
@@ -61,7 +61,6 @@ import IAdminPanelCompanyList from "@/struct/admin-panel/IAdminPanelCompanyList"
 import TableHeaderItemType from "@/struct/ui/Table/TableHeaderItemType";
 import DataSlider from "@/data/Slider/DataSlider";
 import ApiSlider from "@/api/ApiSlider";
-import dayjs from "dayjs";
 
 
 @Component({
