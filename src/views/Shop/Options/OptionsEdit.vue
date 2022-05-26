@@ -78,7 +78,9 @@
                                     label="Period *"
                                     hide-details
                                     dense
+                                    clearable
                                     outlined
+                                    @click:clear="$nextTick(() => newOption.period = '')"
                                 ></v-select>
                             </div>
                         </div>
@@ -97,7 +99,9 @@
                                     label="Measure"
                                     hide-details
                                     dense
+                                    clearable
                                     outlined
+                                    @click:clear="$nextTick(() => newOption.period = '')"
                                 ></v-select>
                             </div>
                         </div>
@@ -283,7 +287,7 @@
                             class="white--text col-1 ml-4"
                             small
                             depressed
-                            :disabled="newOption.name ==='' || newOption.priority === '' || newOption.price === '' || newOption.value === '' || newOption.period === ''"
+                            :disabled="newOption.name ==='' || newOption.priority === '' || newOption.price === '' || newOption.period === ''"
                             @click="OnClickSubmit">
                             Save
                         </v-btn>
