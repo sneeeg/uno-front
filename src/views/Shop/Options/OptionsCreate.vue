@@ -76,7 +76,7 @@
                                 <v-select
                                     :items="PeriodTypes"
                                     v-model="newOption.period"
-                                    label="Period *"
+                                    label="Period"
                                     hide-details
                                     clearable
                                     dense
