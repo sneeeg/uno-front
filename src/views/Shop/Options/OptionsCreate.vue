@@ -288,7 +288,7 @@
                             class="white--text col-1 ml-4"
                             small
                             depressed
-                            :disabled="newOption.name ==='' || newOption.priority === '' || newOption.price === '' || newOption.period === ''"
+                            :disabled="newOption.name ==='' || newOption.priority === '' || newOption.price === ''"
                             @click="OnClickSubmit">
                             Save
                         </v-btn>
