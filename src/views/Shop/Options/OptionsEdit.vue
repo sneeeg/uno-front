@@ -101,7 +101,7 @@
                                     dense
                                     clearable
                                     outlined
-                                    @click:clear="$nextTick(() => newOption.period = '')"
+                                    @click:clear="$nextTick(() => newOption.measure = '')"
                                 ></v-select>
                             </div>
                         </div>
