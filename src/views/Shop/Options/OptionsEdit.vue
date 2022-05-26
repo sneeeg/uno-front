@@ -319,7 +319,7 @@ export default class OptionsEdit extends Vue {
     private CurrentOptionUUID!: string
 
     private PeriodTypes: string[] = ['ora', 'giorno', 'settimana', 'mese', 'anno']
-    private MeasureTypes: string[] = ['SMS', 'Giga', 'SIM', 'Minuti']
+    private MeasureTypes: string[] = ['SMS', 'Giga', 'SIM', 'Minuti', 'Pezzo', 'Servizio']
 
     private newOption: any = {
         name: '',
