@@ -14,6 +14,19 @@ class ApiSlider {
             throw new Error("Error get blog");
         }
     }
+    public static async GetSliderDisplay(session_uuid: string): Promise<any[] | undefined> {
+        try {
+            const result = await axios.get("/api/admin/get-slider-display", {
+                headers: {
+                    "x-tenant": "null",
+                    "x-session-token": session_uuid
+                }
+            });
+            return result.data.data;
+        } catch (e) {
+            throw new Error("Error get blog");
+        }
+    }
     public static async GetSliderByUUID(session_uuid: string, uuid: string): Promise<any[] | undefined> {
         try {
             const result = await axios.post("/api/admin/get-slider-by", {

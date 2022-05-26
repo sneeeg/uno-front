@@ -27,7 +27,7 @@ export default class DataSlider {
         },
         {
             text: "Slide title",
-            value: "title",
+            value: "name",
             width: '65%'
         },
         {
@@ -39,17 +39,21 @@ export default class DataSlider {
     public static SliderDisplayTableHeaders: TableHeaderItemType[] = [
         {
             text: "Sorting",
-            value: "create_at",
+            value: "slider_sort",
             width: '12%'
         },
         {
             text: "Source",
-            value: "source",
+            value: "from",
             width: '12%'
         },
         {
             text: "Title",
-            value: "title",
+            value: "name",
+        },
+        {
+            text: "Action",
+            value: "action"
         }
     ];
 }

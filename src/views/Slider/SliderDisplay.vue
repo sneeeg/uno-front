@@ -28,8 +28,19 @@
 
                 <div class="col-12">
                     <v-data-table dense :headers="TableHeaders" :items="TableItems" :items-per-page="15" item-key="offer" class="elevation-1">
-                        <template v-slot:item.create_at>
-                            {{ 1 }}
+                        <template v-slot:item.from="{ item }">
+                            {{ item.image? 'Slider' : 'Offer' }}
+                        </template>
+                        <template v-slot:item.action="{ item }">
+                            <div class="d-flex align-center">
+                                <button :to="'/slider/edit/' + item.uuid">
+                                    <v-btn icon>
+                                        <v-icon small color="grey darken-2">
+                                            fas fa-pencil-alt
+                                        </v-icon>
+                                    </v-btn>
+                                </button>
+                            </div>
                         </template>
                     </v-data-table>
                 </div>
@@ -58,7 +69,6 @@ import dayjs from "dayjs";
 })
 
 export default class SliderList extends Vue {
-
     private Breadcrumbs: BreadcrumbsItemType[] = DataSlider.SliderListBreadcrumbs;
     private TableHeaders: TableHeaderItemType[] = DataSlider.SliderDisplayTableHeaders;
     private TableItems: IAdminPanelCompanyList[] | undefined = [];
@@ -66,8 +76,7 @@ export default class SliderList extends Vue {
 
     private async GetSlider(): Promise<void> {
         try {
-            const slidesList = await ApiSlider.GetSlider(ApiEnter.CurrentSessionUUID as string);
-            if(slidesList) this.TableItems = slidesList.filter(i => i.publish === 1)
+            this.TableItems = await ApiSlider.GetSliderDisplay(ApiEnter.CurrentSessionUUID as string);
         } catch (e) {
             console.error(e);
         }
