@@ -120,6 +120,38 @@ class ApiSlider {
             return undefined;
         }
     }
+    public static async UpdateSliderSort(slider_sort: string, session_uuid: string, uuid: string): Promise<boolean | undefined> {
+        try {
+            const result = await axios.post("/api/admin/change-slider-sort", {
+                uuid: uuid,
+                slider_sort: slider_sort
+            }, {
+                headers: {
+                    "x-tenant": "null",
+                    "x-session-token": session_uuid
+                }
+            });
+            return result.data.response;
+        } catch (e) {
+            throw new Error("Error");
+        }
+    }
+    public static async UpdateOfferSort(slider_sort: string, session_uuid: string, uuid: string): Promise<boolean | undefined> {
+        try {
+            const result = await axios.post("/api/admin/change-offer-sort", {
+                uuid: uuid,
+                slider_sort: slider_sort
+            }, {
+                headers: {
+                    "x-tenant": "null",
+                    "x-session-token": session_uuid
+                }
+            });
+            return result.data.response;
+        } catch (e) {
+            throw new Error("Error");
+        }
+    }
 }
 
 export default ApiSlider

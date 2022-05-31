@@ -28,7 +28,7 @@
                                 </router-link>
                             </v-col>
                             <v-col>
-                                <router-link to="/" class="card-control company-item">
+                                <router-link to="/cms/source-files" class="card-control company-item">
                                     <div class="name">Source files for content</div>
                                 </router-link>
                             </v-col>
@@ -49,7 +49,7 @@
                                 </router-link>
                             </v-col>
                             <v-col cols="2">
-                                <router-link to="/admin/options" class="card-control company-item">
+                                <router-link to="/shop/options" class="card-control company-item">
                                     <div class="name">Options and Extras</div>
                                 </router-link>
                             </v-col>
@@ -67,6 +67,11 @@
                             <v-col cols="2">
                                 <router-link to="/admin/users" class="card-control company-item">
                                     <div class="name">User management</div>
+                                </router-link>
+                            </v-col>
+                            <v-col cols="2">
+                                <router-link to="/settings/email-notifications" class="card-control company-item">
+                                    <div class="name">Email Notifications</div>
                                 </router-link>
                             </v-col>
                         </v-row>
@@ -100,7 +105,7 @@ export default class Home extends Vue {
 
     private Breadcrumbs!: BreadcrumbsItemType[];
 
-    private created(): void {
+    public created(): void {
 
         this.Breadcrumbs = [
             {
@@ -116,7 +121,7 @@ export default class Home extends Vue {
 //
     }
 
-    private mounted(): void {
+    public mounted(): void {
         document.title = "Home Page";
     }
 }
