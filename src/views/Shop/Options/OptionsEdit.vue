@@ -128,11 +128,11 @@
                         </div>
                         <div class="col-12">
                             <p>Overview</p>
-                            <ckeditor :editor="editor" v-model="newOption.overview" />
+                            <ckeditor :editor="editor" :config="editorConfig" v-model="newOption.overview" />
                         </div>
                         <div class="col-12">
                             <p>Note</p>
-                            <ckeditor :editor="editor" v-model="newOption.note" />
+                            <ckeditor :editor="editor" :config="editorConfig" v-model="newOption.note" />
                         </div>
                         <v-divider class="col-12 p-0"></v-divider>
                         <h6 class="col-12">For E-SHOP</h6>
@@ -233,17 +233,76 @@ import BreadcrumbsItemType from "@/struct/ui/breadcrumbs/BreadcrumbsItemType";
 import StandartTemplate from "@/components/Template/StandartTemplate.vue";
 import ApiEnter from "@/api/ApiEnter";
 import CKEditor from '@ckeditor/ckeditor5-vue2'
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
+import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor'
 import ApiShopOptions from "@/api/ApiShopOptions";
 import sweetalert from "sweetalert";
 import DataOptions from "@/data/AdminPanel/DataOptions";
 import dayjs from "dayjs";
+import EssentialsPlugin from "@ckeditor/ckeditor5-essentials/src/essentials";
+import Bold from "@ckeditor/ckeditor5-basic-styles/src/bold";
+import Italic from "@ckeditor/ckeditor5-basic-styles/src/italic";
+import Alignment from "@ckeditor/ckeditor5-alignment/src/alignment";
+import Heading from "@ckeditor/ckeditor5-heading/src/heading";
+import Highlight from "@ckeditor/ckeditor5-highlight/src/highlight";
+import FontBackgroundColor from "@ckeditor/ckeditor5-font/src/fontbackgroundcolor";
+import FontColor from "@ckeditor/ckeditor5-font/src/fontcolor";
+import FontFamily from "@ckeditor/ckeditor5-font/src/fontfamily";
+import FontSize from "@ckeditor/ckeditor5-font/src/fontsize";
+import BlockQuote from "@ckeditor/ckeditor5-block-quote/src/blockquote";
+import Underline from "@ckeditor/ckeditor5-basic-styles/src/underline";
+import Image from "@ckeditor/ckeditor5-image/src/image";
+import ImageCaption from "@ckeditor/ckeditor5-image/src/imagecaption";
+import ImageInsert from "@ckeditor/ckeditor5-image/src/imageinsert";
+import ImageResize from "@ckeditor/ckeditor5-image/src/imageresize";
+import ImageStyle from "@ckeditor/ckeditor5-image/src/imagestyle";
+import ImageToolbar from "@ckeditor/ckeditor5-image/src/imagetoolbar";
+import ImageUpload from "@ckeditor/ckeditor5-image/src/imageupload";
+import List from "@ckeditor/ckeditor5-list/src/list";
+import TodoList from "@ckeditor/ckeditor5-list/src/todolist";
+import Indent from "@ckeditor/ckeditor5-indent/src/indent";
+import IndentBlock from "@ckeditor/ckeditor5-indent/src/indentblock";
+import Table from "@ckeditor/ckeditor5-table/src/table";
+import TableCaption from "@ckeditor/ckeditor5-table/src/tablecaption";
+import TableCellProperties from "@ckeditor/ckeditor5-table/src/tablecellproperties";
+import TableColumnResize from "@ckeditor/ckeditor5-table/src/tablecolumnresize";
+import TableProperties from "@ckeditor/ckeditor5-table/src/tableproperties";
+import TableToolbar from "@ckeditor/ckeditor5-table/src/tabletoolbar";
+import Code from "@ckeditor/ckeditor5-basic-styles/src/code";
+import CodeBlock from "@ckeditor/ckeditor5-code-block/src/codeblock";
+import HorizontalLine from "@ckeditor/ckeditor5-horizontal-line/src/horizontalline";
+import PageBreak from "@ckeditor/ckeditor5-page-break/src/pagebreak";
+import RemoveFormat from "@ckeditor/ckeditor5-remove-format/src/removeformat";
+import SpecialCharacters from "@ckeditor/ckeditor5-special-characters/src/specialcharacters";
+import SpecialCharactersArrows from "@ckeditor/ckeditor5-special-characters/src/specialcharactersarrows";
+import SpecialCharactersCurrency from "@ckeditor/ckeditor5-special-characters/src/specialcharacterscurrency";
+import SpecialCharactersEssentials from "@ckeditor/ckeditor5-special-characters/src/specialcharactersessentials";
+import SpecialCharactersLatin from "@ckeditor/ckeditor5-special-characters/src/specialcharacterslatin";
+import SpecialCharactersMathematical from "@ckeditor/ckeditor5-special-characters/src/specialcharactersmathematical";
+import SpecialCharactersText from "@ckeditor/ckeditor5-special-characters/src/specialcharacterstext";
+import MediaEmbed from "@ckeditor/ckeditor5-media-embed/src/mediaembed";
+import MediaEmbedToolbar from "@ckeditor/ckeditor5-media-embed/src/mediaembedtoolbar";
 
 @Component({
     components: { StandartTemplate, PageHeader, CKEditor }
 })
 export default class OptionsEdit extends Vue {
     public editor = ClassicEditor
+    public editorConfig = {
+        plugins: [ EssentialsPlugin, Bold, Italic, Alignment, Heading, Highlight, FontBackgroundColor, FontColor, FontFamily, FontSize, BlockQuote, Underline, Image, ImageCaption, ImageInsert, ImageResize, ImageStyle, ImageToolbar, ImageUpload, List, TodoList, Indent, IndentBlock, Table, TableCaption, TableCellProperties, TableColumnResize, TableProperties, TableToolbar, Code, CodeBlock, HorizontalLine, PageBreak, RemoveFormat, SpecialCharacters, SpecialCharactersArrows, SpecialCharactersCurrency, SpecialCharactersEssentials, SpecialCharactersLatin, SpecialCharactersMathematical, SpecialCharactersText, MediaEmbed, MediaEmbedToolbar ],
+        toolbar: [
+            'Heading',
+            'bold', 'italic', 'underline', 'alignment' , '|',
+            'undo', 'redo', '|',
+            'blockQuote', '|',
+            'horizontalLine',
+            'outdent', 'indent', '|',
+            'fontFamily', 'fontSize', 'fontColor', 'fontBackgroundColor', 'Highlight', '|',
+            'bulletedList', 'numberedList', 'todoList', '|',
+            'imageInsert' , 'mediaEmbed', 'insertTable', '|',
+            'code', 'codeBlock', '|',
+            'pageBreak', '|',
+            'removeFormat', 'specialCharacters']
+    }
     private Breadcrumbs: BreadcrumbsItemType[] = DataOptions.BreadcrumbsEdit;
 
     private CurrentOptionUUID!: string
@@ -273,8 +332,21 @@ export default class OptionsEdit extends Vue {
         created: ''
     }
 
+    private Translit(str) {
+        let ru=("А-а-Б-б-В-в-Ґ-ґ-Г-г-Д-д-Е-е-Ё-ё-Є-є-Ж-ж-З-з-И-и-І-і-Ї-ї-Й-й-К-к-Л-л-М-м-Н-н-О-о-П-п-Р-р-С-с-Т-т-У-у-Ф-ф-Х-х-Ц-ц-Ч-ч-Ш-ш-Щ-щ-Ъ-ъ-Ы-ы-Ь-ь-Э-э-Ю-ю-Я-я").split("-")
+        let en=("A-a-B-b-V-v-G-g-G-g-D-d-E-e-E-e-E-e-ZH-zh-Z-z-I-i-I-i-I-i-J-j-K-k-L-l-M-m-N-n-O-o-P-p-R-r-S-s-T-t-U-u-F-f-H-h-TS-ts-CH-ch-SH-sh-SCH-sch-'-'-Y-y-'-'-E-e-YU-yu-YA-ya").split("-")
+        let res = '';
+        for(let i=0, l=str.length; i<l; i++)
+        {
+            let s = str.charAt(i), n = ru.indexOf(s);
+            if(n >= 0) { res += en[n]; }
+            else { res += s; }
+        }
+        return res;
+    }
+
     private ValidateSeoUrl() {
-        this.newOption.seo_url = this.newOption.seo_url.replace(/[. ,$@!^()'*]+/g, '-').toLowerCase()
+        this.newOption.seo_url = this.Translit(this.newOption.seo_url.replace(/[. ,$@!^()'*]+/g, '-').toLowerCase())
     }
 
     private async OnClickSubmit(): Promise<void> {

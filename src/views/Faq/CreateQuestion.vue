@@ -59,7 +59,7 @@
                                 </div>
                                 <div class="col-12">
                                     <h6>Answer</h6>
-                                    <ckeditor :editor="editor" v-model="newPost.answer" />
+                                    <ckeditor :editor="editor" :config="editorConfig" v-model="newPost.answer" />
                                 </div>
                             </div>
                         </div>
@@ -103,7 +103,50 @@ import ApiFaq from "@/api/ApiFaq";
 import StandartTemplate from "@/components/Template/StandartTemplate.vue";
 import PageHeader from "@/components/UI/PageHeader.vue";
 import CKEditor from '@ckeditor/ckeditor5-vue2'
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
+import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor'
+import EssentialsPlugin from "@ckeditor/ckeditor5-essentials/src/essentials";
+import Bold from "@ckeditor/ckeditor5-basic-styles/src/bold";
+import Italic from "@ckeditor/ckeditor5-basic-styles/src/italic";
+import Alignment from "@ckeditor/ckeditor5-alignment/src/alignment";
+import Heading from "@ckeditor/ckeditor5-heading/src/heading";
+import Highlight from "@ckeditor/ckeditor5-highlight/src/highlight";
+import FontBackgroundColor from "@ckeditor/ckeditor5-font/src/fontbackgroundcolor";
+import FontColor from "@ckeditor/ckeditor5-font/src/fontcolor";
+import FontFamily from "@ckeditor/ckeditor5-font/src/fontfamily";
+import FontSize from "@ckeditor/ckeditor5-font/src/fontsize";
+import BlockQuote from "@ckeditor/ckeditor5-block-quote/src/blockquote";
+import Underline from "@ckeditor/ckeditor5-basic-styles/src/underline";
+import Image from "@ckeditor/ckeditor5-image/src/image";
+import ImageCaption from "@ckeditor/ckeditor5-image/src/imagecaption";
+import ImageInsert from "@ckeditor/ckeditor5-image/src/imageinsert";
+import ImageResize from "@ckeditor/ckeditor5-image/src/imageresize";
+import ImageStyle from "@ckeditor/ckeditor5-image/src/imagestyle";
+import ImageToolbar from "@ckeditor/ckeditor5-image/src/imagetoolbar";
+import ImageUpload from "@ckeditor/ckeditor5-image/src/imageupload";
+import List from "@ckeditor/ckeditor5-list/src/list";
+import TodoList from "@ckeditor/ckeditor5-list/src/todolist";
+import Indent from "@ckeditor/ckeditor5-indent/src/indent";
+import IndentBlock from "@ckeditor/ckeditor5-indent/src/indentblock";
+import Table from "@ckeditor/ckeditor5-table/src/table";
+import TableCaption from "@ckeditor/ckeditor5-table/src/tablecaption";
+import TableCellProperties from "@ckeditor/ckeditor5-table/src/tablecellproperties";
+import TableColumnResize from "@ckeditor/ckeditor5-table/src/tablecolumnresize";
+import TableProperties from "@ckeditor/ckeditor5-table/src/tableproperties";
+import TableToolbar from "@ckeditor/ckeditor5-table/src/tabletoolbar";
+import Code from "@ckeditor/ckeditor5-basic-styles/src/code";
+import CodeBlock from "@ckeditor/ckeditor5-code-block/src/codeblock";
+import HorizontalLine from "@ckeditor/ckeditor5-horizontal-line/src/horizontalline";
+import PageBreak from "@ckeditor/ckeditor5-page-break/src/pagebreak";
+import RemoveFormat from "@ckeditor/ckeditor5-remove-format/src/removeformat";
+import SpecialCharacters from "@ckeditor/ckeditor5-special-characters/src/specialcharacters";
+import SpecialCharactersArrows from "@ckeditor/ckeditor5-special-characters/src/specialcharactersarrows";
+import SpecialCharactersCurrency from "@ckeditor/ckeditor5-special-characters/src/specialcharacterscurrency";
+import SpecialCharactersEssentials from "@ckeditor/ckeditor5-special-characters/src/specialcharactersessentials";
+import SpecialCharactersLatin from "@ckeditor/ckeditor5-special-characters/src/specialcharacterslatin";
+import SpecialCharactersMathematical from "@ckeditor/ckeditor5-special-characters/src/specialcharactersmathematical";
+import SpecialCharactersText from "@ckeditor/ckeditor5-special-characters/src/specialcharacterstext";
+import MediaEmbed from "@ckeditor/ckeditor5-media-embed/src/mediaembed";
+import MediaEmbedToolbar from "@ckeditor/ckeditor5-media-embed/src/mediaembedtoolbar";
 
 
 @Component({
@@ -112,6 +155,22 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 
 export default class CreateQuestion extends Vue {
     public editor = ClassicEditor
+    public editorConfig = {
+        plugins: [ EssentialsPlugin, Bold, Italic, Alignment, Heading, Highlight, FontBackgroundColor, FontColor, FontFamily, FontSize, BlockQuote, Underline, Image, ImageCaption, ImageInsert, ImageResize, ImageStyle, ImageToolbar, ImageUpload, List, TodoList, Indent, IndentBlock, Table, TableCaption, TableCellProperties, TableColumnResize, TableProperties, TableToolbar, Code, CodeBlock, HorizontalLine, PageBreak, RemoveFormat, SpecialCharacters, SpecialCharactersArrows, SpecialCharactersCurrency, SpecialCharactersEssentials, SpecialCharactersLatin, SpecialCharactersMathematical, SpecialCharactersText, MediaEmbed, MediaEmbedToolbar ],
+        toolbar: [
+            'Heading',
+            'bold', 'italic', 'underline', 'alignment' , '|',
+            'undo', 'redo', '|',
+            'blockQuote', '|',
+            'horizontalLine',
+            'outdent', 'indent', '|',
+            'fontFamily', 'fontSize', 'fontColor', 'fontBackgroundColor', 'Highlight', '|',
+            'bulletedList', 'numberedList', 'todoList', '|',
+            'imageInsert' , 'mediaEmbed', 'insertTable', '|',
+            'code', 'codeBlock', '|',
+            'pageBreak', '|',
+            'removeFormat', 'specialCharacters']
+    }
 
     public Breadcrumbs: BreadcrumbsItemType[] = [
         {
