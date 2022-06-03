@@ -121,13 +121,6 @@ import FontFamily from "@ckeditor/ckeditor5-font/src/fontfamily";
 import FontSize from "@ckeditor/ckeditor5-font/src/fontsize";
 import BlockQuote from "@ckeditor/ckeditor5-block-quote/src/blockquote";
 import Underline from "@ckeditor/ckeditor5-basic-styles/src/underline";
-import Image from "@ckeditor/ckeditor5-image/src/image";
-import ImageCaption from "@ckeditor/ckeditor5-image/src/imagecaption";
-import ImageInsert from "@ckeditor/ckeditor5-image/src/imageinsert";
-import ImageResize from "@ckeditor/ckeditor5-image/src/imageresize";
-import ImageStyle from "@ckeditor/ckeditor5-image/src/imagestyle";
-import ImageToolbar from "@ckeditor/ckeditor5-image/src/imagetoolbar";
-import ImageUpload from "@ckeditor/ckeditor5-image/src/imageupload";
 import List from "@ckeditor/ckeditor5-list/src/list";
 import TodoList from "@ckeditor/ckeditor5-list/src/todolist";
 import Indent from "@ckeditor/ckeditor5-indent/src/indent";
@@ -150,8 +143,6 @@ import SpecialCharactersEssentials from "@ckeditor/ckeditor5-special-characters/
 import SpecialCharactersLatin from "@ckeditor/ckeditor5-special-characters/src/specialcharacterslatin";
 import SpecialCharactersMathematical from "@ckeditor/ckeditor5-special-characters/src/specialcharactersmathematical";
 import SpecialCharactersText from "@ckeditor/ckeditor5-special-characters/src/specialcharacterstext";
-import MediaEmbed from "@ckeditor/ckeditor5-media-embed/src/mediaembed";
-import MediaEmbedToolbar from "@ckeditor/ckeditor5-media-embed/src/mediaembedtoolbar";
 
 
 @Component({
@@ -161,7 +152,7 @@ import MediaEmbedToolbar from "@ckeditor/ckeditor5-media-embed/src/mediaembedtoo
 export default class EditQuestion extends Vue {
     public editor = ClassicEditor
     public editorConfig = {
-        plugins: [ EssentialsPlugin, Bold, Italic, Alignment, Heading, Highlight, FontBackgroundColor, FontColor, FontFamily, FontSize, BlockQuote, Underline, Image, ImageCaption, ImageInsert, ImageResize, ImageStyle, ImageToolbar, ImageUpload, List, TodoList, Indent, IndentBlock, Table, TableCaption, TableCellProperties, TableColumnResize, TableProperties, TableToolbar, Code, CodeBlock, HorizontalLine, PageBreak, RemoveFormat, SpecialCharacters, SpecialCharactersArrows, SpecialCharactersCurrency, SpecialCharactersEssentials, SpecialCharactersLatin, SpecialCharactersMathematical, SpecialCharactersText, MediaEmbed, MediaEmbedToolbar ],
+        plugins: [ EssentialsPlugin, Bold, Italic, Alignment, Heading, Highlight, FontBackgroundColor, FontColor, FontFamily, FontSize, BlockQuote, Underline, List, TodoList, Indent, IndentBlock, Table, TableCaption, TableCellProperties, TableColumnResize, TableProperties, TableToolbar, Code, CodeBlock, HorizontalLine, PageBreak, RemoveFormat, SpecialCharacters, SpecialCharactersArrows, SpecialCharactersCurrency, SpecialCharactersEssentials, SpecialCharactersLatin, SpecialCharactersMathematical, SpecialCharactersText ],
         toolbar: [
             'Heading',
             'bold', 'italic', 'underline', 'alignment' , '|',
@@ -171,7 +162,7 @@ export default class EditQuestion extends Vue {
             'outdent', 'indent', '|',
             'fontFamily', 'fontSize', 'fontColor', 'fontBackgroundColor', 'Highlight', '|',
             'bulletedList', 'numberedList', 'todoList', '|',
-            'imageInsert' , 'mediaEmbed', 'insertTable', '|',
+            'insertTable', '|',
             'code', 'codeBlock', '|',
             'pageBreak', '|',
             'removeFormat', 'specialCharacters']
