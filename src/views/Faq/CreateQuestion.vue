@@ -131,13 +131,6 @@ import CodeBlock from "@ckeditor/ckeditor5-code-block/src/codeblock";
 import HorizontalLine from "@ckeditor/ckeditor5-horizontal-line/src/horizontalline";
 import PageBreak from "@ckeditor/ckeditor5-page-break/src/pagebreak";
 import RemoveFormat from "@ckeditor/ckeditor5-remove-format/src/removeformat";
-import SpecialCharacters from "@ckeditor/ckeditor5-special-characters/src/specialcharacters";
-import SpecialCharactersArrows from "@ckeditor/ckeditor5-special-characters/src/specialcharactersarrows";
-import SpecialCharactersCurrency from "@ckeditor/ckeditor5-special-characters/src/specialcharacterscurrency";
-import SpecialCharactersEssentials from "@ckeditor/ckeditor5-special-characters/src/specialcharactersessentials";
-import SpecialCharactersLatin from "@ckeditor/ckeditor5-special-characters/src/specialcharacterslatin";
-import SpecialCharactersMathematical from "@ckeditor/ckeditor5-special-characters/src/specialcharactersmathematical";
-import SpecialCharactersText from "@ckeditor/ckeditor5-special-characters/src/specialcharacterstext";
 
 
 @Component({
@@ -147,7 +140,7 @@ import SpecialCharactersText from "@ckeditor/ckeditor5-special-characters/src/sp
 export default class CreateQuestion extends Vue {
     public editor = ClassicEditor
     public editorConfig = {
-        plugins: [ EssentialsPlugin, Bold, Italic, Alignment, Heading, Highlight, FontBackgroundColor, FontColor, FontFamily, FontSize, BlockQuote, Underline, List, TodoList, Indent, IndentBlock, Table, TableCaption, TableCellProperties, TableColumnResize, TableProperties, TableToolbar, Code, CodeBlock, HorizontalLine, PageBreak, RemoveFormat, SpecialCharacters, SpecialCharactersArrows, SpecialCharactersCurrency, SpecialCharactersEssentials, SpecialCharactersLatin, SpecialCharactersMathematical, SpecialCharactersText ],
+        plugins: [ EssentialsPlugin, Bold, Italic, Alignment, Heading, Highlight, FontBackgroundColor, FontColor, FontFamily, FontSize, BlockQuote, Underline, List, TodoList, Indent, IndentBlock, Table, TableCaption, TableCellProperties, TableColumnResize, TableProperties, TableToolbar, Code, CodeBlock, HorizontalLine, PageBreak, RemoveFormat ],
         toolbar: [
             'Heading',
             'bold', 'italic', 'underline', 'alignment' , '|',
@@ -160,7 +153,7 @@ export default class CreateQuestion extends Vue {
             'insertTable', '|',
             'code', 'codeBlock', '|',
             'pageBreak', '|',
-            'removeFormat', 'specialCharacters']
+            'removeFormat']
     }
 
     public Breadcrumbs: BreadcrumbsItemType[] = [
