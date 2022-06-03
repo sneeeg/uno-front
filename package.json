@@ -39,9 +39,9 @@
     "vuex-class": "^0.3.2"
   },
   "devDependencies": {
+    "@ckeditor/ckeditor5-editor-classic": "^34.1.0",
     "@ckeditor/ckeditor5-alignment": "^34.1.0",
     "@ckeditor/ckeditor5-basic-styles": "^34.1.0",
-    "@ckeditor/ckeditor5-editor-classic": "^34.1.0",
     "@ckeditor/ckeditor5-essentials": "^34.1.0",
     "@ckeditor/ckeditor5-heading": "^34.1.0",
     "@ckeditor/ckeditor5-highlight": "^34.1.0",

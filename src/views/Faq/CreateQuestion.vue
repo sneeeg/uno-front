@@ -131,6 +131,22 @@ import CodeBlock from "@ckeditor/ckeditor5-code-block/src/codeblock";
 import HorizontalLine from "@ckeditor/ckeditor5-horizontal-line/src/horizontalline";
 import PageBreak from "@ckeditor/ckeditor5-page-break/src/pagebreak";
 import RemoveFormat from "@ckeditor/ckeditor5-remove-format/src/removeformat";
+import Image from "@ckeditor/ckeditor5-image/src/image";
+import ImageCaption from "@ckeditor/ckeditor5-image/src/imagecaption";
+import ImageInsert from "@ckeditor/ckeditor5-image/src/imageinsert";
+import ImageResize from "@ckeditor/ckeditor5-image/src/imageresize";
+import ImageStyle from "@ckeditor/ckeditor5-image/src/imagestyle";
+import ImageToolbar from "@ckeditor/ckeditor5-image/src/imagetoolbar";
+import ImageUpload from "@ckeditor/ckeditor5-image/src/imageupload";
+import SpecialCharacters from "@ckeditor/ckeditor5-special-characters/src/specialcharacters";
+import SpecialCharactersArrows from "@ckeditor/ckeditor5-special-characters/src/specialcharactersarrows";
+import SpecialCharactersCurrency from "@ckeditor/ckeditor5-special-characters/src/specialcharacterscurrency";
+import SpecialCharactersEssentials from "@ckeditor/ckeditor5-special-characters/src/specialcharactersessentials";
+import SpecialCharactersLatin from "@ckeditor/ckeditor5-special-characters/src/specialcharacterslatin";
+import SpecialCharactersMathematical from "@ckeditor/ckeditor5-special-characters/src/specialcharactersmathematical";
+import SpecialCharactersText from "@ckeditor/ckeditor5-special-characters/src/specialcharacterstext";
+import MediaEmbed from "@ckeditor/ckeditor5-media-embed/src/mediaembed";
+import MediaEmbedToolbar from "@ckeditor/ckeditor5-media-embed/src/mediaembedtoolbar";
 
 
 @Component({
@@ -140,7 +156,7 @@ import RemoveFormat from "@ckeditor/ckeditor5-remove-format/src/removeformat";
 export default class CreateQuestion extends Vue {
     public editor = ClassicEditor
     public editorConfig = {
-        plugins: [ EssentialsPlugin, Bold, Italic, Alignment, Heading, Highlight, FontBackgroundColor, FontColor, FontFamily, FontSize, BlockQuote, Underline, List, TodoList, Indent, IndentBlock, Table, TableCaption, TableCellProperties, TableColumnResize, TableProperties, TableToolbar, Code, CodeBlock, HorizontalLine, PageBreak, RemoveFormat ],
+        plugins: [ EssentialsPlugin, Bold, Italic, Alignment, Heading, Highlight, FontBackgroundColor, FontColor, FontFamily, FontSize, BlockQuote, Underline, Image, ImageCaption, ImageInsert, ImageResize, ImageStyle, ImageToolbar, ImageUpload, List, TodoList, Indent, IndentBlock, Table, TableCaption, TableCellProperties, TableColumnResize, TableProperties, TableToolbar, Code, CodeBlock, HorizontalLine, PageBreak, RemoveFormat, SpecialCharacters, SpecialCharactersArrows, SpecialCharactersCurrency, SpecialCharactersEssentials, SpecialCharactersLatin, SpecialCharactersMathematical, SpecialCharactersText, MediaEmbed, MediaEmbedToolbar ],
         toolbar: [
             'Heading',
             'bold', 'italic', 'underline', 'alignment' , '|',
@@ -150,10 +166,10 @@ export default class CreateQuestion extends Vue {
             'outdent', 'indent', '|',
             'fontFamily', 'fontSize', 'fontColor', 'fontBackgroundColor', 'Highlight', '|',
             'bulletedList', 'numberedList', 'todoList', '|',
-            'insertTable', '|',
+            'mediaEmbed', 'insertTable', '|',
             'code', 'codeBlock', '|',
             'pageBreak', '|',
-            'removeFormat']
+            'removeFormat', 'specialCharacters']
     }
 
     public Breadcrumbs: BreadcrumbsItemType[] = [
