@@ -147,6 +147,13 @@ import SpecialCharactersMathematical from "@ckeditor/ckeditor5-special-character
 import SpecialCharactersText from "@ckeditor/ckeditor5-special-characters/src/specialcharacterstext";
 import MediaEmbed from "@ckeditor/ckeditor5-media-embed/src/mediaembed";
 import MediaEmbedToolbar from "@ckeditor/ckeditor5-media-embed/src/mediaembedtoolbar";
+import AutoImage from "@ckeditor/ckeditor5-image/src/autoimage";
+import FindAndReplace from "@ckeditor/ckeditor5-find-and-replace/src/findandreplace";
+import SourceEditing from "@ckeditor/ckeditor5-source-editing/src/sourceediting";
+import Subscript from "@ckeditor/ckeditor5-basic-styles/src/subscript";
+import Superscript from "@ckeditor/ckeditor5-basic-styles/src/superscript";
+import Link from "@ckeditor/ckeditor5-link/src/link";
+import AutoLink from "@ckeditor/ckeditor5-link/src/autolink";
 
 
 @Component({
@@ -156,20 +163,20 @@ import MediaEmbedToolbar from "@ckeditor/ckeditor5-media-embed/src/mediaembedtoo
 export default class CreateQuestion extends Vue {
     public editor = ClassicEditor
     public editorConfig = {
-        plugins: [ EssentialsPlugin, Bold, Italic, Alignment, Heading, Highlight, FontBackgroundColor, FontColor, FontFamily, FontSize, BlockQuote, Underline, Image, ImageCaption, ImageInsert, ImageResize, ImageStyle, ImageToolbar, ImageUpload, List, TodoList, Indent, IndentBlock, Table, TableCaption, TableCellProperties, TableColumnResize, TableProperties, TableToolbar, Code, CodeBlock, HorizontalLine, PageBreak, RemoveFormat, SpecialCharacters, SpecialCharactersArrows, SpecialCharactersCurrency, SpecialCharactersEssentials, SpecialCharactersLatin, SpecialCharactersMathematical, SpecialCharactersText, MediaEmbed, MediaEmbedToolbar ],
+        plugins: [ EssentialsPlugin, Bold, Italic, Alignment, Heading, Highlight, FontBackgroundColor, FontColor, FontFamily, FontSize, BlockQuote, Underline, AutoImage, Image, ImageCaption, ImageInsert, ImageResize, ImageStyle, ImageToolbar, ImageUpload, List, TodoList, Indent, IndentBlock, Table, TableCaption, TableCellProperties, TableColumnResize, TableProperties, TableToolbar, Code, CodeBlock, HorizontalLine, PageBreak, RemoveFormat, SpecialCharacters, SpecialCharactersArrows, SpecialCharactersCurrency, SpecialCharactersEssentials, SpecialCharactersLatin, SpecialCharactersMathematical, SpecialCharactersText, MediaEmbed, MediaEmbedToolbar, FindAndReplace, SourceEditing, Subscript, Superscript, Link, AutoLink ],
         toolbar: [
             'Heading',
-            'bold', 'italic', 'underline', 'alignment' , '|',
+            'bold', 'italic', 'underline', 'alignment', 'link', '|',
             'undo', 'redo', '|',
             'blockQuote', '|',
             'horizontalLine',
             'outdent', 'indent', '|',
-            'fontFamily', 'fontSize', 'fontColor', 'fontBackgroundColor', 'Highlight', '|',
-            'bulletedList', 'numberedList', 'todoList', '|',
-            'mediaEmbed', 'insertTable', '|',
-            'code', 'codeBlock', '|',
-            'pageBreak', '|',
-            'removeFormat', 'specialCharacters']
+            'fontSize', 'fontColor', 'fontBackgroundColor', 'Highlight', '|',
+            'bulletedList', 'numberedList', '|',
+            'mediaEmbed', 'imageUpload', 'insertTable', '|',
+            'code', 'codeBlock', 'sourceEditing', '|',
+            'pageBreak', 'findAndReplace', '|',
+            'removeFormat', 'specialCharacters', 'subscript', 'superscript']
     }
 
     public Breadcrumbs: BreadcrumbsItemType[] = [

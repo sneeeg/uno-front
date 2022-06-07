@@ -128,6 +128,78 @@ input[type=number] {
     height: 500px;
 }
 
+.ck-content p {
+    font-family: var(--bs-font-ultra);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 22px;
+    letter-spacing: -0.01em;
+    color: #292929;
+    padding-bottom: 15px;
+    padding-top: 15px;
+}
+
+.ck-content ul {
+    list-style: none;
+    padding-left: 30px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    max-width: 600px;
+}
+
+.ck-content {
+    li {
+        padding-left: 20px;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 22px;
+        letter-spacing: -0.01em;
+        color: #292929;
+        padding-bottom: 30px;
+        position: relative;
+    }
+
+    li:before {
+        content: url("../img/list-icon.svg");
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+    ol {
+        list-style: none;
+        padding-left: 30px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        max-width: 600px;
+    }
+    ol li {
+        font-family: var(--bs-font-ultra);
+        font-style: normal;
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 22px;
+        letter-spacing: -0.01em;
+        color: #292929;
+        padding-bottom: 30px;
+        position: relative;
+    }
+    ol li:before {
+        content: attr(data-item);
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-family: 'GT Ultra';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 22px;
+        letter-spacing: -0.01em;
+        color: #2f06d2;
+    }
+}
+
 //<editor-fold defaultstate="collapsed" desc=".btn, .btn-success, .btn-warning, .btn-info, .btn-danger, .btn-primary">
 .btn-primary {
     border-color: rgba(0, 0, 0, 0);
